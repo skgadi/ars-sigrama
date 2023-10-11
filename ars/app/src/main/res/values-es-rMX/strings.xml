@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ars</string>
+    <string name="button_menu">Menú</string>
+    <string name="temp_1">¡Hola Mundo!</string>
+    <string name="temp_2">¡Hola Mundo 12121 212 121!</string>
+    <string name="temp_03">Fases</string>
+    <string name="temp_04">Osc</string>
+    <string name="temp_05">power</string>
+</resources>

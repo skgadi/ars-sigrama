@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ars</string>
+    <string name="button_menu">Menu</string>
+    <string name="temp_1">Hello World!</string>
+    <string name="temp_2">Hello World 12121 11!</string>
+    <string name="temp_03">Phases</string>
+    <string name="temp_04">Osc</string>
+    <string name="temp_05">power</string>
+</resources>
