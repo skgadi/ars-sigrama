@@ -10,10 +10,19 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.codeboy.pager2_transformers.Pager2_AccordionTransformer;
+import com.codeboy.pager2_transformers.Pager2_CubeInDepthTransformer;
+import com.codeboy.pager2_transformers.Pager2_CubeOutScalingTransformer;
+import com.codeboy.pager2_transformers.Pager2_DefaultTransformer;
+import com.codeboy.pager2_transformers.Pager2_DepthTransformer;
+import com.codeboy.pager2_transformers.Pager2_GateTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +30,15 @@ import java.util.List;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayOscilloscope;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPhases;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPower;
+import mx.com.sigrama.ars.common.DepthPageTransformer;
+import mx.com.sigrama.ars.common.ZoomOutPageTransformer;
 import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayBinding;
 
 public class RealtimeDisplay extends Fragment {
 
     //A binder to obtain ViewPager2
     private FragmentRealtimeDisplayBinding binder;
-    private DisplayOscilloscope displayOscilloscope;
-    private DisplayPhases displayPhases;
-    private DisplayPower displayPower;
-    //private ViewPager2 pagerViewRealtimeDisplay;
+    private ViewPager2 pagerViewRealtimeDisplay;
 
     public RealtimeDisplay() {
         // Required empty public constructor
@@ -43,65 +51,17 @@ public class RealtimeDisplay extends Fragment {
 
         binder = FragmentRealtimeDisplayBinding.inflate(inflater, container, false);
         View view = binder.getRoot();
-        displayPhases = new DisplayPhases();
-        displayOscilloscope = new DisplayOscilloscope();
-        displayPower = new DisplayPower();
-
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), 0);
-        viewPagerAdapter.addFragment(displayPhases, "Phases");
-        viewPagerAdapter.addFragment(displayOscilloscope, "Oscilloscope");
-        viewPagerAdapter.addFragment(displayPower, "Power");
 
 
+        pagerViewRealtimeDisplay = binder.viewPagerForRealtimeDisplay;
+        pagerViewRealtimeDisplay.setAdapter(new RealtimeDisplayAdapter(this));
+        pagerViewRealtimeDisplay.setOffscreenPageLimit(1);
 
-        ViewPager viewPagerForRealtimeDisplay =  binder.viewPagerForRealtimeDisplay;
-
-        viewPagerForRealtimeDisplay.setAdapter(viewPagerAdapter);
-
-        //viewPagerForRealtimeDisplay.setAdapter(new RealTimeDisplayAdapterForPager());
-        //pagerViewRealtimeDisplay = binder.pagerViewRealtimeDisplay;
-        //pagerViewRealtimeDisplay.setAdapter(new RealtimeDisplayAdapter(this));
-        //pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
+        //pagerViewRealtimeDisplay.setPageTransformer(new Pager2_DepthTransformer());
+        pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
         //pagerViewRealtimeDisplay.setPageTransformer(new DepthPageTransformer());
         return view;
     }
-
-
-    /**
-     * Added by SKGadi
-     * Pager adapter for RealtimeDisplay
-     */
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private List<Fragment> fragments = new ArrayList<>();
-        private List<String> fragmentTitles = new ArrayList<>();
-        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-            super(fm, behavior);
-        }
-        //add fragment to the viewpager
-        public void addFragment(Fragment fragment, String title){
-            fragments.add(fragment);
-            fragmentTitles.add(title);
-        }
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-        @Override
-        public int getCount() {
-            return fragments.size();
-        }
-        //to setup title of the tab layout
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return fragmentTitles.get(position);
-        }
-    }
-
-
-
-
 
     /**
      * Added by SKGadi
@@ -116,6 +76,7 @@ public class RealtimeDisplay extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             Fragment fragment;
+            //Log.d("SKGadi", "createFragment: " + position);
             switch (position) {
                 case 0:
                     fragment = new DisplayPhases();

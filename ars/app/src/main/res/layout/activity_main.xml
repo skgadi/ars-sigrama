@@ -11,17 +11,14 @@
         android:id="@+id/main_activity_fragment_container_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
-        style="?attr/floatingActionButtonSmallSurfaceStyle"
+    <Button
+        style="?attr/materialIconButtonStyle"
+        android:id="@+id/main_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/button_menu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_menu_24" />
-
+        app:icon="@drawable/baseline_menu_24"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".RealtimeDisplay">
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/view_pager_for_realtime_display">
-
-    </androidx.viewpager.widget.ViewPager>
+        android:id="@+id/view_pager_for_realtime_display"
+        android:background="#AAAAAA"
+        android:orientation="horizontal">
+    </androidx.viewpager2.widget.ViewPager2>
 
     <RadioGroup
         android:layout_width="wrap_content"

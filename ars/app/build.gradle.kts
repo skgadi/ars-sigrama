@@ -77,5 +77,8 @@ dependencies {
     // supporting to use MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    //animation of ViewPager2 transformation
+    implementation ("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")
+
 
 }

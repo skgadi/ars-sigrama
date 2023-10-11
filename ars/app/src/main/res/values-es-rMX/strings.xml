@@ -7,4 +7,5 @@
     <string name="temp_03">Fases</string>
     <string name="temp_04">Osc</string>
     <string name="temp_05">power</string>
+    <string name="main_menu_connect">Connect to device</string>
 </resources>
