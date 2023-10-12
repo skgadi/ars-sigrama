@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
+
 public class MainScreen extends Fragment {
 
 
@@ -26,18 +28,11 @@ public class MainScreen extends Fragment {
         if (!initialVariablesInitialized) {
             initialVariablesInitialized = true;
             // Fill main screen fragment with RealtimeDisplay. It will be temp, later connect with menu
-            if (getChildFragmentManager().findFragmentById(R.id.main_screen_fragment_container_view) == null) {
-                getChildFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .add(R.id.main_screen_fragment_container_view, new RealtimeDisplay())
-                        .commit();
-            }
-            else {
-                getChildFragmentManager().beginTransaction()
-                        .setReorderingAllowed(true)
-                        .show(getChildFragmentManager().findFragmentById(R.id.main_screen_fragment_container_view))
-                        .commit();
-            }
+            new ManipulateFragmentContainerView(
+                    ManipulateFragmentContainerView.MANIPULATION.ADD_ONLY_IF_NOT_EXISTS,
+                    getChildFragmentManager(),
+                    R.id.main_screen_fragment_container_view,
+                    "mx.com.sigrama.ars.RealtimeDisplay");
         }
     }
 

@@ -1,11 +1,15 @@
 package mx.com.sigrama.ars;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -19,6 +23,9 @@ import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetDialog;
+
+import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
+import mx.com.sigrama.ars.common.fragmentContainerAddOrShow;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,23 +48,29 @@ public class MainActivity extends AppCompatActivity {
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);*/
 
         // Fill main screen with fragment
-        if (getSupportFragmentManager().findFragmentById(R.id.main_activity_fragment_container_view) == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.main_activity_fragment_container_view, new MainScreen())
-                    .commit();
-        } else {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .show(getSupportFragmentManager().findFragmentById(R.id.main_activity_fragment_container_view))
-                    .commit();
-        }
+        new ManipulateFragmentContainerView(
+                ManipulateFragmentContainerView.MANIPULATION.ADD_ONLY_IF_NOT_EXISTS,
+                getSupportFragmentManager(),
+                R.id.main_activity_fragment_container_view,
+                "mx.com.sigrama.ars.MainScreen");
 
         //Menu button functionality
+        View tempMainMenuView = getLayoutInflater().inflate(R.layout.main_menu,null);
+        NavigationView mainMenuNavigationView = tempMainMenuView.findViewById(R.id.main_menu_navigationView);
+        mainMenuNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return handleMainMenuButton(item);
+            }
+        });
+
+
         sideSheetForMenu = new SideSheetDialog(this);
-        sideSheetForMenu.setContentView(R.layout.main_menu);
-        sideSheetForMenu.setCanceledOnTouchOutside(true);
-        sideSheetForMenu.getBehavior().setDraggable(true);
+        sideSheetForMenu.setContentView(tempMainMenuView);
+        //sideSheetForMenu.setContentView(R.layout.main_menu);
+
+        /*PopupMenu mainMenu = new PopupMenu(this, null);
+        mainMenu.getMenuInflater().inflate(R.menu.main_menu, mainMenu.getMenu());*/
         findViewById(R.id.main_menu_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,5 +79,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private boolean handleMainMenuButton (@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case :
+                new ManipulateFragmentContainerView(
+                        ManipulateFragmentContainerView.MANIPULATION.REMOVE_AND_ADD,
+                        getSupportFragmentManager(),
+                        R.id.main_activity_fragment_container_view,
+                        "mx.com.sigrama.ars.RealtimeDisplay");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + item);
+        }
+        Log.d("SKGadi", "MenuItem: "+ item.getItemId());
+        return false;
+    }
 
 }

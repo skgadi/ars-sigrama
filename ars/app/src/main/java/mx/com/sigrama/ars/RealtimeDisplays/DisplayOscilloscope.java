@@ -50,4 +50,11 @@ public class DisplayOscilloscope extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d("SKGadi", "onViewCreated: DisplayOscilloscope");
     }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("SKGadi", "onDestroyView: DisplayOscilloscope");
+    }
 }
