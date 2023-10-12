@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/fragment_device_title" />
+
+        <ImageView
+            android:id="@+id/fragment_device_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:contentDescription="@string/fragment_device_image_description"
+            android:src="@drawable/device_photo" />
+
+        <TextView
+            style = "@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/fragment_device_info_01" />
+        <TextView
+            style = "@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/temp_2" />
+        <TextView
+            style = "@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:text="@string/fragment_device_change_device" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:padding ="4dp"
+            android:orientation="horizontal">
+
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/fragment_device_qr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon = "@drawable/baseline_link_24"
+                android:text="@string/fragment_device_qr"/>
+
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/fragment_device_manual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon = "@drawable/baseline_link_24"
+                android:text="@string/fragment_device_manual"/>
+        </LinearLayout>
+        <Button
+            style="?attr/materialButtonStyle"
+            android:id="@+id/fragment_device_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            app:icon = "@drawable/baseline_link_24"
+            android:text="@string/fragment_device_connect"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

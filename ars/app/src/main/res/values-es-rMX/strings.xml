@@ -7,5 +7,16 @@
     <string name="temp_03">Fases</string>
     <string name="temp_04">Osc</string>
     <string name="temp_05">power</string>
-    <string name="main_menu_connect">Connect to device</string>
+    <string name="main_menu_device">ARS Device</string>
+    <string name="main_menu_device_configure">Configurar</string>
+    <string name="main_menu_device_connect">Conexión rápida</string>
+    <string name="main_menu_device_disconnect">Desconectar</string>
+    <string name="fragment_device_title">Establecer conexión con ARS</string>
+    <string name="fragment_device_info_01">Conectado a:</string>
+    <string name="fragment_device_image_description">Imagen del dispositivo ARS</string>
+    <string name="fragment_device_change_device">Cambiar el dispositivo vinculado</string>
+    <string name="fragment_device_qr">Código QR</string>
+    <string name="fragment_device_manual">Manual</string>
+    <string name="fragment_device_connect">Conectar al dispositivo</string>
+    <string name="fragment_device_disconnect">Desconectar el dispositivo</string>
 </resources>

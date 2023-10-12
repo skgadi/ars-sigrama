@@ -2,7 +2,7 @@
 <com.google.android.material.navigation.NavigationView android:id="@+id/navigationView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:menu="@menu/top_menu"
+    app:menu="@menu/main_menu"
     app:dividerInsetStart="@dimen/cardview_default_elevation"
     app:labelVisibilityMode="labeled"
     android:background="#00000000"

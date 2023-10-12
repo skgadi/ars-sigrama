@@ -22,15 +22,8 @@ public class DisplayPhases extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("SKGadi", "onCreateView: DisplayPhases");
         binder = FragmentRealtimeDisplayPhasesBinding.inflate(inflater, container, false);
         return binder.getRoot();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binder = null;
-        Log.d("SKGadi", "onDestroyView: DisplayPhases");
-    }
 }

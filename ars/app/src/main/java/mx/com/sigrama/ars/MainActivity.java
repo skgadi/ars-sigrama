@@ -3,12 +3,18 @@ package mx.com.sigrama.ars;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.sidesheet.SideSheetBehavior;
@@ -16,7 +22,7 @@ import com.google.android.material.sidesheet.SideSheetDialog;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NavigationView navigationView;
+    private SideSheetDialog sideSheetForMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +54,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Menu button functionality
-        SideSheetDialog sideSheetForMenu = new SideSheetDialog(this);
+        sideSheetForMenu = new SideSheetDialog(this);
         sideSheetForMenu.setContentView(R.layout.main_menu);
-
-
-
-
-        /*NavigationView mainMenuNavigationView = new NavigationView(this);
-        mainMenuNavigationView.*/
-
-        //navigationView = findViewById(R.id.navigationView1);
-        Log.d("SKGadi", "onCreate: " + navigationView);
+        sideSheetForMenu.setCanceledOnTouchOutside(true);
+        sideSheetForMenu.getBehavior().setDraggable(true);
         findViewById(R.id.main_menu_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
