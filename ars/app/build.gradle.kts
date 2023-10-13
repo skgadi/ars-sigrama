@@ -80,5 +80,10 @@ dependencies {
     //animation of ViewPager2 transformation
     implementation ("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")
 
+    //Implementation of QR code scanner
+    //implementation ("com.budiyev.android:code-scanner:2.1.0")
+    implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
+
+
 
 }

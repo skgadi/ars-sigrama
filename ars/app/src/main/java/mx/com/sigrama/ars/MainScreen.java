@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class MainScreen extends Fragment {
             initialVariablesInitialized = true;
             // Fill main screen fragment with RealtimeDisplay. It will be temp, later connect with menu
             new ManipulateFragmentContainerView(
-                    ManipulateFragmentContainerView.MANIPULATION.ADD_ONLY_IF_NOT_EXISTS,
+                    ManipulateFragmentContainerView.MANIPULATION.SHOW,
                     getChildFragmentManager(),
                     R.id.main_screen_fragment_container_view,
                     "mx.com.sigrama.ars.RealtimeDisplay");

@@ -18,5 +18,7 @@
     <string name="fragment_device_manual">Manual</string>
     <string name="fragment_device_connect">Connect to device</string>
     <string name="fragment_device_disconnect">Disconnect the device</string>
+    <string name="shared_prefs_default_device_id">ARS-00B0D063C226</string>
+    <string name="fragment_device_info_02">Device ID set to</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

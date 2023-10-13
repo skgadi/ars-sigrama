@@ -19,4 +19,6 @@
     <string name="fragment_device_manual">Manual</string>
     <string name="fragment_device_connect">Conectar al dispositivo</string>
     <string name="fragment_device_disconnect">Desconectar el dispositivo</string>
+    <string name="shared_prefs_default_device_id">ARS-00B0D063C226</string>
+    <string name="fragment_device_info_02">ID del dispositivo configurado a</string>
 </resources>

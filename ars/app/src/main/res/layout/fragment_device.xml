@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:background="?android:attr/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
@@ -15,7 +16,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
             style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,6 +36,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/fragment_device_info_01" />
         <TextView
+            android:id="@+id/fragment_device_id"
             style = "@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,6 +64,10 @@
                 android:layout_height="wrap_content"
                 app:icon = "@drawable/baseline_link_24"
                 android:text="@string/fragment_device_qr"/>
+
+            <Space
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"/>
 
             <Button
                 style="?attr/materialButtonOutlinedStyle"

@@ -2,34 +2,23 @@ package mx.com.sigrama.ars;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetDialog;
 
+import mx.com.sigrama.ars.common.GlobalSharedPreferencesForProject;
 import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
-import mx.com.sigrama.ars.common.fragmentContainerAddOrShow;
 
 public class MainActivity extends AppCompatActivity {
 
     private SideSheetDialog sideSheetForMenu;
+    public GlobalSharedPreferencesForProject sharedPrefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Fill main screen with fragment
         new ManipulateFragmentContainerView(
-                ManipulateFragmentContainerView.MANIPULATION.ADD_ONLY_IF_NOT_EXISTS,
+                ManipulateFragmentContainerView.MANIPULATION.SHOW,
                 getSupportFragmentManager(),
                 R.id.main_activity_fragment_container_view,
                 "mx.com.sigrama.ars.MainScreen");
+
+
+        sharedPrefs = new GlobalSharedPreferencesForProject(this);
 
         //Menu button functionality
         View tempMainMenuView = getLayoutInflater().inflate(R.layout.main_menu,null);
@@ -81,18 +73,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private boolean handleMainMenuButton (@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case :
-                new ManipulateFragmentContainerView(
-                        ManipulateFragmentContainerView.MANIPULATION.REMOVE_AND_ADD,
-                        getSupportFragmentManager(),
-                        R.id.main_activity_fragment_container_view,
-                        "mx.com.sigrama.ars.RealtimeDisplay");
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + item);
-        }
         Log.d("SKGadi", "MenuItem: "+ item.getItemId());
+        if (item.getItemId() == R.id.main_menu_device_configure) {
+            new ManipulateFragmentContainerView(
+                    ManipulateFragmentContainerView.MANIPULATION.SHOW,
+                    getSupportFragmentManager(),
+                    R.id.main_screen_fragment_container_view,
+                    "mx.com.sigrama.ars.FragmentDevice",
+                    true);
+        }
+        sideSheetForMenu.hide();
         return false;
     }
 
