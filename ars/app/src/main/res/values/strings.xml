@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ars</string>
+    <string name="app_name" translatable="false">ARS Connect</string>
     <string name="button_menu">Menu</string>
     <string name="temp_1">Hello World!</string>
     <string name="temp_2">Hello World 12121 11!</string>
@@ -11,14 +11,19 @@
     <string name="fragment_device_title">Establish connection with ARS</string>
     <string name="main_menu_device_connect">Quick connect</string>
     <string name="main_menu_device_configure">Configure</string>
-    <string name="fragment_device_info_01">Connected to:</string>
+    <string name="fragment_device_info_01">Associated to:</string>
     <string name="fragment_device_image_description">Image of ARS device</string>
     <string name="fragment_device_change_device">Change the linked device</string>
     <string name="fragment_device_qr">QR Code</string>
     <string name="fragment_device_manual">Manual</string>
     <string name="fragment_device_connect">Connect to device</string>
     <string name="fragment_device_disconnect">Disconnect the device</string>
-    <string name="shared_prefs_default_device_id">ARS-00B0D063C226</string>
+    <string name="shared_prefs_default_device_id" translatable="false">ARS-B0B21C3342F8</string>
     <string name="fragment_device_info_02">Device ID set to</string>
+    <string name="fragment_device_info_03">You scanned an invalid QR code.</string>
+    <string name="fragment_device_info_04">Failed to scan QR Code</string>
+    <string name="device_connection_manager_info01">Permissions required. Grant permissions to the app and try again.</string>
+    <string name="password_wifi_key" translatable="false">/\'J2Cn5_sB>@qb#A</string>
+    <string name="fragment_device_prefix_ssid" translatable="false">PCS-2.0-</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

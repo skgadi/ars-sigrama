@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.Set;
 
 public class GlobalSharedPreferencesForProject {
@@ -16,44 +18,53 @@ public class GlobalSharedPreferencesForProject {
     }
     public static final String SHARED_PREFERENCES_NAME = "mx.com.sigrama.ars";
     private Context context;
+    private MutableLiveData<SharedPreferences> sharedPreferencesMutableLiveData;
     private static SharedPreferences sharedPreferences;
 
     public GlobalSharedPreferencesForProject(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        sharedPreferencesMutableLiveData = new MutableLiveData<SharedPreferences>();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
 
-    public static void ApplyPreferences(String key, String value) {
+    public void ApplyPreferences(String key, String value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putString(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, int value) {
+    public void ApplyPreferences(String key, int value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putInt(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, boolean value) {
+    public void ApplyPreferences(String key, boolean value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putBoolean(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, float value) {
+    public void ApplyPreferences(String key, float value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putFloat(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, Set<String> value) {
+    public void ApplyPreferences(String key, Set<String> value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putStringSet(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, long value) {
+    public void ApplyPreferences(String key, long value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putLong(key, value);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ApplyPreferences(String key, TYPE type, Object value) {
+    public void ApplyPreferences(String key, TYPE type, Object value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         switch (type){
             case STRING:
@@ -73,6 +84,7 @@ public class GlobalSharedPreferencesForProject {
                 break;
         }
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
 
     public static String GetPreferences(String key, String defaultValue) {
@@ -131,29 +143,28 @@ public class GlobalSharedPreferencesForProject {
         return null;
     }
 
-    public static void RemovePreferences(String key) {
+    public void RemovePreferences(String key) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.remove(key);
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
-    public static void ClearPreferences() {
+    public void ClearPreferences() {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.clear();
         writer.apply();
+        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
     }
 
     public static boolean ContainsPreferences(String key) {
         return sharedPreferences.contains(key);
     }
 
-    public static void RegisterOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
-    }
-    public static void UnregisterOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener);
-    }
-
     public static SharedPreferences GetSharedPreferences() {
         return sharedPreferences;
+    }
+
+    public  MutableLiveData<SharedPreferences> getSharedPreferencesMutableLiveData () {
+        return sharedPreferencesMutableLiveData;
     }
 }

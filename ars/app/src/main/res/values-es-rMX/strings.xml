@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ars</string>
     <string name="button_menu">Menú</string>
     <string name="temp_1">¡Hola Mundo!</string>
     <string name="temp_2">¡Hola Mundo 12121 212 121!</string>
@@ -12,13 +11,15 @@
     <string name="main_menu_device_connect">Conexión rápida</string>
     <string name="main_menu_device_disconnect">Desconectar</string>
     <string name="fragment_device_title">Establecer conexión con ARS</string>
-    <string name="fragment_device_info_01">Conectado a:</string>
+    <string name="fragment_device_info_01">Asociado a:</string>
     <string name="fragment_device_image_description">Imagen del dispositivo ARS</string>
     <string name="fragment_device_change_device">Cambiar el dispositivo vinculado</string>
     <string name="fragment_device_qr">Código QR</string>
     <string name="fragment_device_manual">Manual</string>
     <string name="fragment_device_connect">Conectar al dispositivo</string>
     <string name="fragment_device_disconnect">Desconectar el dispositivo</string>
-    <string name="shared_prefs_default_device_id">ARS-00B0D063C226</string>
     <string name="fragment_device_info_02">ID del dispositivo configurado a</string>
+    <string name="fragment_device_info_03">Has escaneado un código QR no válido.</string>
+    <string name="fragment_device_info_04">Error al escanear el código QR</string>
+    <string name="device_connection_manager_info01">Se requieren permisos. Concede permisos a la aplicación y vuelve a intentarlo.</string>
 </resources>
