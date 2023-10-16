@@ -50,16 +50,21 @@ public class RealtimeDisplay extends Fragment {
                              Bundle savedInstanceState) {
 
         binder = FragmentRealtimeDisplayBinding.inflate(inflater, container, false);
-        View view = binder.getRoot();
 
 
+        // Instantiate a ViewPager2 and a PagerAdapter.
         pagerViewRealtimeDisplay = binder.viewPagerForRealtimeDisplay;
         pagerViewRealtimeDisplay.setAdapter(new RealtimeDisplayAdapter(this));
-        pagerViewRealtimeDisplay.setOffscreenPageLimit(1);
-
+        pagerViewRealtimeDisplay.setOffscreenPageLimit(3);
+        // Set animation for ViewPager2
         //pagerViewRealtimeDisplay.setPageTransformer(new Pager2_DepthTransformer());
         pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
         //pagerViewRealtimeDisplay.setPageTransformer(new DepthPageTransformer());
+
+
+
+
+        View view = binder.getRoot();
         return view;
     }
 

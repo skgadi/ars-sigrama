@@ -81,7 +81,15 @@ dependencies {
     implementation ("com.github.CodeBoy722:ViewPager2_Transformers:1.0.0")
 
     //Implementation of QR code scanner
-    implementation ("com.google.android.gms:play-services-code-scanner:16.1.0")
+    implementation ("com.github.yuriy-budiyev:code-scanner:2.3.2")
+    //implementation ("com.google.zxing:core:3.4.1")
+    //implementation ("com.journeyapps:zxing-android-embedded:4.2.0")
+    //implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+
+    //implementing easy to handle user permissions library
+    //implementation ("com.karumi:dexter:6.2.3")
+    implementation ("com.guolindev.permissionx:permissionx:1.7.1")
+
 
     //implementation of WebSocket client
     implementation ("dev.gustavoavila:java-android-websocket-client:2.0.2")

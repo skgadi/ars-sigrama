@@ -25,44 +25,44 @@ public class GlobalSharedPreferencesForProject {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         sharedPreferencesMutableLiveData = new MutableLiveData<SharedPreferences>();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
 
     public void ApplyPreferences(String key, String value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putString(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, int value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putInt(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, boolean value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putBoolean(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, float value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putFloat(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, Set<String> value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putStringSet(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, long value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.putLong(key, value);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ApplyPreferences(String key, TYPE type, Object value) {
         SharedPreferences.Editor writer = sharedPreferences.edit();
@@ -84,7 +84,7 @@ public class GlobalSharedPreferencesForProject {
                 break;
         }
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
 
     public static String GetPreferences(String key, String defaultValue) {
@@ -147,13 +147,13 @@ public class GlobalSharedPreferencesForProject {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.remove(key);
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
     public void ClearPreferences() {
         SharedPreferences.Editor writer = sharedPreferences.edit();
         writer.clear();
         writer.apply();
-        sharedPreferencesMutableLiveData.setValue(sharedPreferences);
+        sharedPreferencesMutableLiveData.postValue(sharedPreferences);
     }
 
     public static boolean ContainsPreferences(String key) {

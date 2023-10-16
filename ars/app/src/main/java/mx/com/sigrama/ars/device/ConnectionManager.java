@@ -39,7 +39,7 @@ public class ConnectionManager {
         Observer<SharedPreferences> sharedPreferencesObserver = new Observer<SharedPreferences>() {
             @Override
             public void onChanged(SharedPreferences sharedPreferences) {
-                Log.d("SKGadi", "ConnectionManager onChanged: " + sharedPreferences.getString("settings_device_id", mainActivity.getResources().getString(R.string.shared_prefs_default_device_id)));
+                //Log.d("SKGadi", "ConnectionManager onChanged: " + sharedPreferences.getString("settings_device_id", mainActivity.getResources().getString(R.string.shared_prefs_default_device_id)));
                 SSID = sharedPreferences.getString("device_id", mainActivity.getResources().getString(R.string.shared_prefs_default_device_id));
             }
         };
@@ -60,11 +60,20 @@ public class ConnectionManager {
         Network suitableNetwork = null;
         for (int i = 0; i < networks.length; i++) {
             NetworkCapabilities capabilities = connectivity.getNetworkCapabilities(networks[i]);
-            //capabilities.hasCapability()
-            Log.d("SKGadi", "capabilities: " + capabilities);
+            //Log.d("SKGadi", "capabilities: " + capabilities);
+            assert capabilities != null;
+            if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)) {
+                suitableNetwork = networks[i];
+                //Log.d("SKGadi", "suitableNetwork: " + suitableNetwork);
+                break;
+            }
+        }
+        if (suitableNetwork != null) {
+            boolean isBound = connectivity.bindProcessToNetwork(suitableNetwork);
+            //Log.d("SKGadi", "isBound: " + isBound);
         }
 
-        NetworkRequest.Builder request = new NetworkRequest.Builder();
+        /*NetworkRequest.Builder request = new NetworkRequest.Builder();
         request.addCapability(NetworkCapabilities.NET_CAPABILITY_WIFI_P2P);
         connectivity.requestNetwork(request.build(), new ConnectivityManager.NetworkCallback() {
             @Override
@@ -73,16 +82,18 @@ public class ConnectionManager {
                 Log.d("SKGadi", "onAvailable: " + network);
                 connectivity.bindProcessToNetwork(network);
             }
-        });
+        });*/
     }
 
     public void connect() {
-        Log.d("SKGadi", "Requesting connection");
-        Log.d("SKGadi", "SSID: " + SSID);
-        Log.d("SKGadi", "Password: " + password);
+        //Log.d("SKGadi", "Requesting connection");
+        //Log.d("SKGadi", "SSID: " + SSID);
+        //Log.d("SKGadi", "Password: " + password);
         try {
+            mainActivity.requestPermissionsForTheProject();
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                if (isWifiPermissionGranted()
+                if (
+                        isWifiPermissionGranted()
                         && isLocationPermissionGranted()
                         //&& isWriteSettingsPermissionGranted()
                         && isChangeNetworkPermissionGranted()) {
@@ -148,15 +159,6 @@ public class ConnectionManager {
                 if (wifiInfo.getNetworkId() == -1) {
                 }
             }
-
-
-            new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                    new Runnable() {
-                        public void run() {
-                            requestForWiFiConnectivity();
-                        }
-                    },
-                    100);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
 package mx.com.sigrama.ars.common;
 
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,17 +15,23 @@ public class ManipulateFragmentContainerView {
         new ManipulateFragmentContainerView(type, fm, id, fragmentToShow, false);
     }
     public ManipulateFragmentContainerView(MANIPULATION type, FragmentManager fm, int id, String fragmentToShow, boolean addToBackStack) {
+        new ManipulateFragmentContainerView(type, fm, id, fragmentToShow, addToBackStack, true);
+    }
+    public ManipulateFragmentContainerView(MANIPULATION type, FragmentManager fm, int id, String fragmentToShow, boolean addToBackStack, boolean useAnimations) {
         if (fm == null) {
             return;
         }
         boolean doesFragmentExist = (fm.findFragmentById(id) != null);
+        //Log.d("SKGadi", "doesFragmentExist: " + doesFragmentExist);
         FragmentTransaction fragmentTransaction=  fm.beginTransaction();
-        fragmentTransaction.setCustomAnimations(
-                R.anim.slide_in,  // enter
-                R.anim.fade_out,  // exit
-                R.anim.fade_in,   // popEnter
-                R.anim.slide_out  // popExit
-        );
+        if (useAnimations) {
+            fragmentTransaction.setCustomAnimations(
+                    R.anim.slide_in,  // enter
+                    R.anim.fade_out,  // exit
+                    R.anim.fade_in,   // popEnter
+                    R.anim.slide_out  // popExit
+            );
+        }
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
@@ -56,6 +64,11 @@ public class ManipulateFragmentContainerView {
                     fragmentTransaction.show(Objects.requireNonNull(fm.findFragmentById(id)));
                 }
                 break;
+            case REMOVE:
+                if (doesFragmentExist) {
+                    fragmentTransaction.remove(Objects.requireNonNull(fm.findFragmentById(id)));
+                }
+                break;
         }
         fragmentTransaction.commit();
 
@@ -64,5 +77,6 @@ public class ManipulateFragmentContainerView {
         SHOW,
         REMOVE_AND_ADD,
         SHOW_ONLY_IF_EXISTS,
+        REMOVE
     }
 }

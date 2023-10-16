@@ -22,4 +22,9 @@
     <string name="fragment_device_info_03">Has escaneado un código QR no válido.</string>
     <string name="fragment_device_info_04">Error al escanear el código QR</string>
     <string name="device_connection_manager_info01">Se requieren permisos. Concede permisos a la aplicación y vuelve a intentarlo.</string>
+    <string name="main_activity_permissions_request">ARS requiere el siguiente permiso.</string>
+    <string name="general_ok">De acuerdo</string>
+    <string name="general_cancel">Cancelar</string>
+    <string name="main_activity_permissions_manual_request">Debe permitir los permisos necesarios en Configuración manualmente.</string>
+    <string name="fragment_device_cancel_qr_scan">Cancelar escaneo QR</string>
 </resources>

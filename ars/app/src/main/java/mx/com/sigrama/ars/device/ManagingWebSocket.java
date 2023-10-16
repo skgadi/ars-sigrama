@@ -60,7 +60,8 @@ public class ManagingWebSocket {
 
             @Override
             public void onException(Exception e) {
-                System.out.println(e.getMessage());
+                mainActivity.connectionManager.requestForWiFiConnectivity();
+                //System.out.println(e.getMessage());
             }
 
             @Override
@@ -68,6 +69,7 @@ public class ManagingWebSocket {
                 isConnected.postValue(false);
                 Log.d("SKGadi", "WebSocket Closed");
             }
+
         };
         webSocketClient.setConnectTimeout(10000);
         webSocketClient.setReadTimeout(60000);

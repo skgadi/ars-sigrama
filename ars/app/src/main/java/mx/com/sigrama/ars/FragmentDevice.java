@@ -10,25 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import mx.com.sigrama.ars.common.GlobalSharedPreferencesForProject;
+import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
 import mx.com.sigrama.ars.databinding.FragmentDeviceBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentDevice#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentDevice extends Fragment {
 
+    private enum STATE {
+        NORMAL,
+        QR_CODE_SCANNER
+    }
     private FragmentDeviceBinding binder;
     private MainActivity mainActivity;
     public FragmentDevice() {
@@ -46,14 +36,52 @@ public class FragmentDevice extends Fragment {
             @Override
             public void onChanged(SharedPreferences sharedPreferences) {
                 binder.fragmentDeviceId.setText(sharedPreferences.getString("device_id", getResources().getString(R.string.shared_prefs_default_device_id)));
+                setStateTo(STATE.NORMAL);
             }
         };
         mainActivity.sharedPrefs.getSharedPreferencesMutableLiveData().observe(getViewLifecycleOwner(), sharedPreferencesObserver);
         //Implementing the code to read QR code and set the value of the device id
+
+        //Implementing cancel QR button
+        binder.fragmentDeviceCancelQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setStateTo(STATE.NORMAL);
+            }
+        });
+
+
         binder.fragmentDeviceQr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GmsBarcodeScannerOptions options = new GmsBarcodeScannerOptions.Builder()
+                setStateTo(STATE.QR_CODE_SCANNER);
+                mainActivity.requestPermissionsForTheProject();
+                new ManipulateFragmentContainerView(
+                        ManipulateFragmentContainerView.MANIPULATION.REMOVE_AND_ADD,
+                        getChildFragmentManager(),
+                        R.id.fragment_device_container_for_qr_scanner,
+                        "mx.com.sigrama.ars.QRCodeScanner",
+                        false,
+                        false);
+                /*FragmentManager fm = mainActivity.getSupportFragmentManager();
+                QRCodeScanner fragment = new QRCodeScanner();
+                fm.beginTransaction().add(R.id.qr_code_fragment_holder,fragment).commit();*/
+            }
+        });
+
+        /*
+        new ManipulateFragmentContainerView(
+                ManipulateFragmentContainerView.MANIPULATION.REMOVE_AND_ADD,
+                getChildFragmentManager(),
+                R.id.main_screen_fragment_container_view,
+                "mx.com.sigrama.ars.QRCodeScanner");
+                */
+
+        /*
+        binder.fragmentDeviceQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BarcodeScannerOptions options = new BarcodeScannerOptions.Builder()
                         .setBarcodeFormats(
                                 Barcode.FORMAT_QR_CODE,
                                 Barcode.FORMAT_AZTEC)
@@ -75,6 +103,7 @@ public class FragmentDevice extends Fragment {
                 });
             }
         });
+        */
 
         //Implementing connect button
         binder.fragmentDeviceConnect.setOnClickListener(new View.OnClickListener() {
@@ -89,14 +118,28 @@ public class FragmentDevice extends Fragment {
 
     }
 
-    private static boolean validateMAC(String inMac) {
-        try {
-            Pattern pattern = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
-            Matcher matcher = pattern.matcher(inMac);
-            return matcher.matches();
-        } catch (Exception e){
-            e.printStackTrace();
-            return false;
+    private void setStateTo (STATE state) {
+        switch (state) {
+            case NORMAL:
+                binder.fragmentDeviceLicensesContainer.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceContainerForQrScanner.setVisibility(View.GONE);
+                binder.fragmentDeviceQr.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceCancelQr.setVisibility(View.GONE);
+                new ManipulateFragmentContainerView(
+                        ManipulateFragmentContainerView.MANIPULATION.REMOVE,
+                        getChildFragmentManager(),
+                        R.id.fragment_device_container_for_qr_scanner,
+                        "mx.com.sigrama.ars.QRCodeScanner",
+                        false,
+                        false);
+                break;
+            case QR_CODE_SCANNER:
+                binder.fragmentDeviceLicensesContainer.setVisibility(View.GONE);
+                binder.fragmentDeviceContainerForQrScanner.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceQr.setVisibility(View.GONE);
+                binder.fragmentDeviceCancelQr.setVisibility(View.VISIBLE);
+                break;
         }
     }
+
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.Manifest;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -12,6 +13,9 @@ import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.sidesheet.SideSheetDialog;
+import com.permissionx.guolindev.PermissionMediator;
+import com.permissionx.guolindev.PermissionX;
+import com.permissionx.guolindev.request.PermissionBuilder;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         //Menu button functionality ends here
+
+        //Requesting permissions for the project
+        requestPermissionsForTheProject();
     }
 
     @Override
@@ -86,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
 
@@ -95,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
      * @return false
      */
     private boolean handleMainMenuButton (@NonNull MenuItem item) {
-        Log.d("SKGadi", "MenuItem: "+ item.getItemId());
+        //Log.d("SKGadi", "MenuItem: "+ item.getItemId());
         //Configuring device
         if (item.getItemId() == R.id.main_menu_device_configure) {
             //This is done to make sure that the device fragment is loaded after the side sheet is closed
@@ -125,6 +134,44 @@ public class MainActivity extends AppCompatActivity {
         }
         sideSheetForMenu.hide();
         return false;
+    }
+
+    /*
+    * This function is used to request user to give permissions.
+    * The permissions are required for camera, location and storage.
+     */
+
+    public void requestPermissionsForTheProject() {
+        PermissionBuilder permissionBuilder = PermissionX.init(this).permissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_WIFI_STATE,
+                Manifest.permission.CHANGE_WIFI_STATE,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.CHANGE_NETWORK_STATE)
+                .explainReasonBeforeRequest();
+        permissionBuilder.onExplainRequestReason((scope, deniedList, beforeRequest) -> {
+            scope.showRequestReasonDialog(deniedList,
+                    getString(R.string.main_activity_permissions_request),
+                    getString(R.string.general_ok),
+                    getString(R.string.general_cancel));
+        });
+        permissionBuilder.onForwardToSettings((scope, deniedList) -> {
+            scope.showForwardToSettingsDialog(deniedList,
+                    getString(R.string.main_activity_permissions_manual_request),
+                    getString(R.string.general_ok),
+                    getString(R.string.general_cancel));
+        });
+        permissionBuilder.request((allGranted, grantedList, deniedList) -> {
+            if (allGranted) {
+                //Log.d("SKGadi", "All permissions are granted");
+            } else {
+                //Log.d("SKGadi", "These permissions are denied: $deniedList");
+            }
+        });
     }
 
 }

@@ -25,5 +25,11 @@
     <string name="device_connection_manager_info01">Permissions required. Grant permissions to the app and try again.</string>
     <string name="password_wifi_key" translatable="false">/\'J2Cn5_sB>@qb#A</string>
     <string name="fragment_device_prefix_ssid" translatable="false">PCS-2.0-</string>
+    <string name="main_activity_permissions_request">ARS requires the following permission.</string>
+    <string name="general_ok">Ok</string>
+    <string name="general_cancel">Cancel</string>
+    <string name="main_activity_permissions_manual_request">You need to allow necessary permissions in Settings manually.</string>
+    <string name="fragment_device_cancel_qr_scan">Cancel QR Scan</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -64,6 +64,14 @@
                 android:layout_height="wrap_content"
                 app:icon = "@drawable/baseline_link_24"
                 android:text="@string/fragment_device_qr"/>
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:id="@+id/fragment_device_cancel_qr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon = "@drawable/baseline_link_24"
+                android:visibility="gone"
+                android:text="@string/fragment_device_cancel_qr_scan"/>
 
             <Space
                 android:layout_width="16dp"
@@ -94,10 +102,19 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_device_container_for_qr_scanner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:visibility="gone">
+    </androidx.fragment.app.FragmentContainerView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_device_licenses_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:visibility="visible">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
