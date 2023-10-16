@@ -125,19 +125,25 @@ public class FragmentDevice extends Fragment {
                 binder.fragmentDeviceContainerForQrScanner.setVisibility(View.GONE);
                 binder.fragmentDeviceQr.setVisibility(View.VISIBLE);
                 binder.fragmentDeviceCancelQr.setVisibility(View.GONE);
+                binder.fragmentDeviceManual.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceConnect.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceChangeDevice.setText(getResources().getString(R.string.fragment_device_change_device));
                 new ManipulateFragmentContainerView(
                         ManipulateFragmentContainerView.MANIPULATION.REMOVE,
                         getChildFragmentManager(),
                         R.id.fragment_device_container_for_qr_scanner,
                         "mx.com.sigrama.ars.QRCodeScanner",
                         false,
-                        false);
+                        true);
                 break;
             case QR_CODE_SCANNER:
                 binder.fragmentDeviceLicensesContainer.setVisibility(View.GONE);
                 binder.fragmentDeviceContainerForQrScanner.setVisibility(View.VISIBLE);
                 binder.fragmentDeviceQr.setVisibility(View.GONE);
                 binder.fragmentDeviceCancelQr.setVisibility(View.VISIBLE);
+                binder.fragmentDeviceManual.setVisibility(View.GONE);
+                binder.fragmentDeviceConnect.setVisibility(View.GONE);
+                binder.fragmentDeviceChangeDevice.setText(getResources().getString(R.string.fragment_device_qr_scanning_for_change_device));
                 break;
         }
     }

@@ -43,6 +43,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/temp_2" />
         <TextView
+            android:id="@+id/fragment_device_change_device"
             style = "@style/TextAppearance.Material3.BodySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,11 +66,11 @@
                 app:icon = "@drawable/baseline_link_24"
                 android:text="@string/fragment_device_qr"/>
             <Button
-                style="?attr/materialButtonOutlinedStyle"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                 android:id="@+id/fragment_device_cancel_qr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon = "@drawable/baseline_link_24"
+                app:icon = "@drawable/twotone_cancel_24"
                 android:visibility="gone"
                 android:text="@string/fragment_device_cancel_qr_scan"/>
 
@@ -86,7 +87,7 @@
                 android:text="@string/fragment_device_manual"/>
         </LinearLayout>
         <Button
-            style="?attr/materialButtonStyle"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
             android:id="@+id/fragment_device_connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

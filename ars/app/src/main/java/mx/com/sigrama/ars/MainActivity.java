@@ -8,6 +8,7 @@ import android.Manifest;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             });
             sideSheetForMenu = new SideSheetDialog(this);
             sideSheetForMenu.setContentView(tempMainMenuView);
+            sideSheetForMenu.setSheetEdge(Gravity.END);
             findViewById(R.id.main_menu_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

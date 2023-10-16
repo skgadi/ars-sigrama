@@ -17,8 +17,10 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ScanMode;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +43,7 @@ public class QRCodeScanner extends Fragment {
         mCodeScanner.setAutoFocusMode(AutoFocusMode.CONTINUOUS);
         //mCodeScanner.setFlashEnabled(true);
         mCodeScanner.setScanMode(ScanMode.SINGLE); // SINGLE or CONTINUOUS or PREVIEW
+        mCodeScanner.setFormats(Arrays.asList(BarcodeFormat.QR_CODE));
 
         mainActivity = (MainActivity) getActivity();
 
@@ -65,7 +68,7 @@ public class QRCodeScanner extends Fragment {
                         getResources().getString(R.string.fragment_device_prefix_ssid) +
                                 result.getText().replace(":","").toUpperCase();
                 mainActivity.sharedPrefs.ApplyPreferences("device_id", deviceID);
-                Snackbar.make(parentLayout, getResources().getString(R.string.fragment_device_info_02) + "\n" + deviceID, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(parentLayout, getResources().getString(R.string.fragment_device_info_02) + "\u00A0" + deviceID, Snackbar.LENGTH_LONG).show();
             }
         });
         scannerView.setOnClickListener(new View.OnClickListener() {

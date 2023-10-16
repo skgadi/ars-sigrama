@@ -13,12 +13,12 @@
     <string name="fragment_device_title">Establecer conexión con ARS</string>
     <string name="fragment_device_info_01">Asociado a:</string>
     <string name="fragment_device_image_description">Imagen del dispositivo ARS</string>
-    <string name="fragment_device_change_device">Cambiar el dispositivo vinculado</string>
+    <string name="fragment_device_change_device">Cambie el dispositivo ARS asociado.</string>
     <string name="fragment_device_qr">Código QR</string>
     <string name="fragment_device_manual">Manual</string>
     <string name="fragment_device_connect">Conectar al dispositivo</string>
     <string name="fragment_device_disconnect">Desconectar el dispositivo</string>
-    <string name="fragment_device_info_02">ID del dispositivo configurado a</string>
+    <string name="fragment_device_info_02">Escaneo exitoso. Ahora estás conectado a:</string>
     <string name="fragment_device_info_03">Has escaneado un código QR no válido.</string>
     <string name="fragment_device_info_04">Error al escanear el código QR</string>
     <string name="device_connection_manager_info01">Se requieren permisos. Concede permisos a la aplicación y vuelve a intentarlo.</string>
@@ -27,4 +27,5 @@
     <string name="general_cancel">Cancelar</string>
     <string name="main_activity_permissions_manual_request">Debe permitir los permisos necesarios en Configuración manualmente.</string>
     <string name="fragment_device_cancel_qr_scan">Cancelar escaneo QR</string>
+    <string name="fragment_device_qr_scanning_for_change_device">Escanee el código QR con el número de serie del producto para asociarlo con otro dispositivo.</string>
 </resources>
