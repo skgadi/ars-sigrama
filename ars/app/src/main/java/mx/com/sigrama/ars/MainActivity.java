@@ -25,6 +25,7 @@ import mx.com.sigrama.ars.common.GlobalSharedPreferencesForProject;
 import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
 import mx.com.sigrama.ars.device.ConnectionManager;
 import mx.com.sigrama.ars.device.ManagingWebSocket;
+import mx.com.sigrama.ars.device.SignalConditioningAndProcessing;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,10 +33,39 @@ public class MainActivity extends AppCompatActivity {
     public GlobalSharedPreferencesForProject sharedPrefs;
     public ConnectionManager connectionManager;
     public ManagingWebSocket managingWebSocket;
+    public SignalConditioningAndProcessing signalConditioningAndProcessing;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        //The order should be respected to make sure all the modules are loaded properly
+        // because some modules depend on other modules
+
+        //Shared preferences for the project starts here
+        if (sharedPrefs == null) {
+            sharedPrefs = new GlobalSharedPreferencesForProject(this);
+        }
+        //Shared preferences for the project ends here
+
+
+        //ConnectionManager starts here
+        if (connectionManager == null) {
+            connectionManager = new ConnectionManager(this);
+        }
+        //ConnectionManager ends here
+        //ManagingWebSocket starts here
+        if (managingWebSocket == null) {
+            managingWebSocket = new ManagingWebSocket(this);
+        }
+        //ManagingWebSocket ends here
+
+        //Signal conditioning and processing starts here
+        // This should be called after creating ManagingWebSocket
+        signalConditioningAndProcessing = new SignalConditioningAndProcessing(this);
+        //Signal conditioning and processing ends here
 
 
         // Fill main screen with fragment
@@ -45,12 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.main_activity_fragment_container_view,
                 "mx.com.sigrama.ars.MainScreen");
 
-
-        //Shared preferences for the project starts here
-        if (sharedPrefs == null) {
-            sharedPrefs = new GlobalSharedPreferencesForProject(this);
-        }
-        //Shared preferences for the project ends here
 
         //Menu button functionality starts here
         // It generates side sheet for menu and sets up its functionality
@@ -77,27 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Requesting permissions for the project
         requestPermissionsForTheProject();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //ConnectionManager starts here
-        if (connectionManager == null) {
-            connectionManager = new ConnectionManager(this);
-        }
-        //ConnectionManager ends here
-        //ManagingWebSocket starts here
-        if (managingWebSocket == null) {
-            managingWebSocket = new ManagingWebSocket(this);
-        }
-        //ManagingWebSocket ends here
-
-
-
-
 
     }
+
 
 
     /**

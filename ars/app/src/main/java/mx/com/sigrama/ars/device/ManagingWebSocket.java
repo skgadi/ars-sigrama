@@ -28,11 +28,23 @@ public class ManagingWebSocket {
         receivedData = new MutableLiveData<byte[]>();
         isConnected = new MutableLiveData<Boolean>();
         receivedText = new MutableLiveData<String>();
+
+        isConnected.postValue(false);
+
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
                 Log.d("SKGadi", "onOpen: ");
                 isConnected.postValue(true);
+
+                //Send a request to the device to start sending data every 5 seconds
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        sendRequestToDevice(0.0f, 0, 0);
+                    }
+                }, 0, 5000);
 
             }
 
@@ -60,6 +72,7 @@ public class ManagingWebSocket {
 
             @Override
             public void onException(Exception e) {
+                isConnected.postValue(false); //Is it required? Please check
                 mainActivity.connectionManager.requestForWiFiConnectivity();
                 //System.out.println(e.getMessage());
             }
@@ -100,6 +113,35 @@ public class ManagingWebSocket {
 
     public void disconnect() {
         webSocketClient.close(500, 0, "Done");
+    }
+
+    private void sendRequestToDevice(float currentPercentage, int delay, int time) {
+        if (isConnected.getValue()) {
+            byte[] dataToSend = new byte[13];
+            dataToSend[0]=0;
+
+            //Converting float to byte array
+            int currentPerentageBits =  Float.floatToIntBits(currentPercentage);
+            dataToSend[1]=(byte) (currentPerentageBits);
+            dataToSend[2]=(byte) (currentPerentageBits >> 8);
+            dataToSend[3]=(byte) (currentPerentageBits >> 16);
+            dataToSend[4]=(byte) (currentPerentageBits >> 24);
+
+            // Converting delay  (int) to bytes
+            dataToSend[5]=(byte) (delay);
+            dataToSend[6]=(byte) (delay >> 8);
+            dataToSend[7]=(byte) (delay >> 16);
+            dataToSend[8]=(byte) (delay >> 24);
+
+
+            // Converting time  (int) to bytes
+            dataToSend[9]=(byte) (time);
+            dataToSend[10]=(byte) (time >> 8);
+            dataToSend[11]=(byte) (time >> 16);
+            dataToSend[12]=(byte) (time >> 24);
+
+            webSocketClient.send(dataToSend);
+        }
     }
 
 }

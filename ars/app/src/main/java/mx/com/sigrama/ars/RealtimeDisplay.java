@@ -1,14 +1,11 @@
 package mx.com.sigrama.ars;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.lifecycle.Observer;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -17,20 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codeboy.pager2_transformers.Pager2_AccordionTransformer;
-import com.codeboy.pager2_transformers.Pager2_CubeInDepthTransformer;
-import com.codeboy.pager2_transformers.Pager2_CubeOutScalingTransformer;
-import com.codeboy.pager2_transformers.Pager2_DefaultTransformer;
-import com.codeboy.pager2_transformers.Pager2_DepthTransformer;
-import com.codeboy.pager2_transformers.Pager2_GateTransformer;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayOscilloscope;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPhases;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPower;
-import mx.com.sigrama.ars.common.DepthPageTransformer;
 import mx.com.sigrama.ars.common.ZoomOutPageTransformer;
 import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayBinding;
 
@@ -39,6 +25,7 @@ public class RealtimeDisplay extends Fragment {
     //A binder to obtain ViewPager2
     private FragmentRealtimeDisplayBinding binder;
     private ViewPager2 pagerViewRealtimeDisplay;
+    private MainActivity mainActivity;
 
     public RealtimeDisplay() {
         // Required empty public constructor
@@ -51,6 +38,7 @@ public class RealtimeDisplay extends Fragment {
 
         binder = FragmentRealtimeDisplayBinding.inflate(inflater, container, false);
 
+        mainActivity = (MainActivity) getActivity();
 
         // Instantiate a ViewPager2 and a PagerAdapter.
         pagerViewRealtimeDisplay = binder.viewPagerForRealtimeDisplay;
@@ -62,6 +50,34 @@ public class RealtimeDisplay extends Fragment {
         //pagerViewRealtimeDisplay.setPageTransformer(new DepthPageTransformer());
 
 
+        // Enabling and disabling the device activity indicator
+        mainActivity.managingWebSocket.getIsConnected().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                Log.d("SKGadi", "onChanged: " + aBoolean);
+                if (aBoolean) {
+                    binder.fragmentRealtimeDisplayActivityIndicator.setVisibility(View.VISIBLE);
+                } else {
+                    binder.fragmentRealtimeDisplayActivityIndicator.setVisibility(View.INVISIBLE);
+                }
+                /*if (aBoolean) {
+                    binder.fragmentRealtimeDisplayActivityIndicator.animate().alpha(1).setDuration(500);
+                } else {
+                    binder.fragmentRealtimeDisplayActivityIndicator.animate().alpha(0).setDuration(500);
+                }*/
+                //binder.fragmentRealtimeDisplayActivityIndicator.animate().alpha(0).setDuration(1000);
+            }
+        });
+
+        // Device activity indicator shows a blink when data received
+        mainActivity.signalConditioningAndProcessing.getIsDataProcessingSuccessful().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                setIndicatorStateView(aBoolean);
+            }
+        });
+
+        binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(false);
 
 
         View view = binder.getRoot();
@@ -102,6 +118,56 @@ public class RealtimeDisplay extends Fragment {
         public int getItemCount() {
             return 3;
         }
+    }
+
+
+    ColorStateList normalColoState = new ColorStateList(
+            new int[][]{
+                    new int[]{-android.R.attr.state_enabled}, //disabled
+                    new int[]{android.R.attr.state_enabled}, //enabled
+                    new int[]{-android.R.attr.state_checked}, //disabled
+                    new int[]{android.R.attr.state_checked} //enabled
+            },
+            new int[] {
+                    Color.LTGRAY, //disabled
+                    Color.GREEN, //enabled
+                    Color.GREEN, //disabled
+                    Color.GREEN //enabled
+            }
+    );
+
+    ColorStateList errorColorState = new ColorStateList(
+            new int[][]{
+                    new int[]{-android.R.attr.state_enabled}, //disabled
+                    new int[]{android.R.attr.state_enabled}, //enabled
+            },
+            new int[] {
+                    Color.RED, //disabled
+                    Color.RED, //enabled
+            }
+    );
+
+
+    private void setIndicatorStateView (boolean isSuccessful) {
+        if (isSuccessful) {
+            binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(normalColoState);
+            binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(true);
+            binder.fragmentRealtimeDisplayActivityIndicator.setChecked(true);
+            binder.fragmentRealtimeDisplayActivityIndicator.setBackgroundColor(Color.GREEN);
+        } else {
+            binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(errorColorState);
+            binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(true);
+            binder.fragmentRealtimeDisplayActivityIndicator.setChecked(true);
+            binder.fragmentRealtimeDisplayActivityIndicator.setBackgroundColor(Color.RED);
+        }
+        //Returns to unchecked after 0.5 seconds
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    public void run() {
+                        binder.fragmentRealtimeDisplayActivityIndicator.setChecked(false);
+                    }
+                },
+                500);
     }
 
 }
