@@ -23,6 +23,7 @@ import java.util.TimerTask;
 
 import mx.com.sigrama.ars.common.GlobalSharedPreferencesForProject;
 import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
+import mx.com.sigrama.ars.common.TimerForProject;
 import mx.com.sigrama.ars.device.ConnectionManager;
 import mx.com.sigrama.ars.device.ManagingWebSocket;
 import mx.com.sigrama.ars.device.SignalConditioningAndProcessing;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public ConnectionManager connectionManager;
     public ManagingWebSocket managingWebSocket;
     public SignalConditioningAndProcessing signalConditioningAndProcessing;
+    public TimerForProject timerForProject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
         //The order should be respected to make sure all the modules are loaded properly
         // because some modules depend on other modules
+
+
+        //Timer for the project starts here
+        if (timerForProject == null) {
+            timerForProject = new TimerForProject();
+        }
+        //Timer for the project ends here
 
         //Shared preferences for the project starts here
         if (sharedPrefs == null) {

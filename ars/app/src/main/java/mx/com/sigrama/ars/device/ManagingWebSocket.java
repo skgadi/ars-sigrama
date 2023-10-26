@@ -22,6 +22,7 @@ public class ManagingWebSocket {
     private MainActivity mainActivity;
 
     public ManagingWebSocket(MainActivity mainActivity) {
+        Log.d("SKGadi", "ManagingWebSocket started");
         this.mainActivity = mainActivity;
         String url = "ws://192.168.1.1";
         uri = URI.create(url);
@@ -29,23 +30,13 @@ public class ManagingWebSocket {
         isConnected = new MutableLiveData<Boolean>();
         receivedText = new MutableLiveData<String>();
 
-        isConnected.postValue(false);
+        isConnected.setValue(false);
 
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
                 Log.d("SKGadi", "onOpen: ");
                 isConnected.postValue(true);
-
-                //Send a request to the device to start sending data every 5 seconds
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        sendRequestToDevice(0.0f, 0, 0);
-                    }
-                }, 0, 5000);
-
             }
 
             @Override
@@ -115,7 +106,7 @@ public class ManagingWebSocket {
         webSocketClient.close(500, 0, "Done");
     }
 
-    private void sendRequestToDevice(float currentPercentage, int delay, int time) {
+    public void sendRequestToDevice(float currentPercentage, int delay, int time) {
         if (isConnected.getValue()) {
             byte[] dataToSend = new byte[13];
             dataToSend[0]=0;

@@ -57,8 +57,10 @@ public class RealtimeDisplay extends Fragment {
                 Log.d("SKGadi", "onChanged: " + aBoolean);
                 if (aBoolean) {
                     binder.fragmentRealtimeDisplayActivityIndicator.setVisibility(View.VISIBLE);
+                    binder.fragmentRealtimeDisplayConnectButton.setVisibility(View.INVISIBLE);
                 } else {
                     binder.fragmentRealtimeDisplayActivityIndicator.setVisibility(View.INVISIBLE);
+                    binder.fragmentRealtimeDisplayConnectButton.setVisibility(View.VISIBLE);
                 }
                 /*if (aBoolean) {
                     binder.fragmentRealtimeDisplayActivityIndicator.animate().alpha(1).setDuration(500);
@@ -69,6 +71,15 @@ public class RealtimeDisplay extends Fragment {
             }
         });
 
+        // Connect button functionality
+        binder.fragmentRealtimeDisplayConnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.connectionManager.connect();
+            }
+        });
+
+
         // Device activity indicator shows a blink when data received
         mainActivity.signalConditioningAndProcessing.getIsDataProcessingSuccessful().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -78,6 +89,16 @@ public class RealtimeDisplay extends Fragment {
         });
 
         binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(false);
+
+        //Try to obtain data every 5 seconds to update the graphs
+
+        mainActivity.timerForProject.getFiveSeconds().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer timeInSeconds) {
+                mainActivity.managingWebSocket.sendRequestToDevice(0.0f, 0, 0);
+            }
+        });
+
 
 
         View view = binder.getRoot();
@@ -120,8 +141,7 @@ public class RealtimeDisplay extends Fragment {
         }
     }
 
-
-    ColorStateList normalColoState = new ColorStateList(
+    ColorStateList successColorState = new ColorStateList(
             new int[][]{
                     new int[]{-android.R.attr.state_enabled}, //disabled
                     new int[]{android.R.attr.state_enabled}, //enabled
@@ -150,20 +170,17 @@ public class RealtimeDisplay extends Fragment {
 
     private void setIndicatorStateView (boolean isSuccessful) {
         if (isSuccessful) {
-            binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(normalColoState);
-            binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(true);
-            binder.fragmentRealtimeDisplayActivityIndicator.setChecked(true);
-            binder.fragmentRealtimeDisplayActivityIndicator.setBackgroundColor(Color.GREEN);
+            binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(successColorState);
         } else {
             binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(errorColorState);
-            binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(true);
-            binder.fragmentRealtimeDisplayActivityIndicator.setChecked(true);
-            binder.fragmentRealtimeDisplayActivityIndicator.setBackgroundColor(Color.RED);
         }
+        binder.fragmentRealtimeDisplayActivityIndicator.setEnabled(true);
+        binder.fragmentRealtimeDisplayActivityIndicator.setChecked(true);
         //Returns to unchecked after 0.5 seconds
         new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
+                        binder.fragmentRealtimeDisplayActivityIndicator.setButtonTintList(successColorState);
                         binder.fragmentRealtimeDisplayActivityIndicator.setChecked(false);
                     }
                 },
