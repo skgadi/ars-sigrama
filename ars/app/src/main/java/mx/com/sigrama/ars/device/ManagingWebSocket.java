@@ -63,9 +63,8 @@ public class ManagingWebSocket {
 
             @Override
             public void onException(Exception e) {
-                isConnected.postValue(false); //Is it required? Please check
                 mainActivity.connectionManager.requestForWiFiConnectivity();
-                //System.out.println(e.getMessage());
+                System.out.println(e.getMessage());
             }
 
             @Override

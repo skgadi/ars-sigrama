@@ -1,0 +1,302 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\variants\\esp32"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\uc.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "Wire.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\Wire\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "WiFi.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "ESPmDNS.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\ESPmDNS\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "ArduinoWebsockets.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "HTTPClient.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\HTTPClient\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "WiFiClientSecure.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFiClientSecure\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "SPI.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\SPI\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "EasyButton.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "AD5245.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\AD5245"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "EEPROM.h",
+    "Includepath": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\EEPROM\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "SHTSensor.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\arduino-sht"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "IP5306_I2C.h",
+    "Includepath": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\IP5306_I2C\\src"
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_ack.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_adc.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_auto_power.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_bat.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_display.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_eeprom.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_emulate_fault.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_global.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_pins.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_sensor.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_serial.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Suresh\\git\\probador-de-centinela\\firmware\\uc-new\\ver003-with-battery-indicator\\ArduinoOutput\\sketch\\sgi_wifi.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\Wire\\src\\Wire.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFi.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiAP.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiClient.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiGeneric.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiMulti.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiSTA.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiScan.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiServer.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFi\\src\\WiFiUdp.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\ESPmDNS\\src\\ESPmDNS.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\crypto.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\message.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\websockets_client.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\websockets_endpoint.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\websockets_server.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\ArduinoWebsockets\\src\\ws_common.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\HTTPClient\\src\\HTTPClient.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFiClientSecure\\src\\WiFiClientSecure.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFiClientSecure\\src\\esp_crt_bundle.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\WiFiClientSecure\\src\\ssl_client.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\SPI\\src\\SPI.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src\\EasyButton.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src\\EasyButtonBase.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src\\EasyButtonTouch.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src\\EasyButtonVirtual.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\EasyButton\\src\\Sequence.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\AD5245\\AD5245.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\libraries\\EEPROM\\src\\EEPROM.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\arduino-sht\\SHTSensor.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library\\src\\SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "C:\\Users\\sureshk\\Documents\\Arduino\\libraries\\IP5306_I2C\\src\\IP5306_I2C.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
