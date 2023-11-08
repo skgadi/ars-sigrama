@@ -35,19 +35,19 @@ public class ManagingWebSocket {
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
-                Log.d("SKGadi", "onOpen: ");
+                //Log.d("SKGadi", "onOpen: ");
                 isConnected.postValue(true);
             }
 
             @Override
             public void onTextReceived(String message) {
-                Log.d("SKGadi", "onTextReceived: " + message);
+                //Log.d("SKGadi", "onTextReceived: " + message);
                 receivedText.postValue(message);
             }
 
             @Override
             public void onBinaryReceived(byte[] data) {
-                Log.d("SKGadi", "onBinaryReceived: " + data);
+                //Log.d("SKGadi", "onBinaryReceived: " + data);
                 receivedData.postValue(data);
             }
 
@@ -64,13 +64,13 @@ public class ManagingWebSocket {
             @Override
             public void onException(Exception e) {
                 mainActivity.connectionManager.requestForWiFiConnectivity();
-                System.out.println(e.getMessage());
+                //System.out.println(e.getMessage());
             }
 
             @Override
             public void onCloseReceived(int reason, String description) {
                 isConnected.postValue(false);
-                Log.d("SKGadi", "WebSocket Closed");
+                //Log.d("SKGadi", "WebSocket Closed");
             }
 
         };
