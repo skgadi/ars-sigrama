@@ -6,10 +6,25 @@
     tools:context=".RealtimeDisplays.DisplayPhases"
     android:background="?android:attr/colorBackground">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/temp_03"/>
+        android:orientation="horizontal">
+        <mx.com.sigrama.ars.common.PhasorDiagram
+            android:id="@+id/fragment_realtime_display_phases_diagram"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="true">
+            <WebView
+                android:id="@+id/fragment_realtime_display_phases_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+    </LinearLayout>
 
 </FrameLayout>

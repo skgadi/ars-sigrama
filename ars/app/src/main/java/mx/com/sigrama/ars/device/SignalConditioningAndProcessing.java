@@ -20,7 +20,7 @@ public class SignalConditioningAndProcessing {
     private MainActivity mainActivity;
     private MutableLiveData<PhasorData> phasorData = new MutableLiveData<>();
     private MutableLiveData<HarmonicsData> harmonicsData = new MutableLiveData<>();
-    private MutableLiveData<OscilloscopeData> oscilloscopeData = new MutableLiveData<>();
+    private MutableLiveData<ResampledData> oscilloscopeData = new MutableLiveData<>();
 
     class BATTERY_STATE {
         int percentage;
@@ -35,10 +35,6 @@ public class SignalConditioningAndProcessing {
         double[] gains;
         double[] offsets;
         long time=0;
-    }
-    class RESAMPLED_DATUM {
-        double t;
-        double[] y;
     }
 
     private CALIBRATION_DATA calibrationData;
@@ -57,6 +53,8 @@ public class SignalConditioningAndProcessing {
 
     private ResampledData resampledData;
 
+    private SpectrumAnalysis spectrumAnalysis;
+
     public SignalConditioningAndProcessing (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.harmonicsData.postValue(null);
@@ -73,6 +71,7 @@ public class SignalConditioningAndProcessing {
                     processSamplesToDataPoints(bytes);
                     calibrateData();
                     resampleData();
+                    performSpectrumAnalysis();
                     preparePhasorData();
                     prepareHarmonicsData();
                     prepareOscilloscopeData();
@@ -93,7 +92,7 @@ public class SignalConditioningAndProcessing {
         return harmonicsData;
     }
 
-    public MutableLiveData<OscilloscopeData> getOscilloscopeData() {
+    public MutableLiveData<ResampledData> getOscilloscopeData() {
         return oscilloscopeData;
     }
 
@@ -235,7 +234,7 @@ public class SignalConditioningAndProcessing {
         harmonicsData.postValue(null);
     }
     private void prepareOscilloscopeData() {
-        oscilloscopeData.postValue(null);
+        oscilloscopeData.postValue(resampledData);
     }
 
     private void calibrateData() {
@@ -252,6 +251,15 @@ public class SignalConditioningAndProcessing {
 
     private void resampleData() {
         resampledData = new ResampledData(voltages, currents);
+    }
+
+    /**
+     * This function performs spectrum analysis on the resampled data
+     * updates the spectrumAnalysis variable
+     * @return void
+     */
+    private void performSpectrumAnalysis() {
+        spectrumAnalysis = new SpectrumAnalysis(resampledData);
     }
 
 }
