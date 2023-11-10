@@ -28,11 +28,11 @@ public class ResampledData {
         }
     }
     public class DATA {
-        DATUM[] data;
-        int RESAMPLE_SIZE;
-        int NO_OF_CHANNELS;
-        String [] channelNames;
-        int[] channelColors;
+        private DATUM[] data;
+        private int RESAMPLE_SIZE;
+        private int NO_OF_CHANNELS;
+        private String [] channelNames;
+        private int[] channelColors;
         public DATA(DATUM[] data, String [] channelNames) {
             this.data = data;
             RESAMPLE_SIZE = data.length;
@@ -75,7 +75,7 @@ public class ResampledData {
         }
     }
     DATA data;
-    private double RESAMPLE_STEP_SIZE = 0.00005d;
+    private double RESAMPLE_STEP_SIZE;
     private int RESAMPLE_SIZE;
     private int NO_OF_CHANNELS;
     private int SAMPLE_SIZE;
@@ -93,94 +93,9 @@ public class ResampledData {
         offsetTimeToStartFromZero(tempData);
         this.data = new DATA(tempData, generateChannelNames());
 
-        /*
 
-        // Preparing data variable with the correct size
-        Log.d("SKGadi", "Original Sample size: " + SAMPLE_SIZE);
-        Log.d("SKGadi", "Original Sampling time: "+ voltages[1][0].t);
-
-
-        //Obtaining startTime which is maximum time of first sample of voltage and current
-        double startTime = voltages[0][0].t;
-        for (int i=0; i<voltages[0].length; i++) {
-            if (voltages[0][i].t>startTime) {
-                startTime = voltages[0][i].t;
-            }
-        }
-        for (int i=0; i<currents[0].length; i++) {
-            if (currents[0][i].t>startTime) {
-                startTime = currents[0][i].t;
-            }
-        }
-
-
-        //Obtaining endTime which is minimum time of last sample of voltage and current
-        double endTime = voltages[SAMPLE_SIZE-1][0].t;
-        for (int i=0; i<voltages[0].length; i++) {
-            if (voltages[SAMPLE_SIZE-1][i].t<endTime) {
-                endTime = voltages[SAMPLE_SIZE-1][i].t;
-            }
-        }
-        for (int i=0; i<currents[0].length; i++) {
-            if (currents[SAMPLE_SIZE-1][i].t<endTime) {
-                endTime = currents[SAMPLE_SIZE-1][i].t;
-            }
-        }
-        RESAMPLE_SIZE = (int)((endTime-startTime)/RESAMPLE_STEP_SIZE);
-
-        DATUM [] tempData = new DATUM[RESAMPLE_SIZE];
-        for (int i=0; i<RESAMPLE_SIZE; i++) {
-            tempData[i] = new DATUM(startTime+i*RESAMPLE_STEP_SIZE, new double[NO_OF_CHANNELS]);
-        }
-
-        // Resampling voltages
-        for (int i=0; i<voltages[0].length; i++) {
-            // Preparing List<Float> x and List<Float> y for SplineInterpolator
-            List<Float> x = new ArrayList<Float>();
-            List<Float> y = new ArrayList<Float>();
-            for (int j=0; j<SAMPLE_SIZE; j++) {
-                x.add((float)voltages[j][i].t);
-                y.add((float)voltages[j][i].y);
-            }
-            SplineInterpolator spline = SplineInterpolator.createMonotoneCubicSpline(x, y);
-            for (int j=0; j<RESAMPLE_SIZE; j++) {
-                tempData[j].y[i] = spline.interpolate((float) tempData[j].t);
-            }
-        }
-
-        // Resampling currents
-        for (int i=0; i<currents[0].length; i++) {
-            // Preparing List<Float> x and List<Float> y for SplineInterpolator
-            List<Float> x = new ArrayList<Float>();
-            List<Float> y = new ArrayList<Float>();
-            for (int j=0; j<SAMPLE_SIZE; j++) {
-                x.add((float)currents[j][i].t);
-                y.add((float)currents[j][i].y);
-            }
-            SplineInterpolator spline = SplineInterpolator.createMonotoneCubicSpline(x, y);
-            for (int j=0; j<RESAMPLE_SIZE; j++) {
-                tempData[j].y[i+voltages[0].length] = spline.interpolate((float) tempData[j].t);
-            }
-        }
-        //Offsetting the time to start from zero
-        for (int i=0; i<RESAMPLE_SIZE; i++) {
-            tempData[i].t = tempData[i].t - startTime;
-        }
-
-        String [] channelNames = new String[NO_OF_CHANNELS];
-        for (int i=0; i<voltages[0].length; i++) {
-            //channelNames[i] = "Voltage Line " + (i+1) + " - " + ((i+1)%3 + 1);
-            channelNames[i] = "Voltage L " + (i+1) + " - E";
-        }
-        for (int i=0; i<currents[0].length; i++) {
-            //channelNames[i+voltages[0].length] = "Current Line " + (i+1) + " - " + ((i+1)%3 + 1);
-            channelNames[i+voltages[0].length] = "Current L " + (i+1) + " - E";
-        }
-
-        data = new DATA(tempData, channelNames);
-
-         */
-
+        //Shows summary of the resampled data in logcat for debugging
+        showSummary();
     }
 
     /**
@@ -214,8 +129,65 @@ public class ResampledData {
                 endTime = currents[SAMPLE_SIZE-1][i].t;
             }
         }
-        RESAMPLE_SIZE = (int)((endTime-startTime)/RESAMPLE_STEP_SIZE);
 
+        // Calculating zero-crossing frequency of the signal
+        // this is used to calculate the step size for resampling
+        // It is calculated by taking average of the first voltage channel zero crossing time
+
+        double lastVoltageZeroCrossingTime = -1;
+        double lastVoltageZeroCrossingTimeDifference = -1;
+        double sumOfVoltageZeroCrossingTimeDifference = 0;
+        int numberOfVoltageZeroCrossings = 0;
+        for (int i=0; i<SAMPLE_SIZE-1; i++) {
+            if (
+                    (voltages[i][0].y < 0 && voltages[i+1][0].y > 0) ||
+                            (voltages[i][0].y > 0 && voltages[i+1][0].y < 0)
+            ) {
+                if (lastVoltageZeroCrossingTime!=-1) {
+                    lastVoltageZeroCrossingTimeDifference = voltages[i][0].t - lastVoltageZeroCrossingTime;
+                    sumOfVoltageZeroCrossingTimeDifference += lastVoltageZeroCrossingTimeDifference;
+                    numberOfVoltageZeroCrossings++;
+                }
+                lastVoltageZeroCrossingTime = voltages[i][0].t;
+            }
+        }
+        double zeroCrossingTimePeriod = sumOfVoltageZeroCrossingTimeDifference/numberOfVoltageZeroCrossings;
+        double zeroCrossingFrequency = 1d/zeroCrossingTimePeriod;
+        Log.d("SKGadi", "ResampledData: zeroCrossingFrequency: " + zeroCrossingFrequency);
+
+
+        // Calculating RESAMPLE_SIZE
+        // RESAMPLE_SIZE is the number of data points after resampling
+        // RESAMPLE_SIZE should be power of 2 for FFT
+
+        RESAMPLE_SIZE = (int) Math.pow ( 2, (int) Math.round(Math.log(SAMPLE_SIZE)/Math.log(2)));
+
+        // Estimation of Actual sampling frequency
+        double actualSamplingFrequency = ((RESAMPLE_SIZE)*1d)/(endTime-startTime);
+
+        Log.d("SKGadi", "ResampledData: actualSamplingFrequency: "+ actualSamplingFrequency);
+
+        // Minimum possible frequency step that can be achieved after resampling
+        double minimumFrequencyStep = actualSamplingFrequency/(RESAMPLE_SIZE*1d);
+        Log.d("SKGadi", "ResampledData: minimumFrequencyStep: "+ minimumFrequencyStep);
+
+        // Calculating number of steps to reach zeroCrossingFrequency
+        int numberOfStepsToReachZeroCrossingFrequency = (int) Math.ceil(zeroCrossingFrequency/minimumFrequencyStep);
+        Log.d("SKGadi", "ResampledData: numberOfStepsToReachZeroCrossingFrequency: "+ numberOfStepsToReachZeroCrossingFrequency);
+
+        // Calculating frequency step size that is achieved after FFT
+        double frequencyStepSize = (zeroCrossingFrequency*1d)/(numberOfStepsToReachZeroCrossingFrequency*1d);
+        Log.d("SKGadi", "ResampledData: frequencyStepSize: "+ frequencyStepSize);
+
+        // Calculating RESAMPLE_FREQUENCY
+        double RESAMPLE_FREQUENCY = frequencyStepSize*RESAMPLE_SIZE;
+        Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: "+ RESAMPLE_FREQUENCY);
+
+        // Calculating RESAMPLE_STEP_SIZE
+        RESAMPLE_STEP_SIZE = 1d/RESAMPLE_FREQUENCY;
+        Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
+
+        // Generating DATUM[] data variable with uniform step size and correct size
         DATUM [] tempData = new DATUM[RESAMPLE_SIZE];
         for (int i=0; i<RESAMPLE_SIZE; i++) {
             tempData[i] = new DATUM(startTime+i*RESAMPLE_STEP_SIZE, new double[NO_OF_CHANNELS]);
@@ -413,4 +385,22 @@ public class ResampledData {
         return new DATA(tempData, data.getChannelNames());
     }
 
+    public double getRESAMPLE_STEP_SIZE() {
+        return RESAMPLE_STEP_SIZE;
+    }
+    public double getResampleFrequency() {
+        return 1d/RESAMPLE_STEP_SIZE;
+    }
+
+    /**
+     * This function displays stats of the resampled data in logcat
+     */
+    public void showSummary() {
+        Log.d("SKGadi", "ResampledData: Resampled data summary");
+        Log.d("SKGadi", "ResampledData: RESAMPLE_SIZE: " + RESAMPLE_SIZE);
+        Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: " + RESAMPLE_STEP_SIZE);
+        Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: " + getResampleFrequency());
+        Log.d("SKGadi", "ResampledData: NO_OF_CHANNELS: " + NO_OF_CHANNELS);
+        Log.d("SKGadi", "ResampledData: SAMPLE_SIZE: " + SAMPLE_SIZE);
+    }
 }

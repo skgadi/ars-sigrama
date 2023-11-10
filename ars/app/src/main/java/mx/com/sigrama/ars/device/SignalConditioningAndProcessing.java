@@ -53,6 +53,8 @@ public class SignalConditioningAndProcessing {
 
     private ResampledData resampledData;
 
+    private SpectrumAnalysis spectrumAnalysis;
+
     public SignalConditioningAndProcessing (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         this.harmonicsData.postValue(null);
@@ -69,6 +71,7 @@ public class SignalConditioningAndProcessing {
                     processSamplesToDataPoints(bytes);
                     calibrateData();
                     resampleData();
+                    performSpectrumAnalysis();
                     preparePhasorData();
                     prepareHarmonicsData();
                     prepareOscilloscopeData();
@@ -248,6 +251,15 @@ public class SignalConditioningAndProcessing {
 
     private void resampleData() {
         resampledData = new ResampledData(voltages, currents);
+    }
+
+    /**
+     * This function performs spectrum analysis on the resampled data
+     * updates the spectrumAnalysis variable
+     * @return void
+     */
+    private void performSpectrumAnalysis() {
+        spectrumAnalysis = new SpectrumAnalysis(resampledData);
     }
 
 }
