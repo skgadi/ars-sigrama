@@ -37,7 +37,7 @@ public class DisplayPhases extends Fragment {
         new Timer().scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run(){
-                binder.fragmentRealtimeDisplayPhasesDiagram.invalidate();
+                binder.fragmentRealtimeDisplayPhasesDiagram.invalidateViewForAnimation();
                 Log.d("SKGadi", "Invalidate called");
             }
         },0,5000);

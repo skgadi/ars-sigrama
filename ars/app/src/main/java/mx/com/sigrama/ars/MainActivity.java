@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         //The order should be respected to make sure all the modules are loaded properly
         // because some modules depend on other modules
 
+        // Keeps the screen on
+        findViewById(R.id.main_activity_fragment_container_view).setKeepScreenOn(true);
+
 
         //Timer for the project starts here
         if (timerForProject == null) {
