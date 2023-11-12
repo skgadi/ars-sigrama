@@ -15,12 +15,14 @@ import android.view.ViewGroup;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mx.com.sigrama.ars.MainActivity;
 import mx.com.sigrama.ars.common.PhasorDiagram;
 import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayPhasesBinding;
 
 
 public class DisplayPhases extends Fragment {
 
+    private MainActivity mainActivity;
     private FragmentRealtimeDisplayPhasesBinding binder;
 
     public DisplayPhases() {
@@ -31,16 +33,24 @@ public class DisplayPhases extends Fragment {
                              Bundle savedInstanceState) {
         binder = FragmentRealtimeDisplayPhasesBinding.inflate(inflater, container, false);
 
+        // Get a reference to MainActivity
+        mainActivity = (MainActivity) getActivity();
+
+        //Update binder.fragmentRealtimeDisplayPhasesDiagram when
+        //mainActivity.signalConditioningAndProcessing.getPhasorData() is available
+        mainActivity.signalConditioningAndProcessing.getPhasorData().observe(getViewLifecycleOwner(), phasorData -> {
+            binder.fragmentRealtimeDisplayPhasesDiagram.invalidateViewForAnimation(phasorData);
+        });
 
 
         //update the binder.fragmentRealtimeDisplayPhasesDiagram every 100ms
-        new Timer().scheduleAtFixedRate(new TimerTask(){
+        /*new Timer().scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run(){
-                binder.fragmentRealtimeDisplayPhasesDiagram.invalidateViewForAnimation();
+                binder.fragmentRealtimeDisplayPhasesDiagram.invalidateViewForAnimation(null);
                 Log.d("SKGadi", "Invalidate called");
             }
-        },0,5000);
+        },0,5000);*/
 
 
 

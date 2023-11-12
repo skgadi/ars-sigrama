@@ -95,7 +95,7 @@ public class ResampledData {
 
 
         //Shows summary of the resampled data in logcat for debugging
-        showSummary();
+        //showSummary();
     }
 
     /**
@@ -153,7 +153,10 @@ public class ResampledData {
         }
         double zeroCrossingTimePeriod = sumOfVoltageZeroCrossingTimeDifference/numberOfVoltageZeroCrossings;
         double zeroCrossingFrequency = 1d/zeroCrossingTimePeriod;
-        Log.d("SKGadi", "ResampledData: zeroCrossingFrequency: " + zeroCrossingFrequency);
+        // Divide the zeroCrossingFrequency with 4 to make sure that the FFT fundamental frequency is captured
+        zeroCrossingFrequency = zeroCrossingFrequency/4d;
+        zeroCrossingTimePeriod = 1d/zeroCrossingFrequency; // This is not used but kept for consistency of variables
+        //Log.d("SKGadi", "ResampledData: zeroCrossingFrequency: " + zeroCrossingFrequency);
 
 
         // Calculating RESAMPLE_SIZE
@@ -165,27 +168,27 @@ public class ResampledData {
         // Estimation of Actual sampling frequency
         double actualSamplingFrequency = ((RESAMPLE_SIZE)*1d)/(endTime-startTime);
 
-        Log.d("SKGadi", "ResampledData: actualSamplingFrequency: "+ actualSamplingFrequency);
+        //Log.d("SKGadi", "ResampledData: actualSamplingFrequency: "+ actualSamplingFrequency);
 
         // Minimum possible frequency step that can be achieved after resampling
         double minimumFrequencyStep = actualSamplingFrequency/(RESAMPLE_SIZE*1d);
-        Log.d("SKGadi", "ResampledData: minimumFrequencyStep: "+ minimumFrequencyStep);
+        //Log.d("SKGadi", "ResampledData: minimumFrequencyStep: "+ minimumFrequencyStep);
 
         // Calculating number of steps to reach zeroCrossingFrequency
         int numberOfStepsToReachZeroCrossingFrequency = (int) Math.ceil(zeroCrossingFrequency/minimumFrequencyStep);
-        Log.d("SKGadi", "ResampledData: numberOfStepsToReachZeroCrossingFrequency: "+ numberOfStepsToReachZeroCrossingFrequency);
+        //Log.d("SKGadi", "ResampledData: numberOfStepsToReachZeroCrossingFrequency: "+ numberOfStepsToReachZeroCrossingFrequency);
 
         // Calculating frequency step size that is achieved after FFT
         double frequencyStepSize = (zeroCrossingFrequency*1d)/(numberOfStepsToReachZeroCrossingFrequency*1d);
-        Log.d("SKGadi", "ResampledData: frequencyStepSize: "+ frequencyStepSize);
+        //Log.d("SKGadi", "ResampledData: frequencyStepSize: "+ frequencyStepSize);
 
         // Calculating RESAMPLE_FREQUENCY
         double RESAMPLE_FREQUENCY = frequencyStepSize*RESAMPLE_SIZE;
-        Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: "+ RESAMPLE_FREQUENCY);
+        //Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: "+ RESAMPLE_FREQUENCY);
 
         // Calculating RESAMPLE_STEP_SIZE
         RESAMPLE_STEP_SIZE = 1d/RESAMPLE_FREQUENCY;
-        Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
+        //Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
 
         // Generating DATUM[] data variable with uniform step size and correct size
         DATUM [] tempData = new DATUM[RESAMPLE_SIZE];

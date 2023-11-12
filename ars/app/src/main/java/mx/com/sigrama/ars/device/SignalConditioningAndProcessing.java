@@ -5,6 +5,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import org.apache.commons.math3.complex.Complex;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -18,7 +20,7 @@ public class SignalConditioningAndProcessing {
 
 
     private MainActivity mainActivity;
-    private MutableLiveData<PhasorData> phasorData = new MutableLiveData<>();
+    private MutableLiveData<SpectrumAnalysis> phasorData = new MutableLiveData<>();
     private MutableLiveData<HarmonicsData> harmonicsData = new MutableLiveData<>();
     private MutableLiveData<ResampledData> oscilloscopeData = new MutableLiveData<>();
 
@@ -84,7 +86,7 @@ public class SignalConditioningAndProcessing {
         };
         mainActivity.managingWebSocket.getReceivedData().observe(mainActivity, receivedDataObserver);
     }
-    public MutableLiveData<PhasorData> getPhasorData() {
+    public MutableLiveData<SpectrumAnalysis> getPhasorData() {
         return phasorData;
     }
 
@@ -228,7 +230,7 @@ public class SignalConditioningAndProcessing {
     }
 
     private void preparePhasorData() {
-        phasorData.postValue(null);
+        phasorData.postValue(spectrumAnalysis);
     }
     private void prepareHarmonicsData() {
         harmonicsData.postValue(null);
@@ -261,5 +263,6 @@ public class SignalConditioningAndProcessing {
     private void performSpectrumAnalysis() {
         spectrumAnalysis = new SpectrumAnalysis(resampledData);
     }
+
 
 }
