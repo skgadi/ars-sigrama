@@ -240,7 +240,7 @@ public class ResampledData {
         RESAMPLE_STEP_SIZE = 1d/RESAMPLE_FREQUENCY;
         //Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
         */
-        
+
         // Generating DATUM[] data variable with uniform step size and correct size
         DATUM [] tempData = new DATUM[RESAMPLE_SIZE];
         for (int i=0; i<RESAMPLE_SIZE; i++) {

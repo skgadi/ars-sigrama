@@ -380,60 +380,60 @@ public class PhasorDiagram extends View {
 
         //Draw the text
         //Text described in point 13.1
-        placeTextOnCanvas(canvas, "0\u00B0",
+        placeTextOnCanvas(canvas, "0°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.9/2f) + dpToPixels(5),
                 canvasStats.centerY, Paint.Align.LEFT, Paint.Align.CENTER, fontSizeDpGridText);
         //Text described in point 13.2
-        placeTextOnCanvas(canvas, "90\u00B0",
+        placeTextOnCanvas(canvas, "90°",
                 canvasStats.centerX,
                 canvasStats.centerY - (float) (canvasStats.width * 0.9/2f) - dpToPixels(5),
                 Paint.Align.CENTER, Paint.Align.RIGHT, fontSizeDpGridText);
         //Text described in point 13.3
-        placeTextOnCanvas(canvas, "30\u00B0",
+        placeTextOnCanvas(canvas, "30°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(30))),
                 canvasStats.centerY - (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(30))) - dpToPixels(5),
                 Paint.Align.LEFT, Paint.Align.RIGHT, fontSizeDpGridText);
         //Text described in point 13.4
-        placeTextOnCanvas(canvas, "60\u00B0",
+        placeTextOnCanvas(canvas, "60°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(60))),
                 canvasStats.centerY - (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(60))) - dpToPixels(5),
                 Paint.Align.LEFT, Paint.Align.RIGHT, fontSizeDpGridText);
         //Text described in point 13.5
-        placeTextOnCanvas(canvas, "120\u00B0",
+        placeTextOnCanvas(canvas, "120°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(120))),
                 canvasStats.centerY - (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(120))) - dpToPixels(5),
                 Paint.Align.RIGHT, Paint.Align.RIGHT, fontSizeDpGridText);
         //Text described in point 13.6
-        placeTextOnCanvas(canvas, "150\u00B0",
+        placeTextOnCanvas(canvas, "150°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(150))),
                 canvasStats.centerY - (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(150))) - dpToPixels(5),
                 Paint.Align.RIGHT, Paint.Align.RIGHT, fontSizeDpGridText);
         //Text described in point 13.7
-        placeTextOnCanvas(canvas, "180\u00B0",
+        placeTextOnCanvas(canvas, "180°",
                 canvasStats.centerX - (float) (canvasStats.width * 0.9/2f) - dpToPixels(5),
                 canvasStats.centerY, Paint.Align.CENTER, Paint.Align.RIGHT, 270, fontSizeDpGridText);
         //Text described in point 13.8
-        placeTextOnCanvas(canvas, "210\u00B0",
+        placeTextOnCanvas(canvas, "210°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(150))),
                 canvasStats.centerY + (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(150))) + dpToPixels(5),
                 Paint.Align.RIGHT, Paint.Align.LEFT, fontSizeDpGridText);
         //Text described in point 13.9
-        placeTextOnCanvas(canvas, "240\u00B0",
+        placeTextOnCanvas(canvas, "240°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(120))),
                 canvasStats.centerY + (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(120))) + dpToPixels(5),
                 Paint.Align.RIGHT, Paint.Align.LEFT, fontSizeDpGridText);
         //Text described in point 13.10
-        placeTextOnCanvas(canvas, "300\u00B0",
+        placeTextOnCanvas(canvas, "300°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(60))),
                 canvasStats.centerY + (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(60))) + dpToPixels(5),
                 Paint.Align.LEFT, Paint.Align.LEFT, fontSizeDpGridText);
         //Text described in point 13.11
-        placeTextOnCanvas(canvas, "330\u00B0",
+        placeTextOnCanvas(canvas, "330°",
                 canvasStats.centerX + (float) (canvasStats.width * 0.45 * Math.cos(Math.toRadians(30))),
                 canvasStats.centerY + (float) (canvasStats.width * 0.45 * Math.sin(Math.toRadians(30))) + dpToPixels(5),
                 Paint.Align.LEFT, Paint.Align.LEFT, fontSizeDpGridText);
         //Text described in point 13.12
-        placeTextOnCanvas(canvas, "270\u00B0",
+        placeTextOnCanvas(canvas, "270°",
                 canvasStats.centerX,
                 canvasStats.centerY + (float) (canvasStats.width * 0.9/2f) + dpToPixels(5),
                 Paint.Align.CENTER, Paint.Align.LEFT, fontSizeDpGridText);
