@@ -81,6 +81,9 @@ public class ResampledData {
     private int SAMPLE_SIZE;
     private SignalConditioningAndProcessing.DATAPOINT[][] voltages;
     private SignalConditioningAndProcessing.DATAPOINT[][] currents;
+    //Limits where resampling is done
+    private double RESAMPLE_START_TIME;
+    private double RESAMPLE_END_TIME;
     public ResampledData(SignalConditioningAndProcessing.DATAPOINT[][] voltages, SignalConditioningAndProcessing.DATAPOINT[][] currents) {
         this.voltages = voltages;
         this.currents = currents;
@@ -104,29 +107,29 @@ public class ResampledData {
      * Returns DATUM[] data variable with uniform step size and correct size
      */
     private DATUM[] prepareDataVariableWithUniformStepSize() {
-        //Obtaining startTime which is maximum time of first sample of voltage and current
-        double startTime = voltages[0][0].t;
+        //Obtaining RESAMPLE_START_TIME which is maximum time of first sample of voltage and current
+        RESAMPLE_START_TIME = voltages[0][0].t;
         for (int i=0; i<voltages[0].length; i++) {
-            if (voltages[0][i].t>startTime) {
-                startTime = voltages[0][i].t;
+            if (voltages[0][i].t>RESAMPLE_START_TIME) {
+                RESAMPLE_START_TIME = voltages[0][i].t;
             }
         }
         for (int i=0; i<currents[0].length; i++) {
-            if (currents[0][i].t>startTime) {
-                startTime = currents[0][i].t;
+            if (currents[0][i].t>RESAMPLE_START_TIME) {
+                RESAMPLE_START_TIME = currents[0][i].t;
             }
         }
 
-        //Obtaining endTime which is minimum time of last sample of voltage and current
-        double endTime = voltages[SAMPLE_SIZE-1][0].t;
+        //Obtaining RESAMPLE_END_TIME which is minimum time of last sample of voltage and current
+        RESAMPLE_END_TIME = voltages[SAMPLE_SIZE-1][0].t;
         for (int i=0; i<voltages[0].length; i++) {
-            if (voltages[SAMPLE_SIZE-1][i].t<endTime) {
-                endTime = voltages[SAMPLE_SIZE-1][i].t;
+            if (voltages[SAMPLE_SIZE-1][i].t<RESAMPLE_END_TIME) {
+                RESAMPLE_END_TIME = voltages[SAMPLE_SIZE-1][i].t;
             }
         }
         for (int i=0; i<currents[0].length; i++) {
-            if (currents[SAMPLE_SIZE-1][i].t<endTime) {
-                endTime = currents[SAMPLE_SIZE-1][i].t;
+            if (currents[SAMPLE_SIZE-1][i].t<RESAMPLE_END_TIME) {
+                RESAMPLE_END_TIME = currents[SAMPLE_SIZE-1][i].t;
             }
         }
 
@@ -158,15 +161,62 @@ public class ResampledData {
         zeroCrossingTimePeriod = 1d/zeroCrossingFrequency; // This is not used but kept for consistency of variables
         //Log.d("SKGadi", "ResampledData: zeroCrossingFrequency: " + zeroCrossingFrequency);
 
+        //This reduceFactor is used to reduce the RESAMPLE_SIZE to make sure that
+        // the the resample is between RESAMPLE_START_TIME and RESAMPLE_END_TIME
+        // This is done to make sure that the resampled data is not extrapolated
+        // This factor is calculated in 2 iterations
+        // First iteration is done with RESAMPLE_SIZE = SAMPLE_SIZE
+        double reduceFactor = 1d;
+        boolean reduceFactorNeedsToBeUpdated = true;
+        while (reduceFactorNeedsToBeUpdated) {
+            reduceFactorNeedsToBeUpdated = false;
+            // Calculating RESAMPLE_SIZE
+            // RESAMPLE_SIZE is the number of data points after resampling
+            // RESAMPLE_SIZE should be power of 2 for FFT
+            RESAMPLE_SIZE = (int) Math.pow ( 2, (int) Math.round(Math.log(reduceFactor*SAMPLE_SIZE)/Math.log(2)));
 
+            // Estimation of Actual sampling frequency
+            double actualSamplingFrequency = ((RESAMPLE_SIZE)*1d)/(reduceFactor*RESAMPLE_END_TIME-RESAMPLE_START_TIME);
+
+            //Log.d("SKGadi", "ResampledData: actualSamplingFrequency: "+ actualSamplingFrequency);
+
+            // Minimum possible frequency step that can be achieved after resampling
+            double minimumFrequencyStep = actualSamplingFrequency/(RESAMPLE_SIZE*1d);
+            //Log.d("SKGadi", "ResampledData: minimumFrequencyStep: "+ minimumFrequencyStep);
+
+            // Calculating number of steps to reach zeroCrossingFrequency
+            int numberOfStepsToReachZeroCrossingFrequency = (int) Math.ceil(zeroCrossingFrequency/minimumFrequencyStep);
+            //Log.d("SKGadi", "ResampledData: numberOfStepsToReachZeroCrossingFrequency: "+ numberOfStepsToReachZeroCrossingFrequency);
+
+            // Calculating frequency step size that is achieved after FFT
+            double frequencyStepSize = (zeroCrossingFrequency*1d)/(numberOfStepsToReachZeroCrossingFrequency*1d);
+            //Log.d("SKGadi", "ResampledData: frequencyStepSize: "+ frequencyStepSize);
+
+            // Calculating RESAMPLE_FREQUENCY
+            double RESAMPLE_FREQUENCY = frequencyStepSize*RESAMPLE_SIZE;
+            //Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: "+ RESAMPLE_FREQUENCY);
+
+            // Calculating RESAMPLE_STEP_SIZE
+
+            RESAMPLE_STEP_SIZE = 1d/RESAMPLE_FREQUENCY;
+
+            //Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
+
+            // Checking if RESAMPLE_END_TIME is greater than RESAMPLE_START_TIME
+            // If not then reduce RESAMPLE_SIZE
+            if (RESAMPLE_START_TIME+RESAMPLE_SIZE*RESAMPLE_STEP_SIZE>RESAMPLE_END_TIME) {
+                reduceFactorNeedsToBeUpdated = true;
+                reduceFactor = reduceFactor*0.98;
+            }
+        }
+        /*
         // Calculating RESAMPLE_SIZE
         // RESAMPLE_SIZE is the number of data points after resampling
         // RESAMPLE_SIZE should be power of 2 for FFT
-
-        RESAMPLE_SIZE = (int) Math.pow ( 2, (int) Math.round(Math.log(SAMPLE_SIZE)/Math.log(2)));
+        RESAMPLE_SIZE = (int) Math.pow ( 2, (int) Math.round(Math.log(0.9*SAMPLE_SIZE)/Math.log(2)));
 
         // Estimation of Actual sampling frequency
-        double actualSamplingFrequency = ((RESAMPLE_SIZE)*1d)/(endTime-startTime);
+        double actualSamplingFrequency = ((RESAMPLE_SIZE)*1d)/(0.9*RESAMPLE_END_TIME-RESAMPLE_START_TIME);
 
         //Log.d("SKGadi", "ResampledData: actualSamplingFrequency: "+ actualSamplingFrequency);
 
@@ -189,11 +239,12 @@ public class ResampledData {
         // Calculating RESAMPLE_STEP_SIZE
         RESAMPLE_STEP_SIZE = 1d/RESAMPLE_FREQUENCY;
         //Log.d("SKGadi", "ResampledData: RESAMPLE_STEP_SIZE: "+ RESAMPLE_STEP_SIZE);
-
+        */
+        
         // Generating DATUM[] data variable with uniform step size and correct size
         DATUM [] tempData = new DATUM[RESAMPLE_SIZE];
         for (int i=0; i<RESAMPLE_SIZE; i++) {
-            tempData[i] = new DATUM(startTime+i*RESAMPLE_STEP_SIZE, new double[NO_OF_CHANNELS]);
+            tempData[i] = new DATUM(RESAMPLE_START_TIME+i*RESAMPLE_STEP_SIZE, new double[NO_OF_CHANNELS]);
         }
         return tempData;
     }
