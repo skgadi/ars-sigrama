@@ -100,6 +100,9 @@ public class PhasorDiagram extends View {
             placeArrowOnCanvas(canvas, (float) (presentVoltages[i].abs()/scaleForVoltage), (float) (presentVoltages[i].getArgument()*180/Math.PI), colors[i], ArrowType.VOLTAGE);
         }
 
+        //Display the sequence of the phasors
+        showPhaseSequence(canvas);
+
 
         //Animate the view
         if (timeSinceStart < ANIMATION_DURATION) {
@@ -614,5 +617,79 @@ public class PhasorDiagram extends View {
                 canvasStats.width - dpToPixels(10),
                 dpToPixels(10),
                 Paint.Align.RIGHT, Paint.Align.LEFT, fontSizeDpScaleText);
+    }
+
+    /**
+     * Show phase sequence indicator on bottom right corner of the canvas
+     * The voltage phase information is taken from variable voltages
+     *
+     * Phase sequence indicator contains the following:
+     * 1. Arc with arrow head at the end pointing the phase sequence
+     * 2. Text showing + or - for the phase sequence
+     * 3. Text ABC or ACB for the phase sequence     *
+     *
+     * @param canvas canvas object
+     *
+     */
+    private void showPhaseSequence(android.graphics.Canvas canvas) {
+
+        //Obtain the sequence direction from the voltages
+        boolean tempPositiveSequence = true;
+        double angleForVoltage2 = voltages[1].getArgument()*180/Math.PI;
+        if (angleForVoltage2 <0) {
+            angleForVoltage2 += 360;
+        }
+        double angleForVoltage3 = voltages[2].getArgument()*180/Math.PI;
+        if (angleForVoltage3 <0) {
+            angleForVoltage3 += 360;
+        }
+        if (angleForVoltage2 > angleForVoltage3) {
+            tempPositiveSequence = false;
+        }
+
+
+        //Make a paint object
+        android.graphics.Paint paintForPhaseSequenceIndicator = new android.graphics.Paint();
+        paintForPhaseSequenceIndicator.setStyle(android.graphics.Paint.Style.STROKE);
+        paintForPhaseSequenceIndicator.setColor(android.graphics.Color.BLACK);
+        paintForPhaseSequenceIndicator.setStrokeWidth(dpToPixels(3));
+        paintForPhaseSequenceIndicator.setPathEffect(null);
+
+        //Calculate the coordinates of the arrow
+        float x1 = canvasStats.centerX;
+        float y1 = canvasStats.centerY;
+        float x2 = canvasStats.centerX + canvasStats.width * 0.45f * (float) Math.cos(Math.toRadians(30));
+        float y2 = canvasStats.centerY - canvasStats.width * 0.45f * (float) Math.sin(Math.toRadians(30));
+        float x3 = x2 - canvasStats.width * 0.45f * 0.1f * (float) Math.cos(Math.toRadians(30 + 30));
+        float y3 = y2 + canvasStats.width * 0.45f * 0.1f * (float) Math.sin(Math.toRadians(30 + 30));
+        float x4 = x2 - canvasStats.width * 0.45f * 0.1f * (float) Math.cos(Math.toRadians(30 - 30));
+        float y4 = y2 + canvasStats.width * 0.45f * 0.1f * (float) Math.sin(Math.toRadians(30 - 30));
+
+        //Draw the arrow
+        canvas.drawLine(x1, y1, 0.5f * (x3 + x4), 0.5f * (y3 + y4), paintForPhaseSequenceIndicator);
+        //Draw the arrow head
+        android.graphics.Paint paintForArrowHead = new android.graphics.Paint();
+        paintForArrowHead.setColor(android.graphics.Color.BLACK);
+        paintForArrowHead.setPathEffect(null);
+        paintForArrowHead.setStrokeWidth(dpToPixels(3));
+        paintForArrowHead.setStyle(android.graphics.Paint.Style.FILL);
+        android.graphics.Path path = new android.graphics.Path();
+        path.moveTo(x2, y2);
+        path.lineTo(x3, y3);
+        path.lineTo(x4, y4);
+        path.close();
+        canvas.drawPath(path, paintForArrowHead);
+
+        //Draw the text
+        //Text for phase sequence
+        placeTextOnCanvas(canvas, tempPositiveSequence?"ABC":"ACB",
+                canvasStats.centerX + canvasStats.width * 0.50f - dpToPixels(16),
+                canvasStats.centerY + canvasStats.width * 0.50f - dpToPixels(16),
+                Paint.Align.CENTER, Paint.Align.CENTER, fontSizeDpScaleText);
+        placeTextOnCanvas(canvas, tempPositiveSequence?"+":"-",
+                canvasStats.centerX + canvasStats.width * 0.50f - dpToPixels(16),
+                canvasStats.centerY + canvasStats.width * 0.50f - dpToPixels(16) - dpToPixels(20),
+                Paint.Align.CENTER, Paint.Align.CENTER, fontSizeDpScaleText);
+
     }
 }
