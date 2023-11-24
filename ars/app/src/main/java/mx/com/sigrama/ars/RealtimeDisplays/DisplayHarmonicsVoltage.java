@@ -87,11 +87,34 @@ public class DisplayHarmonicsVoltage extends Fragment {
                 chart.groupBars(1.5f, groupSpace, barSpace); // perform the "explicit" grouping
                 chart.animate();
                 chart.invalidate(); // refresh
+
+                // Update the WebView with the Harmonics data
+                // The string contains HTML code that displays the Harmonics data
+                StringBuilder html = new StringBuilder("<html><style>body,table{text-align:center;margin-left: auto; margin-right: auto;} table {border-collapse: collapse;}</style><body>"
+                        + "<p>Frequency: <b>" + String.format("%.0f", spectrumAnalysis.getFundamentalFrequency()) + " Hz</b></p>"
+                        + "<table border=\"1\" style=\"width:100%\">"
+                        + "<tr><th>Parameter</th><th>V<sub>1-E</sub></th><th>V<sub>2-E</sub></th><th>V<sub>3-E</sub></th></tr>");
+                html.append("<tr><td style=\"text-align:center\">TDH</td>");
+                for (int i=0; i<3; i++) {
+                    html.append("<td style=\"text-align:right\">").append(String.format("%.1f", spectrumAnalysis.getTHD(i))).append("</td>");
+                }
+                html.append("</tr>");
+
+                for (int i=2; i<spectrumAnalysis.getFftDataForHarmonics()[0].length; i++) {
+                    html.append("<tr><td style=\"text-align:center\">H").append(i).append("</td>");
+                    for (int j=0; j<3; j++) {
+                        html.append("<td style=\"text-align:right\">").append(String.format("%.1f", spectrumAnalysis.getHarmonicsPercentage(j,i) )).append("</td>");
+                    }
+                    html.append("</tr>");
+                }
+
+                html.append("</table>")
+                        .append("</body></html>");
+                webView.loadData(html.toString(), "text/html", null);
+
             }
 
 
-            //Display list of harmonics in webview in ascending order
-            
 
 
         });

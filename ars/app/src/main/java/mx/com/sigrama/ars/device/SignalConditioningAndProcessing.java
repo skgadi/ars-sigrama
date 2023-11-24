@@ -11,6 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import mx.com.sigrama.ars.MainActivity;
+import mx.com.sigrama.ars.common.PowerQuality;
 
 public class SignalConditioningAndProcessing {
 
@@ -23,6 +24,7 @@ public class SignalConditioningAndProcessing {
     private MutableLiveData<SpectrumAnalysis> phasorData = new MutableLiveData<>();
     private MutableLiveData<SpectrumAnalysis> harmonicsData = new MutableLiveData<>();
     private MutableLiveData<ResampledData> oscilloscopeData = new MutableLiveData<>();
+    private MutableLiveData<PowerQuality> powerQualityData = new MutableLiveData<>();
 
     class BATTERY_STATE {
         int percentage;
@@ -62,6 +64,7 @@ public class SignalConditioningAndProcessing {
         this.harmonicsData.postValue(null);
         this.oscilloscopeData.postValue(null);
         this.phasorData.postValue(null);
+        this.powerQualityData.postValue(null);
         this.isDataProcessingSuccessful = new MutableLiveData<Boolean>();
 
         //Observer for received data
@@ -77,6 +80,7 @@ public class SignalConditioningAndProcessing {
                     preparePhasorData();
                     prepareHarmonicsData();
                     prepareOscilloscopeData();
+                    preparePowerQualityData();
                     isDataProcessingSuccessful.postValue(true);
                 } catch (Exception e) {
                     isDataProcessingSuccessful.postValue(false);
@@ -88,6 +92,10 @@ public class SignalConditioningAndProcessing {
     }
     public MutableLiveData<SpectrumAnalysis> getPhasorData() {
         return phasorData;
+    }
+
+    public MutableLiveData<PowerQuality> getPowerQualityData() {
+        return powerQualityData;
     }
 
     public MutableLiveData<SpectrumAnalysis> getHarmonicsData() {
@@ -232,6 +240,10 @@ public class SignalConditioningAndProcessing {
     private void preparePhasorData() {
         phasorData.postValue(spectrumAnalysis);
     }
+
+    private void preparePowerQualityData() {
+        powerQualityData.postValue(spectrumAnalysis.getPowerQuality());
+    }
     private void prepareHarmonicsData() {
         harmonicsData.postValue(spectrumAnalysis);
     }
@@ -263,6 +275,7 @@ public class SignalConditioningAndProcessing {
     private void performSpectrumAnalysis() {
         spectrumAnalysis = new SpectrumAnalysis(resampledData);
     }
+
 
 
 }

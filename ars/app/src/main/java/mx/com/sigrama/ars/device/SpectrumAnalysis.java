@@ -6,6 +6,8 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 
+import mx.com.sigrama.ars.common.PowerQuality;
+
 /**
  * Created by SKGadi on 9th November 2023
  * This class is used to perform spectrum analysis on the resampled data
@@ -25,6 +27,15 @@ public class SpectrumAnalysis {
     double FUNDAMENTAL_FREQUENCY_MAX_LIMIT = 100;
     double FUNDAMENTAL_FREQUENCY_MIN_LIMIT = 20;
     Complex [][] fftDataForHarmonics;
+
+    double[] THD; //Total Harmonic Distortion
+
+    private PowerQuality powerQuality;
+
+    /**
+     * This is the constructor for the SpectrumAnalysis class
+     * @param resampledData
+     */
     public SpectrumAnalysis(ResampledData resampledData){
 
         this.resampledData = resampledData;
@@ -62,6 +73,9 @@ public class SpectrumAnalysis {
 
         //Offset phase
         offsetPhase();
+
+        //Prepare power quality object
+        preparePowerQuality();
 
         //Shows summary of the spectrum analysis in logcat for debugging
         //showSummary();
@@ -260,7 +274,7 @@ public class SpectrumAnalysis {
         }
 
         //Calculate the number of harmonics
-        int numberOfHarmonics = (int) Math.floor(this.frequencyData[this.frequencyData.length-1]/this.FUNDAMENTAL_FREQUENCY);
+        int numberOfHarmonics = (int) Math.floor(this.frequencyData[this.frequencyData.length-1]/this.FUNDAMENTAL_FREQUENCY/2f);
         //numberOfHarmonics may be negative in that case keep the fftDataForHarmonics null
 
         if (numberOfHarmonics < 0) {
@@ -278,15 +292,52 @@ public class SpectrumAnalysis {
         //Iterating through the FFT data
         for (int i=0; i<this.fftData.length; i++) {
             //Initializing the variable for harmonics data
-            fftDataForHarmonics[i] = new Complex[numberOfHarmonics+1];
+            fftDataForHarmonics[i] = new Complex[numberOfHarmonics];
             //Initializing the variable for harmonics data index
             int harmonicsDataIndex = 0;
             //Iterating through fftData[i] with step size of FUNDAMENTAL_FREQUENCY_INDEX
-            for (int j=0; j<this.fftData[i].length; j+=this.FUNDAMENTAL_FREQUENCY_INDEX) {
+            for (int j=0; j<numberOfHarmonics; j++) {
                 //Updating the harmonics data
-                fftDataForHarmonics[i][harmonicsDataIndex++] = this.fftData[i][j];
+                fftDataForHarmonics[i][harmonicsDataIndex++] = this.fftData[i][j*this.FUNDAMENTAL_FREQUENCY_INDEX];
             }
             //Log.d("SKGadi", "SpecturmAnalysis: Harmonics data size: " + harmonicsDataIndex);
+        }
+
+        //Calculate THD
+        calculateTHD();
+    }
+
+    /**
+     * This function calculates the total harmonic distortion
+     * The result is updated in the THD variable
+     */
+    public void calculateTHD() {
+        //Check if fftDataForHarmonics is null
+        if (this.fftDataForHarmonics == null) {
+            return;
+        }
+        //Initialize total harmonic distortion
+        THD = new double[fftData.length];
+
+        //Iterate through fftDataForHarmonics
+        for (int i = 0; i < this.fftDataForHarmonics.length; i++) {
+            //Check if fftDataForHarmonics[i] is null
+            if (this.fftDataForHarmonics[i] == null) {
+                return;
+            }
+            //Check if fftDataForHarmonics[i].length is within the limits
+            if (this.fftDataForHarmonics[i].length < 1) {
+                return;
+            }
+            //Calculate THD
+            double numerator = 0;
+            double denominator = 0;
+            for (int j = 2; j < this.fftDataForHarmonics[i].length; j++) {
+                numerator += Math.pow(this.fftDataForHarmonics[i][j].abs(), 2);
+            }
+            denominator = numerator + Math.pow(this.fftDataForHarmonics[i][1].abs(), 2);
+
+            this.THD[i] = Math.sqrt(numerator / denominator) * 100;
         }
     }
 
@@ -399,6 +450,86 @@ public class SpectrumAnalysis {
         //Return the harmonics as percentage of fundamental value
         return this.fftDataForHarmonics[channel][harmonic].abs() / this.fftDataForHarmonics[channel][1].abs() * 100;
 
+    }
+
+    /**
+     * This function returns the THD for the channel
+     * @param channel int
+     *                The channel for which THD is to be calculated
+     * @return double
+     *       The THD for the channel
+     */
+    public double getTHD(int channel) {
+        //Check if THD is null
+        if (this.THD == null) {
+            return 0;
+        }
+        //Check if channel is within the limits
+        if (channel < 0 || channel >= this.THD.length) {
+            return 0;
+        }
+        //Return the THD for the channel
+        return this.THD[channel];
+    }
+
+    /**
+     * This function prepares powerQuality object
+     * @return void
+     */
+    public void preparePowerQuality() {
+        //Initialize powerQuality
+        int NO_OF_PHASES = 3;
+        powerQuality = new PowerQuality(NO_OF_PHASES);
+
+        //Check if fftDataForHarmonics is null
+        if (this.fftDataForHarmonics == null) {
+            return;
+        }
+        //Check if fftDataForHarmonics[0] is null
+        if (this.fftDataForHarmonics[0] == null) {
+            return;
+        }
+        //Check if fftDataForHarmonics[0].length is within the limits
+        if (this.fftDataForHarmonics[0].length < 1) {
+            return;
+        }
+
+        //Preparing data to call setVoltageRMS, setCurrentRMS, setCosPhi of powerQuality
+        double[][] voltageRMS = new double[NO_OF_PHASES][];
+        double[][] currentRMS = new double[NO_OF_PHASES][];
+        double[][] cosPhi = new double[NO_OF_PHASES][];
+        for (int i = 0; i < NO_OF_PHASES; i++) {
+            voltageRMS[i] = new double[fftDataForHarmonics[0].length];
+            currentRMS[i] = new double[fftDataForHarmonics[0].length];
+            cosPhi[i] = new double[fftDataForHarmonics[0].length];
+        }
+        //Iterate through fftDataForHarmonics
+        for (int i = 0; i < NO_OF_PHASES; i++) {
+            //Iterate through fftDataForHarmonics[i]
+            for (int j = 0; j < fftDataForHarmonics[i].length; j++) {
+                //Calculate voltageRMS
+                voltageRMS[i][j] = fftDataForHarmonics[i][j].abs()/Math.sqrt(2);
+                //Calculate currentRMS
+                currentRMS[i][j] = fftDataForHarmonics[NO_OF_PHASES+i][j].abs()/Math.sqrt(2);
+                //Calculate cosPhi
+                cosPhi[i][j] = Math.cos(fftDataForHarmonics[i][j].getArgument() - fftDataForHarmonics[NO_OF_PHASES+i][j].getArgument());
+            }
+            powerQuality.setVoltageRMS(i, voltageRMS[i]);
+            powerQuality.setCurrentRMS(i, currentRMS[i]);
+            powerQuality.setPowerFactor(i, cosPhi[i]);
+        }
+        //Calculate power quality parameters
+        powerQuality.calculatePowerQualityParameters();
+    }
+
+
+    /**
+     * This function returns the power quality
+     * @return PowerQuality
+     *       The power quality
+     */
+    public PowerQuality getPowerQuality() {
+        return powerQuality;
     }
 
 

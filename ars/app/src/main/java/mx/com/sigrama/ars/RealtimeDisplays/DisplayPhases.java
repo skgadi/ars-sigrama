@@ -52,7 +52,7 @@ public class DisplayPhases extends Fragment {
             if (phasorData.getFftDataForHarmonics().length == 0) return;
             if (phasorData.getFftDataForHarmonics()[0].length == 0) return;
             //Complex[][] harmonics = phasorData.getFftDataForHarmonics();
-            String html = "<html><body><h1>Info</h1>"
+            String html = "<html><style>body,table{text-align:center;margin-left: auto; margin-right: auto;} table {border-collapse: collapse;}</style><body>"
                     + "<p>Frequency: <b>"+String.format(Locale.ENGLISH, "%.0f", phasorData.getFundamentalFrequency())+" Hz</b></p>"
                     + "<table border=\"1\" style=\"width:100%\">"
                     + "<tr><th>Parameter</th><th>Amplitude</th><th>Phase</th></tr>"
