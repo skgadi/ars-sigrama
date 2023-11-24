@@ -40,11 +40,11 @@ public class ResampledData {
             this.channelNames = channelNames;
             channelColors = new int[]{
                     Color.BLACK,
+                    Color.RED,
                     Color.BLUE,
-                    Color.CYAN,
-                    Color.DKGRAY,
-                    Color.GRAY,
-                    Color.GREEN,
+                    Color.BLACK,
+                    Color.RED,
+                    Color.BLUE,
                     Color.LTGRAY,
                     Color.MAGENTA,
                     Color.RED,

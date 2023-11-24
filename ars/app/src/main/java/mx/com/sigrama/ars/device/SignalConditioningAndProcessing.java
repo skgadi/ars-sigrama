@@ -21,7 +21,7 @@ public class SignalConditioningAndProcessing {
 
     private MainActivity mainActivity;
     private MutableLiveData<SpectrumAnalysis> phasorData = new MutableLiveData<>();
-    private MutableLiveData<HarmonicsData> harmonicsData = new MutableLiveData<>();
+    private MutableLiveData<SpectrumAnalysis> harmonicsData = new MutableLiveData<>();
     private MutableLiveData<ResampledData> oscilloscopeData = new MutableLiveData<>();
 
     class BATTERY_STATE {
@@ -90,7 +90,7 @@ public class SignalConditioningAndProcessing {
         return phasorData;
     }
 
-    public MutableLiveData<HarmonicsData> getHarmonicsData() {
+    public MutableLiveData<SpectrumAnalysis> getHarmonicsData() {
         return harmonicsData;
     }
 
@@ -233,7 +233,7 @@ public class SignalConditioningAndProcessing {
         phasorData.postValue(spectrumAnalysis);
     }
     private void prepareHarmonicsData() {
-        harmonicsData.postValue(null);
+        harmonicsData.postValue(spectrumAnalysis);
     }
     private void prepareOscilloscopeData() {
         oscilloscopeData.postValue(resampledData);

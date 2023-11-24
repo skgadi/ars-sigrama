@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import mx.com.sigrama.ars.RealtimeDisplays.DisplayHarmonicsCurrent;
+import mx.com.sigrama.ars.RealtimeDisplays.DisplayHarmonicsVoltage;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayOscilloscope;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPhases;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPower;
@@ -43,7 +45,7 @@ public class RealtimeDisplay extends Fragment {
         // Instantiate a ViewPager2 and a PagerAdapter.
         pagerViewRealtimeDisplay = binder.viewPagerForRealtimeDisplay;
         pagerViewRealtimeDisplay.setAdapter(new RealtimeDisplayAdapter(this));
-        pagerViewRealtimeDisplay.setOffscreenPageLimit(3);
+        pagerViewRealtimeDisplay.setOffscreenPageLimit(1);
         // Set animation for ViewPager2
         //pagerViewRealtimeDisplay.setPageTransformer(new Pager2_DepthTransformer());
         pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
@@ -127,6 +129,12 @@ public class RealtimeDisplay extends Fragment {
                     fragment = new DisplayOscilloscope();
                     break;
                 case 2:
+                    fragment = new DisplayHarmonicsVoltage();
+                    break;
+                case 3:
+                    fragment = new DisplayHarmonicsCurrent();
+                    break;
+                case 4:
                     fragment = new DisplayPower();
                     break;
                 default:
@@ -137,7 +145,7 @@ public class RealtimeDisplay extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 3;
+            return 5;
         }
     }
 

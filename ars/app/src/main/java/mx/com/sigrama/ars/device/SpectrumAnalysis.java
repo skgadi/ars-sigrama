@@ -365,4 +365,41 @@ public class SpectrumAnalysis {
             }
         }
     }
+
+    /**
+     * This function returns harmonics as percentage of fundamental value
+     * @param channel int
+     *                The channel for which harmonics is to be calculated
+     * @param harmonic int
+     *                 The harmonic for which harmonics is to be calculated
+     * @return double
+     *        The harmonics as percentage of fundamental value
+     */
+    public double getHarmonicsPercentage(int channel, int harmonic) {
+        //Check if fftDataForHarmonics is null
+        if (this.fftDataForHarmonics == null) {
+            return 0;
+        }
+        //Check if channel is within the limits
+        if (channel < 0 || channel >= this.fftDataForHarmonics.length) {
+            return 0;
+        }
+        //Check if fftDataForHarmonics[channel] is null
+        if (this.fftDataForHarmonics[channel] == null) {
+            return 0;
+        }
+        //Check if fftDataForHarmonics[channel].length is within the limits
+        if (this.fftDataForHarmonics[channel].length < 1) {
+            return 0;
+        }
+        //Check if harmonic is within the limits
+        if (harmonic < 0 || harmonic >= this.fftDataForHarmonics[channel].length) {
+            return 0;
+        }
+        //Return the harmonics as percentage of fundamental value
+        return this.fftDataForHarmonics[channel][harmonic].abs() / this.fftDataForHarmonics[channel][1].abs() * 100;
+
+    }
+
+
 }
