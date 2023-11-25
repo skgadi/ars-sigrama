@@ -99,9 +99,9 @@ public class ConnectionManager {
                         && isChangeNetworkPermissionGranted()) {
                     String SSID = this.SSID;
 
-                    Log.d("SKGadi", "Requesting connection");
-                    Log.d("SKGadi", "SSID: " + SSID);
-                    Log.d("SKGadi", "Password: " + password);
+                    //Log.d("SKGadi", "Requesting connection");
+                    //Log.d("SKGadi", "SSID: " + SSID);
+                    //Log.d("SKGadi", "Password: " + password);
                     WifiNetworkSpecifier wifiNetworkSpecifier = new WifiNetworkSpecifier.Builder()
                             .setSsid( SSID )
                             .setWpa2Passphrase(password)
@@ -210,7 +210,7 @@ public class ConnectionManager {
         return wifiInfo.getSSID();
     }
     public boolean isConnectedToRequiredWifi() {
-        Log.d("SKGadi", "getConnectedWifiSSID(): " + getConnectedWifiSSID());
+        //Log.d("SKGadi", "getConnectedWifiSSID(): " + getConnectedWifiSSID());
         return (getConnectedWifiSSID().equals(getRequiredWiFiSSD())
                 || getConnectedWifiSSID().equals(this.SSID)
         );

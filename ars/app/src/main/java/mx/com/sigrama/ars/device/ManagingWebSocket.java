@@ -22,7 +22,7 @@ public class ManagingWebSocket {
     private MainActivity mainActivity;
 
     public ManagingWebSocket(MainActivity mainActivity) {
-        Log.d("SKGadi", "ManagingWebSocket started");
+        //Log.d("SKGadi", "ManagingWebSocket started");
         this.mainActivity = mainActivity;
         String url = "ws://192.168.1.1";
         uri = URI.create(url);
@@ -53,12 +53,12 @@ public class ManagingWebSocket {
 
             @Override
             public void onPingReceived(byte[] data) {
-                Log.d("SKGadi", "onPingReceived: " + data);
+                //Log.d("SKGadi", "onPingReceived: " + data);
             }
 
             @Override
             public void onPongReceived(byte[] data) {
-                Log.d("SKGadi", "onPongReceived: " + data);
+                //Log.d("SKGadi", "onPongReceived: " + data);
             }
 
             @Override

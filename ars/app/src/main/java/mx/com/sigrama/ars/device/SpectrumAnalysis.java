@@ -32,6 +32,8 @@ public class SpectrumAnalysis {
 
     private PowerQuality powerQuality;
 
+    private boolean PHASE_SEQUENCE_CLOCKWISE = true;
+
     /**
      * This is the constructor for the SpectrumAnalysis class
      * @param resampledData
@@ -76,6 +78,9 @@ public class SpectrumAnalysis {
 
         //Prepare power quality object
         preparePowerQuality();
+
+        //Calculate Phase Sequence
+        calculatePhaseSequence();
 
         //Shows summary of the spectrum analysis in logcat for debugging
         //showSummary();
@@ -530,6 +535,64 @@ public class SpectrumAnalysis {
      */
     public PowerQuality getPowerQuality() {
         return powerQuality;
+    }
+
+    /**
+     * This function returns the phase sequence
+     * The value is calculated from the phase angle of the fundamental frequency
+     * It updates PHASE_SEQUENCE_CLOCKWISE variable
+     */
+    public void calculatePhaseSequence() {
+        //Check if fftDataForHarmonics is null
+        if (this.fftDataForHarmonics == null) {
+            return;
+        }
+        //Check if fftDataForHarmonics[0] is null
+        if (this.fftDataForHarmonics[0] == null) {
+            return;
+        }
+        //Check if fftDataForHarmonics[0].length is within the limits
+        if (this.fftDataForHarmonics[0].length < 1) {
+            return;
+        }
+
+        //Angle of fundamental frequency phase 2 relative to phase 1
+        double phaseAngle2 = getFundamentalValue(1).getArgument();
+
+        //Angle of fundamental frequency phase 3 relative to phase 1
+        double phaseAngle3 = getFundamentalValue(2).getArgument();
+
+        if (phaseAngle2 < 0) {
+            phaseAngle2 += 2*Math.PI;
+        }
+        if (phaseAngle3 < 0) {
+            phaseAngle3 += 2*Math.PI;
+        }
+
+        if (phaseAngle2 > 2*Math.PI) {
+            phaseAngle2 -= 2*Math.PI;
+        }
+        if (phaseAngle3 > 2*Math.PI) {
+            phaseAngle3 -= 2*Math.PI;
+        }
+
+        //Check if phaseAngle2 is greater than phaseAngle3
+        if (phaseAngle2 > phaseAngle3) {
+            //Update PHASE_SEQUENCE_CLOCKWISE
+            PHASE_SEQUENCE_CLOCKWISE = true;
+        } else {
+            //Update PHASE_SEQUENCE_CLOCKWISE
+            PHASE_SEQUENCE_CLOCKWISE = false;
+        }
+    }
+
+    /**
+     * This function returns the phase sequence
+     * @return boolean
+     *       The phase sequence
+     */
+    public boolean getPhaseSequenceClockwise() {
+        return PHASE_SEQUENCE_CLOCKWISE;
     }
 
 

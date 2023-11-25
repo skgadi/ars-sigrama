@@ -90,20 +90,20 @@ public class DisplayOscilloscope extends Fragment {
         mainActivity.signalConditioningAndProcessing.getOscilloscopeData().observe(getViewLifecycleOwner(), new Observer<ResampledData>() {
             @Override
             public void onChanged(ResampledData resampledData) {
-                Log.d("SKGadi", "Updating the Oscilloscope's display");
+                //Log.d("SKGadi", "Updating the Oscilloscope's display");
                 if (resampledData==null) {
-                    Log.d("SKGadi", "Null for displaying the Oscilloscope");
+                    //Log.d("SKGadi", "Null for displaying the Oscilloscope");
                     return;
                 }
                 ResampledData.DATA graphData = resampledData.obtainDataForOscilloscope();
                 binder.oscilloscopeChart.clear();
                 if (graphData == null || graphData.getRESAMPLE_SIZE() == 0) {
                     binder.oscilloscopeChart.invalidate();
-                    Log.d("SKGadi", "Empty for displaying the Oscilloscope");
+                    //Log.d("SKGadi", "Empty for displaying the Oscilloscope");
                     return;
                 }
-                Log.d("SKGadi", "Not empty for displaying the Oscilloscope");
-                Log.d("SKGadi", "onChanged: " + graphData.getRESAMPLE_SIZE());
+                //Log.d("SKGadi", "Not empty for displaying the Oscilloscope");
+                //Log.d("SKGadi", "onChanged: " + graphData.getRESAMPLE_SIZE());
                 LineData data = new LineData();
                 datasets.removeAll(datasets);
                 for (int i=0; i<graphData.getNO_OF_CHANNELS(); i++) {
@@ -127,30 +127,6 @@ public class DisplayOscilloscope extends Fragment {
                 binder.oscilloscopeChart.invalidate();
             }
         });
-
-
         return binder.getRoot();
-    }
-
-
-    /**
-     * Added by SKGadi
-     * Called immediately after onCreateView(LayoutInflater, ViewGroup, Bundle) has returned,
-     * but before any saved state has been restored in to the view. This gives subclasses a chance
-     * to initialize themselves once they know their view hierarchy has been completely created.
-     * The fragment's view hierarchy is not however attached to its parent at this point.
-     * @param view
-     * @param savedInstanceState
-     */
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d("SKGadi", "onViewCreated: DisplayOscilloscope");
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("SKGadi", "onDestroyView: DisplayOscilloscope");
     }
 }

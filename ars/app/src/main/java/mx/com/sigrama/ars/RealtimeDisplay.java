@@ -19,6 +19,7 @@ import mx.com.sigrama.ars.RealtimeDisplays.DisplayHarmonicsVoltage;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayOscilloscope;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPhases;
 import mx.com.sigrama.ars.RealtimeDisplays.DisplayPower;
+import mx.com.sigrama.ars.common.DepthPageTransformer;
 import mx.com.sigrama.ars.common.ZoomOutPageTransformer;
 import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayBinding;
 
@@ -45,10 +46,10 @@ public class RealtimeDisplay extends Fragment {
         // Instantiate a ViewPager2 and a PagerAdapter.
         pagerViewRealtimeDisplay = binder.viewPagerForRealtimeDisplay;
         pagerViewRealtimeDisplay.setAdapter(new RealtimeDisplayAdapter(this));
-        pagerViewRealtimeDisplay.setOffscreenPageLimit(1);
+        pagerViewRealtimeDisplay.setOffscreenPageLimit(ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT);
         // Set animation for ViewPager2
         //pagerViewRealtimeDisplay.setPageTransformer(new Pager2_DepthTransformer());
-        pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
+        //pagerViewRealtimeDisplay.setPageTransformer(new ZoomOutPageTransformer());
         //pagerViewRealtimeDisplay.setPageTransformer(new DepthPageTransformer());
 
 

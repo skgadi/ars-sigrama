@@ -6,6 +6,6 @@ package mx.com.sigrama.ars.common;
  */
 public class ColorsForSignals {
     enum COLOR_SCHEME {
-        
+
     }
 }

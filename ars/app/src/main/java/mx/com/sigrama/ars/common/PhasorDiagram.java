@@ -203,8 +203,8 @@ public class PhasorDiagram extends View {
         } else {
             scaleForCurrent = (int) Math.ceil(maxCurrent / 50d) * 50;
         }
-        Log.d("SKGadi", "Max voltage: " + maxVoltage + " Scale: " + scaleForVoltage);
-        Log.d("SKGadi", "Max current: " + maxCurrent + " Scale: " + scaleForCurrent);
+        //Log.d("SKGadi", "Max voltage: " + maxVoltage + " Scale: " + scaleForVoltage);
+        //Log.d("SKGadi", "Max current: " + maxCurrent + " Scale: " + scaleForCurrent);
     }
 
     /**

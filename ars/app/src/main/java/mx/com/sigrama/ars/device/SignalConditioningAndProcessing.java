@@ -72,7 +72,7 @@ public class SignalConditioningAndProcessing {
             @Override
             public void onChanged(byte[] bytes) {
                 try {
-                    Log.d("SKGadi", "Received data: " + bytes);
+                    //Log.d("SKGadi", "Received data: " + bytes);
                     processSamplesToDataPoints(bytes);
                     calibrateData();
                     resampleData();
