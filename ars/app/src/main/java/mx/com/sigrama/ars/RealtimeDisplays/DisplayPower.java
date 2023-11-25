@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayPowerBinding;
 public class DisplayPower extends Fragment {
 
     MainActivity mainActivity;
+    int yScrollPosition = 0;
     private FragmentRealtimeDisplayPowerBinding binder;
     public DisplayPower() {
         // Required empty public constructor
@@ -31,61 +33,81 @@ public class DisplayPower extends Fragment {
         mainActivity.signalConditioningAndProcessing.getPowerQualityData().observe(getViewLifecycleOwner(), powerQuality -> {
             if (powerQuality == null) return;
             if (!powerQuality.isDataValid()) return;
+
+            //Percentage of scroll progress in the actual web page content
+            yScrollPosition = binder.powerSummaryWebview.getScrollY();
+
+
             //Updating Summary WebView with power quality data
-            String html = "<html><style>body,table{text-align:center;margin-left: auto; margin-right: auto;} table {border-collapse: collapse;}</style><body>";
-            html += "<p>Summary</p>";
-            html += "<table border=\"1\">";
-            html += "<tr><th>Parameter</th><th>Value</th></tr>";
-            html += "<tr><td style=\"text-align:center\">VA</td><td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getApparentPower())+" VA</td></tr>";
-            html += "<tr><td style=\"text-align:center\">W</td><td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getActivePower())+" W</td></tr>";
-            html += "<tr><td style=\"text-align:center\">VAR</td><td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getReactivePower())+" VAR</td></tr>";
-            html += "<tr><td style=\"text-align:center\">PF</td><td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getPowerFactor())+"</td></tr>";
-            html += "</table>";
-            html += "<p>Per phase data</p>";
-            html += "<table border=\"1\">";
-            html += "<tr><th>\u03D5</th><th>VA</th><th>W</th><th>VAR</th><th>PF</th></tr>";
+            StringBuilder html = new StringBuilder("<html><style>body,table{text-align:center;margin-left: auto; margin-right: auto;} table {border-collapse: collapse;}</style><body>");
+            html.append("<p>Summary</p>");
+            html.append("<table border=\"1\">");
+            html.append("<tr><th>Parameter</th><th>Value</th></tr>");
+            html.append("<tr><td style=\"text-align:center\">VA</td><td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getApparentPower())).append(" VA</td></tr>");
+            html.append("<tr><td style=\"text-align:center\">W</td><td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getActivePower())).append(" W</td></tr>");
+            html.append("<tr><td style=\"text-align:center\">VAR</td><td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getReactivePower())).append(" VAR</td></tr>");
+            html.append("<tr><td style=\"text-align:center\">PF</td><td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getPowerFactor())).append("</td></tr>");
+            html.append("</table>");
+            html.append("<p>Per phase data</p>");
+            html.append("<table border=\"1\">");
+            html.append("<tr><th>\u03D5</th><th>VA</th><th>W</th><th>VAR</th><th>PF</th></tr>");
             for (int i = 0; i < powerQuality.getNO_OF_PHASES(); i++) {
-                html += "<tr>";
-                html += "<td style=\"text-align:center\">"+(i+1)+"</td>";
-                html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getApparentPower(i))+"</td>";
-                html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getActivePower(i))+"</td>";
-                html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getReactivePower(i))+"</td>";
-                html += "<td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getPowerFactor(i))+"</td>";
-                html += "</tr>";
+                html.append("<tr>");
+                html.append("<td style=\"text-align:center\">").append(i + 1).append("</td>");
+                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getApparentPower(i))).append("</td>");
+                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getActivePower(i))).append("</td>");
+                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getReactivePower(i))).append("</td>");
+                html.append("<td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getPowerFactor(i))).append("</td>");
+                html.append("</tr>");
             }
-            html += "</table>";
+            html.append("</table>");
 
 
 
             //Updating the details WebView
             //Contains table with the power quality data per phase and per harmonic in a tabular format
 
-            html += "<p>More details</p>";
-            html += "<table border=\"1\" style=\"width:100%\">";
-            html += "<tr><th rowspan=\"2\">H</th><th colspan=\"4\">\u03D5 - 1</th><th colspan=\"4\">\u03D5 - 2</th><th colspan=\"4\">\u03D5 - 3</th></tr>";
-            html += "<tr>";
+            html.append("<p>More details</p>");
+            html.append("<table border=\"1\" style=\"width:100%\">");
+            StringBuilder TableHeading = new StringBuilder("<tr><th rowspan=\"2\">H</th><th colspan=\"4\">\u03D5 - 1</th><th colspan=\"4\">\u03D5 - 2</th><th colspan=\"4\">\u03D5 - 3</th></tr>");
+            TableHeading.append("<tr>");
             for (int i = 0; i < powerQuality.getNO_OF_PHASES(); i++) {
-                html += "<th>VA</th>";
-                html += "<th>W</th>";
-                html += "<th>VAR</th>";
-                html += "<th>cos(\u03D5)</th>";
+                TableHeading.append("<th>VA</th>");
+                TableHeading.append("<th>W</th>");
+                TableHeading.append("<th>VAR</th>");
+                TableHeading.append("<th>cos(\u03D5)</th>");
             }
-            html += "</tr>";
+            TableHeading.append("</tr>");
             for (int i = 0; i < powerQuality.getNO_OF_HARMONICS(); i++) {
-                html += "<tr>";
-                html += "<td style=\"text-align:center\">H"+(i)+"</td>";
+                if (i%10 == 0) html.append(TableHeading);
+
+                html.append("<tr>");
+                html.append("<td style=\"text-align:center\">H").append(i).append("</td>");
                 for (int j = 0; j < powerQuality.getNO_OF_PHASES(); j++) {
-                    html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getApparentPower(j, i))+"</td>";
-                    html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getActivePower(j, i))+"</td>";
-                    html += "<td style=\"text-align:right\">"+String.format("%.0f", powerQuality.getReactivePower(j, i))+"</td>";
-                    html += "<td style=\"text-align:right\">"+String.format("%.2f", powerQuality.getPowerFactor(j, i))+"</td>";
+                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getApparentPower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getActivePower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getReactivePower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getPowerFactor(j, i))).append("</td>");
                 }
-                html += "</tr>";
+                html.append("</tr>");
             }
-            html += "</table>";
-            html += "</body></html>";
-            binder.powerSummaryWebview.loadData(html, "text/html", null);
+            html.append(TableHeading);
+            html.append("</table>");
+            html.append("</body></html>");
+            binder.powerSummaryWebview.loadData(html.toString(), "text/html", null);
             //binder.powerDetailsWebview.loadData(html, "text/html", null);
+
+            //Scrolling the webview to the previous position
+            binder.powerSummaryWebview.post(() -> {
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            binder.powerSummaryWebview.scrollTo(0, yScrollPosition);
+                        }
+                    },
+                    1000);
+            });
+
 
 
 

@@ -95,7 +95,7 @@ public class RealtimeDisplay extends Fragment {
 
         //Try to obtain data every 5 seconds to update the graphs
 
-        mainActivity.timerForProject.getFiveSeconds().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+        mainActivity.timerForProject.getTenSeconds().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer timeInSeconds) {
                 mainActivity.managingWebSocket.sendRequestToDevice(0.0f, 0, 0);
