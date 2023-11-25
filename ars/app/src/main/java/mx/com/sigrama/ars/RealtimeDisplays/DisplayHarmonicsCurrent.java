@@ -98,6 +98,7 @@ public class DisplayHarmonicsCurrent extends Fragment {
                         + "<p>Frequency: <b>" + String.format("%.0f", spectrumAnalysis.getFundamentalFrequency()) + " Hz</b></p>"
                         + "<table border=\"1\" style=\"width:100%\">");
                 String TableHeading =  "<tr><th>Parameter</th><th>I<sub>1-E</sub></th><th>I<sub>2-E</sub></th><th>I<sub>3-E</sub></th></tr>";
+                html.append(TableHeading);
                 html.append("<tr><td style=\"text-align:center\">TDH</td>");
                 for (int i=0; i<3; i++) {
                     html.append("<td style=\"text-align:right\">").append(String.format("%.1f", spectrumAnalysis.getTHD(3+i))).append("</td>");

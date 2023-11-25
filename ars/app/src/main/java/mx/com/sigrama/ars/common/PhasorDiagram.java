@@ -64,6 +64,8 @@ public class PhasorDiagram extends View {
     private long ANIMATION_DURATION = 1000;
     private long timeSinceStart = 0;
 
+    private boolean PHASE_SEQUENCE_CLOCKWISE = true;
+
     public PhasorDiagram(Context context) {
         super(context);
     }
@@ -158,6 +160,12 @@ public class PhasorDiagram extends View {
                 }
             }
         }
+
+        //Update PHASE_SEQUENCE_CLOCKWISE
+        if (spectrumAnalysis != null) {
+            PHASE_SEQUENCE_CLOCKWISE = spectrumAnalysis.getPhaseSequenceClockwise();
+        }
+
         //Change the start time to current time for animation
         startTime = System.currentTimeMillis();
 
@@ -636,18 +644,7 @@ public class PhasorDiagram extends View {
     private void showPhaseSequence(android.graphics.Canvas canvas) {
 
         //Obtain the sequence direction from the voltages
-        boolean tempPositiveSequence = true;
-        double angleForVoltage2 = voltages[1].getArgument()*180/Math.PI;
-        if (angleForVoltage2 <0) {
-            angleForVoltage2 += 360;
-        }
-        double angleForVoltage3 = voltages[2].getArgument()*180/Math.PI;
-        if (angleForVoltage3 <0) {
-            angleForVoltage3 += 360;
-        }
-        if (angleForVoltage2 > angleForVoltage3) {
-            tempPositiveSequence = false;
-        }
+
 
 
         //Make a paint object
@@ -687,10 +684,10 @@ public class PhasorDiagram extends View {
         //calculating coordinates for the first arrow head
         float x1 = canvasStats.centerX + canvasStats.width * 0.50f - xyShift + circleRadius;
         float y1 = canvasStats.centerY + canvasStats.width * 0.50f - xyShift;
-        float x2 = x1 + dpToPixels(10) * (float) Math.cos(Math.toRadians(tempPositiveSequence?230:50));
-        float y2 = y1 - dpToPixels(10) * (float) Math.sin(Math.toRadians(tempPositiveSequence?230:50));
-        float x3 = x1 - dpToPixels(10) * (float) Math.cos(Math.toRadians(tempPositiveSequence?140:310));
-        float y3 = y1 + dpToPixels(10) * (float) Math.sin(Math.toRadians(tempPositiveSequence?140:310));
+        float x2 = x1 + dpToPixels(10) * (float) Math.cos(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?50:230));
+        float y2 = y1 - dpToPixels(10) * (float) Math.sin(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?50:230));
+        float x3 = x1 - dpToPixels(10) * (float) Math.cos(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?310:140));
+        float y3 = y1 + dpToPixels(10) * (float) Math.sin(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?310:140));
         //Draw the first arrow head
         canvas.drawLine(x1, y1, x2, y2, paintForArrowHead);
         canvas.drawLine(x1, y1, x3, y3, paintForArrowHead);
@@ -698,10 +695,10 @@ public class PhasorDiagram extends View {
         //calculating coordinates for the second arrow head
         x1 = canvasStats.centerX + canvasStats.width * 0.50f - xyShift - circleRadius;
         y1 = canvasStats.centerY + canvasStats.width * 0.50f - xyShift;
-        x2 = x1 + dpToPixels(10) * (float) Math.cos(Math.toRadians(tempPositiveSequence?50:230));
-        y2 = y1 - dpToPixels(10) * (float) Math.sin(Math.toRadians(tempPositiveSequence?50:230));
-        x3 = x1 - dpToPixels(10) * (float) Math.cos(Math.toRadians(tempPositiveSequence?310:140));
-        y3 = y1 + dpToPixels(10) * (float) Math.sin(Math.toRadians(tempPositiveSequence?310:140));
+        x2 = x1 + dpToPixels(10) * (float) Math.cos(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?230:50));
+        y2 = y1 - dpToPixels(10) * (float) Math.sin(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?230:50));
+        x3 = x1 - dpToPixels(10) * (float) Math.cos(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?140:310));
+        y3 = y1 + dpToPixels(10) * (float) Math.sin(Math.toRadians(PHASE_SEQUENCE_CLOCKWISE?140:310));
         //Draw the second arrow head
         canvas.drawLine(x1, y1, x2, y2, paintForArrowHead);
         canvas.drawLine(x1, y1, x3, y3, paintForArrowHead);
@@ -712,11 +709,11 @@ public class PhasorDiagram extends View {
 
         //Draw the text
         //Text for phase sequence
-        placeTextOnCanvas(canvas, tempPositiveSequence?"ABC":"ACB",
+        placeTextOnCanvas(canvas, PHASE_SEQUENCE_CLOCKWISE?"ABC":"ACB",
                 canvasStats.centerX + canvasStats.width * 0.50f - xyShift,
                 canvasStats.centerY + canvasStats.width * 0.50f - xyShift,
                 Paint.Align.CENTER, Paint.Align.CENTER, fontSizeDpScaleText);
-        placeTextOnCanvas(canvas, tempPositiveSequence?"+":"-",
+        placeTextOnCanvas(canvas, PHASE_SEQUENCE_CLOCKWISE?"+":"-",
                 canvasStats.centerX + canvasStats.width * 0.50f - xyShift,
                 canvasStats.centerY + canvasStats.width * 0.50f - xyShift - dpToPixels(20),
                 Paint.Align.CENTER, Paint.Align.CENTER, fontSizeDpScaleText);
@@ -744,7 +741,7 @@ public class PhasorDiagram extends View {
             //Calculate the angle of the dot
 
             angleOfPhaseSequenceDot = (int) ((360f * timeSinceStart) / ANIMATION_DURATION);
-            if (!tempPositiveSequence) {
+            if (PHASE_SEQUENCE_CLOCKWISE) {
                 angleOfPhaseSequenceDot = 360 - angleOfPhaseSequenceDot;
             }
 

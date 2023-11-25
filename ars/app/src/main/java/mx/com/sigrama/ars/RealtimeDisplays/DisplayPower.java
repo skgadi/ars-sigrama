@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +51,16 @@ public class DisplayPower extends Fragment {
             html.append("</table>");
             html.append("<p>Per phase data</p>");
             html.append("<table border=\"1\">");
-            html.append("<tr><th>\u03D5</th><th>VA</th><th>W</th><th>VAR</th><th>PF</th></tr>");
+            html.append("<tr><th>Phase</th><th>VA</th><th>W</th><th>VAR</th><th>PF</th></tr>");
+
             for (int i = 0; i < powerQuality.getNO_OF_PHASES(); i++) {
+                Log.d("SKGadi","<tr style=\"color:"+mainActivity.colorsForSignals.getColorHex(i)+";\">");
                 html.append("<tr>");
-                html.append("<td style=\"text-align:center\">").append(i + 1).append("</td>");
-                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getApparentPower(i))).append("</td>");
-                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getActivePower(i))).append("</td>");
-                html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getReactivePower(i))).append("</td>");
-                html.append("<td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getPowerFactor(i))).append("</td>");
+                html.append("<td style=\"text-align:center\">\u03D5-").append(i + 1).append("</td>");
+                html.append("<td style=\"text-align:right;\">").append(String.format("%.0f", powerQuality.getApparentPower(i))).append("</td>");
+                html.append("<td style=\"text-align:right;\">").append(String.format("%.0f", powerQuality.getActivePower(i))).append("</td>");
+                html.append("<td style=\"text-align:right;\">").append(String.format("%.0f", powerQuality.getReactivePower(i))).append("</td>");
+                html.append("<td style=\"text-align:right;\">").append(String.format("%.2f", powerQuality.getPowerFactor(i))).append("</td>");
                 html.append("</tr>");
             }
             html.append("</table>");

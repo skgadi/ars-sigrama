@@ -21,6 +21,7 @@ import com.permissionx.guolindev.request.PermissionBuilder;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import mx.com.sigrama.ars.common.ColorsForSignals;
 import mx.com.sigrama.ars.common.GlobalSharedPreferencesForProject;
 import mx.com.sigrama.ars.common.ManipulateFragmentContainerView;
 import mx.com.sigrama.ars.common.TimerForProject;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public ManagingWebSocket managingWebSocket;
     public SignalConditioningAndProcessing signalConditioningAndProcessing;
     public TimerForProject timerForProject;
+    public ColorsForSignals colorsForSignals;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
             sharedPrefs = new GlobalSharedPreferencesForProject(this);
         }
         //Shared preferences for the project ends here
+
+        //Colors for signals starts here
+        if (colorsForSignals == null) {
+            colorsForSignals = new ColorsForSignals();
+        }
+        //Colors for signals ends here
 
 
         //ConnectionManager starts here
