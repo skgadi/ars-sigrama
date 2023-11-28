@@ -57,7 +57,7 @@ public class ColorsForSignals {
     }
 
     public String getColorHex(int channel) {
-        return String.format("#%06X", (0xFFFFFF & Colors[selectedColorScheme.ordinal()][channel]));
+        return String.format("%06X", (0xFFFFFF & Colors[selectedColorScheme.ordinal()][channel]));
     }
 
 }

@@ -180,6 +180,16 @@ public class PhasorDiagram extends View {
      *
      */
     private void obtainScaleForVoltageAndCurrent() {
+
+        //check for null values for voltages and currents
+        if (voltages == null) {
+            return;
+        }
+        if (currents == null) {
+            return;
+        }
+
+
         //Initialize the scale for voltage and current
         scaleForVoltage = 100;
         scaleForCurrent = 100;
@@ -240,6 +250,14 @@ public class PhasorDiagram extends View {
             for (int i = 0; i < NO_OF_PHASES; i++) {
                 presentCurrents[i] = new Complex(0, 0);
             }
+        }
+
+        //check null for previousVoltages
+        if (previousVoltages== null){
+            return;
+        }
+        if(previousCurrents==null){
+            return;
         }
         //Calculate the present values
         //Time since start of animation

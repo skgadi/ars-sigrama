@@ -276,6 +276,20 @@ public class SignalConditioningAndProcessing {
         spectrumAnalysis = new SpectrumAnalysis(resampledData);
     }
 
+    /**
+     * This function returns the humidity of the board
+     */
+    public double getBoardHumidity() {
+        return boardHumidity;
+    }
+
+    /**
+     * This function returns the temperature of the board
+     */
+    public double getBoardTemperature() {
+        return boardTemperature;
+    }
+
 
 
 }

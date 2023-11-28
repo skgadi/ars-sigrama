@@ -84,6 +84,16 @@ public class ResampledData {
     //Limits where resampling is done
     private double RESAMPLE_START_TIME;
     private double RESAMPLE_END_TIME;
+
+    private double[] peakValue;
+    private double[] rmsValue;
+
+    /**
+     * Constructor for ResampledData
+     * Takes SignalConditioningAndProcessing.DATAPOINT[][] voltages and SignalConditioningAndProcessing.DATAPOINT[][] currents as parameters
+     * @param voltages SignalConditioningAndProcessing.DATAPOINT[][] voltages
+     * @param currents SignalConditioningAndProcessing.DATAPOINT[][] currents
+     */
     public ResampledData(SignalConditioningAndProcessing.DATAPOINT[][] voltages, SignalConditioningAndProcessing.DATAPOINT[][] currents) {
         this.voltages = voltages;
         this.currents = currents;
@@ -96,6 +106,8 @@ public class ResampledData {
         offsetTimeToStartFromZero(tempData);
         this.data = new DATA(tempData, generateChannelNames());
 
+        //Calculating peak and rms values
+        calculatePeakAndRmsValues();
 
         //Shows summary of the resampled data in logcat for debugging
         //showSummary();
@@ -456,5 +468,36 @@ public class ResampledData {
         Log.d("SKGadi", "ResampledData: RESAMPLE_FREQUENCY: " + getResampleFrequency());
         Log.d("SKGadi", "ResampledData: NO_OF_CHANNELS: " + NO_OF_CHANNELS);
         Log.d("SKGadi", "ResampledData: SAMPLE_SIZE: " + SAMPLE_SIZE);
+    }
+
+    public double[] getPeakValue() {
+        return peakValue;
+    }
+    public double[] getRmsValue() {
+        return rmsValue;
+    }
+
+    /**
+     * This function calculates peak and rms values for all channels
+     * It updates the peakValue and rmsValue variables
+     */
+    public void calculatePeakAndRmsValues() {
+        peakValue = new double[NO_OF_CHANNELS];
+        rmsValue = new double[NO_OF_CHANNELS];
+        for (int i = 0; i < NO_OF_CHANNELS; i++) {
+            peakValue[i] = 0;
+            rmsValue[i] = 0;
+        }
+        for (int i = 0; i < RESAMPLE_SIZE; i++) {
+            for (int j = 0; j < NO_OF_CHANNELS; j++) {
+                if (Math.abs(data.getDatum(i).getY(j)) > peakValue[j]) {
+                    peakValue[j] = Math.abs(data.getDatum(i).getY(j));
+                }
+                rmsValue[j] += data.getDatum(i).getY(j) * data.getDatum(i).getY(j);
+            }
+        }
+        for (int i = 0; i < NO_OF_CHANNELS; i++) {
+            rmsValue[i] = Math.sqrt(rmsValue[i] / RESAMPLE_SIZE);
+        }
     }
 }

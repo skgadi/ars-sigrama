@@ -34,11 +34,13 @@ public class SpectrumAnalysis {
 
     private boolean PHASE_SEQUENCE_CLOCKWISE = true;
 
+    private double[] crestFactor;
+
     /**
      * This is the constructor for the SpectrumAnalysis class
      * @param resampledData
      */
-    public SpectrumAnalysis(ResampledData resampledData){
+    public SpectrumAnalysis(ResampledData resampledData) {
 
         this.resampledData = resampledData;
         //Check if resampled data is null
@@ -81,6 +83,9 @@ public class SpectrumAnalysis {
 
         //Calculate Phase Sequence
         calculatePhaseSequence();
+
+        //Calculate crest factor
+        calculateCrestFactor();
 
         //Shows summary of the spectrum analysis in logcat for debugging
         //showSummary();
@@ -595,5 +600,40 @@ public class SpectrumAnalysis {
         return PHASE_SEQUENCE_CLOCKWISE;
     }
 
+    /**
+     * This function calculates the crest factor
+     */
+    private void calculateCrestFactor() {
+        double[] maxValue = resampledData.getPeakValue();
+        double[] rmsValue = resampledData.getRmsValue();
+        crestFactor = new double[maxValue.length];
+
+        for (int i=0; i<maxValue.length; i++) {
+            crestFactor[i] = maxValue[i] / rmsValue[i];
+            //Log.d("SKGadi", "Crest factor for channel " + i + ": " + crestFactor[i]);
+        }
+    }
+
+    /**
+     * This function returns the crest factor
+     * @return double[]
+     *       The crest factor
+     */
+    public double[] getCrestFactor() {
+        return crestFactor;
+    }
+
+    /**
+     * This function returns crest factor for the channel
+     */
+    public double getCrestFactor(int channel) {
+        if (crestFactor == null) {
+            return 0;
+        }
+        if (channel < 0 || channel >= crestFactor.length) {
+            return 0;
+        }
+        return crestFactor[channel];
+    }
 
 }

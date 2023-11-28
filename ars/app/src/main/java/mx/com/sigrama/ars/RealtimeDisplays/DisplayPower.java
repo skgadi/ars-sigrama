@@ -54,8 +54,8 @@ public class DisplayPower extends Fragment {
             html.append("<tr><th>Phase</th><th>VA</th><th>W</th><th>VAR</th><th>PF</th></tr>");
 
             for (int i = 0; i < powerQuality.getNO_OF_PHASES(); i++) {
-                Log.d("SKGadi","<tr style=\"color:"+mainActivity.colorsForSignals.getColorHex(i)+";\">");
-                html.append("<tr>");
+                //Log.d("SKGadi","<tr style=\"color:"+mainActivity.colorsForSignals.getColorHex(i)+";\">");
+                html.append("<tr style=\"color:"+mainActivity.colorsForSignals.getColorHex(i)+";\">");
                 html.append("<td style=\"text-align:center\">\u03D5-").append(i + 1).append("</td>");
                 html.append("<td style=\"text-align:right;\">").append(String.format("%.0f", powerQuality.getApparentPower(i))).append("</td>");
                 html.append("<td style=\"text-align:right;\">").append(String.format("%.0f", powerQuality.getActivePower(i))).append("</td>");
@@ -71,14 +71,18 @@ public class DisplayPower extends Fragment {
             //Contains table with the power quality data per phase and per harmonic in a tabular format
 
             html.append("<p>More details</p>");
-            html.append("<table border=\"1\" style=\"width:100%\">");
-            StringBuilder TableHeading = new StringBuilder("<tr><th rowspan=\"2\">H</th><th colspan=\"4\">\u03D5 - 1</th><th colspan=\"4\">\u03D5 - 2</th><th colspan=\"4\">\u03D5 - 3</th></tr>");
+            html.append("<table border=\"1\"  style=\"width:calc(100% - 16px); margin:0 8px;\">");
+            StringBuilder TableHeading = new StringBuilder("<tr><th rowspan=\"2\">H</th>" +
+                    "<th colspan=\"4\" style=\"color:"+mainActivity.colorsForSignals.getColorHex(0)+"\">\u03D5 - 1</th>" +
+                    "<th colspan=\"4\" style=\"color:"+mainActivity.colorsForSignals.getColorHex(1)+"\">\u03D5 - 2</th>" +
+                    "<th colspan=\"4\" style=\"color:"+mainActivity.colorsForSignals.getColorHex(2)+"\">\u03D5 - 3</th>" +
+                    "</tr>");
             TableHeading.append("<tr>");
             for (int i = 0; i < powerQuality.getNO_OF_PHASES(); i++) {
-                TableHeading.append("<th>VA</th>");
-                TableHeading.append("<th>W</th>");
-                TableHeading.append("<th>VAR</th>");
-                TableHeading.append("<th>cos(\u03D5)</th>");
+                TableHeading.append("<th style=\"color: "+mainActivity.colorsForSignals.getColorHex(i)+"\">VA</th>");
+                TableHeading.append("<th style=\"color: "+mainActivity.colorsForSignals.getColorHex(i)+"\">W</th>");
+                TableHeading.append("<th style=\"color: "+mainActivity.colorsForSignals.getColorHex(i)+"\">VAR</th>");
+                TableHeading.append("<th style=\"color: "+mainActivity.colorsForSignals.getColorHex(i)+"\">cos(\u03D5)</th>");
             }
             TableHeading.append("</tr>");
             for (int i = 0; i < powerQuality.getNO_OF_HARMONICS(); i++) {
@@ -87,10 +91,10 @@ public class DisplayPower extends Fragment {
                 html.append("<tr>");
                 html.append("<td style=\"text-align:center\">H").append(i).append("</td>");
                 for (int j = 0; j < powerQuality.getNO_OF_PHASES(); j++) {
-                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getApparentPower(j, i))).append("</td>");
-                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getActivePower(j, i))).append("</td>");
-                    html.append("<td style=\"text-align:right\">").append(String.format("%.0f", powerQuality.getReactivePower(j, i))).append("</td>");
-                    html.append("<td style=\"text-align:right\">").append(String.format("%.2f", powerQuality.getPowerFactor(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right;color: "+mainActivity.colorsForSignals.getColorHex(j)+"\">").append(String.format("%.0f", powerQuality.getApparentPower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right;color: "+mainActivity.colorsForSignals.getColorHex(j)+"\">").append(String.format("%.0f", powerQuality.getActivePower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right;color: "+mainActivity.colorsForSignals.getColorHex(j)+"\">").append(String.format("%.0f", powerQuality.getReactivePower(j, i))).append("</td>");
+                    html.append("<td style=\"text-align:right;color: "+mainActivity.colorsForSignals.getColorHex(j)+"\">").append(String.format("%.2f", powerQuality.getPowerFactor(j, i))).append("</td>");
                 }
                 html.append("</tr>");
             }

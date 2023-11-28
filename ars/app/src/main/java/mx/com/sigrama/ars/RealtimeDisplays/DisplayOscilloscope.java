@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import mx.com.sigrama.ars.MainActivity;
 import mx.com.sigrama.ars.R;
+import mx.com.sigrama.ars.common.formatterForHarmonicsXAxis;
 import mx.com.sigrama.ars.databinding.FragmentRealtimeDisplayOscilloscopeBinding;
 import mx.com.sigrama.ars.device.ResampledData;
 
@@ -83,6 +85,10 @@ public class DisplayOscilloscope extends Fragment {
         binder.oscilloscopeChart.setAutoScaleMinMaxEnabled(true);
         binder.oscilloscopeChart.setKeepPositionOnRotation(true);
         binder.oscilloscopeChart.setNoDataText("No se recibó los datos");
+        XAxis xAxis = binder.oscilloscopeChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(5);
         //add a chart with some random data
 
 
