@@ -6,6 +6,7 @@ SIG_PINS pins;
 SIG_ADC adc;
 SIG_CALIBRATE calibrate;
 SIG_RESAMPLE resample;
+SIG_FFT fft;
 
 void setup() {
   pins.setup();
@@ -23,6 +24,8 @@ void loop() {
 
 
       sample.prepare();
+      resample.prepare();
+      fft.prepare();
       
       
       //resample.calculateFrequency();
@@ -46,6 +49,12 @@ void loop() {
     if (c == 4) {
       sample.prepare();
       sample.printFrequency();
+    }
+    if (c == 5) {
+      resample.printData();
+    }
+    if (c == 6) {
+      fft.printData();
     }
   }
 }

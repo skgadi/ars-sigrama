@@ -16,13 +16,13 @@ class SIG_CALIBRATE {
   float channelOffset[NO_OF_CHANNELS];
 
   void getChannelGainsAndOffsets();
+  float applyVoltageCalibration(float);
+  float applyCurrentCalibration(float);
+  float applyChannelCalibration(float, uint8_t);
   public:
     SIG_CALIBRATE();
     void putChannelGainsAndOffsets();
-    float applyVoltageOffset(uint16_t);
-    float applyVoltageCalibration(uint16_t);
-    float applyCurrentCalibration(uint16_t);
-    float applyChannelCalibration(uint16_t, uint8_t);
+    float applyFullCalibration(float, uint8_t);
     float getVoltageOffset();
 };
 

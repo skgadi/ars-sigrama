@@ -120,4 +120,12 @@ void SIG_SAMPLE::calculateFrequency() {
   } else {
     powerFrequency = -1.0f;
   }
+
+  if (powerFrequency < MIN_FREQUENCY_LIMIT || powerFrequency > MAX_FREQUENCY_LIMIT) {
+    powerFrequency = -1.0f;
+  }
+}
+
+float SIG_SAMPLE::getFrequency() {
+  return powerFrequency;
 }

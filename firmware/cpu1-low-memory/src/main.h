@@ -14,8 +14,6 @@ uint16_t readADC(uint8_t channel);
 #define SAMPLE_SIZE 1024
 #define NO_OF_CHANNELS 8
 #define TOTAL_SAMPLES (SAMPLE_SIZE*NO_OF_CHANNELS)
-#define RESAMPLE_SIZE 1024
-#define TOTAL_RESAMPLES (RESAMPLE_SIZE*NO_OF_CHANNELS)
 
 // EEPROM MAP
 #define EEPROM_CHANNEL_GAIN_ADDRESS 0
@@ -23,13 +21,19 @@ uint16_t readADC(uint8_t channel);
 
 
 // Min and Max Frequency to be detected
-#define MIN_FREQUENCY_LIMIT 30.0f
-#define MAX_FREQUENCY_LIMIT 100.0f
+#define MIN_FREQUENCY_LIMIT 29.0f
+#define MAX_FREQUENCY_LIMIT 101.0f
+
+// FFT and resample related constants
+#define RESAMPLE_SIZE 128 //Same as FFT size
+#define TOTAL_RESAMPLES (RESAMPLE_SIZE*NO_OF_CHANNELS)
+#define ALL_SIGNALS_SYNC_FROM_HARDWARE 0 //Set to 1 if all signals are synced from hardware
 
 #include "sig_sample.h"
 #include "sig_adc.h"
 #include "sig_pins.h"
 #include "sig_calibrate.h"
 #include "sig_resample.h"
+#include "sig_fft.h"
 
 #endif // MAIN_H

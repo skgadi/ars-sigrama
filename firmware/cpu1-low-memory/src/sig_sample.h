@@ -19,6 +19,7 @@ class SIG_SAMPLE {
     uint16_t get(int, int);
     void set(int, int, uint16_t);
     float getStepTime();
+    float getFrequency();
 };
 
 extern SIG_SAMPLE sample;

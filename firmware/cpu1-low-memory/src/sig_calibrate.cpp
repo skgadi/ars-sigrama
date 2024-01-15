@@ -27,16 +27,24 @@ void SIG_CALIBRATE::putChannelGainsAndOffsets() {
   }
 }
 
-float SIG_CALIBRATE::applyVoltageCalibration(uint16_t inValue) {
+float SIG_CALIBRATE::applyVoltageCalibration(float inValue) {
   return (inValue - voltageOffset) * voltageGain;
 }
 
-float SIG_CALIBRATE::applyCurrentCalibration(uint16_t inValue) {
+float SIG_CALIBRATE::applyCurrentCalibration(float inValue) {
   return (inValue - currentOffset) * currentGain;
 }
 
-float SIG_CALIBRATE::applyChannelCalibration(uint16_t inValue, uint8_t channel) {
+float SIG_CALIBRATE::applyChannelCalibration(float inValue, uint8_t channel) {
   return (inValue - channelOffset[channel]) * channelGain[channel];
+}
+
+float SIG_CALIBRATE::applyFullCalibration(float inValue, uint8_t channel) {
+  if (channel < 4) {
+    return applyChannelCalibration(applyVoltageCalibration(inValue), channel);
+  } else {
+    return applyChannelCalibration(applyCurrentCalibration(inValue), channel);
+  }
 }
 
 float SIG_CALIBRATE::getVoltageOffset() {
