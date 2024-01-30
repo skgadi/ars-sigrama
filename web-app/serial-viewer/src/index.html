@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Network analyzer by Sigrama" />
+    <meta name="keywords" content="network, analyzer, sigrama" />
+    <meta name="author" content="Sigrama" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Network analyzer by Sigrama</title>
+    <link rel="stylesheet" href="style/web-browser.css" />
+  </head>
+  <body>
+    <div id="app" class="w3-light-gray">
+      <div id="side-bar" class="w3-sidebar w3-bar-block w3-light-gray" :style="'width:'+menuPixelsOffset+'px;'">
+        <template v-for="(menuItem, idx) in menuItems">
+          <div class="w3-bar-item w3-button" @click="selectedMenuItem=idx" :class="selectedMenuItem==idx?'selected-menu-item':''"><div>{{menuItem}}</div></div>
+        </template>
+      </div>
+      <div class="w3-light-gray" :style="'margin-left:'+menuPixelsOffset+'px;'">
+        <div v-if="selectedMenuItem == 0">
+          <canvas id="canvas-phasor-diagram" width="500px" height="500px"></canvas>
+        </div>
+        <div v-if="selectedMenuItem == 1">
+          <div id="div-waveform-diagram"></div>
+        </div>
+        <div v-if="selectedMenuItem == 5" class="w3-panel">
+          <div class="w3-row-padding w3-padding">
+            <div class="w3-col s12 m6 l4">
+              <label>First Name</label>
+              <select class="w3-select w3-border" name="option" v-model="settings.serial.selectedPort">
+                <option v-for="availablePort in settings.serial.availablePorts" :value="availablePort.path">{{availablePort.path}}</option>
+              </select>
+            </div>
+            <div class="w3-col s12 m6 l4">
+              <label>Update graph timer (seconds)</label>
+              <input class="w3-input w3-border" type="number" v-model="settings.updateGraphTimer.interval" />
+            </div>
+          </div>
+          <div class="w3-row-padding w3-padding">
+            <div class="w3-col s12 m6 l4">
+              <div class="w3-button w3-green w3-block" @click="refreshSerialPorts">Refresh serial ports</div>
+            </div>
+            <div class="w3-col s12 m6 l4">
+              <div class="w3-button w3-green w3-block" @click="sendReceive">Send</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="browser-script.min.js" type="module"></script>
+  </body>
+</html>

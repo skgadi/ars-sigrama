@@ -1,0 +1,30 @@
+@import url('../../node_modules/w3-css/w3.css');
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#side-bar {
+  height: 100%;
+  width: 100px;
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 100%;
+  place-items: stretch;
+  justify-items: stretch;
+}
+#side-bar>div {
+  display: grid;
+  place-items: center;
+  justify-items: left;
+  cursor: pointer;
+}
+
+.selected-menu-item {
+  font-weight: bold;
+  font-style: italic;
+}

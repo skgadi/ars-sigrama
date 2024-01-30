@@ -7,11 +7,21 @@ SIG_ADC adc;
 SIG_CALIBRATE calibrate;
 SIG_RESAMPLE resample;
 SIG_FFT fft;
+SIG_POWER power;
+SIG_ESP_NOW sig_esp_now;
+SIG_CORE_0 sig_core_0;
+SIG_CORE_1 sig_core_1;
 
 void setup() {
   pins.setup();
   Serial.begin(115200);
   adc.setup();
+  power.setup();
+
+  sig_esp_now.setup();
+
+  sig_core_0.setup();
+  sig_core_1.setup();
 }
 
 void loop() {
@@ -19,6 +29,20 @@ void loop() {
   if (Serial.available() != 0) {
     int c = Serial.parseInt();
     if (c == 1) {
+      sample.prepare();
+      resample.prepare();
+      fft.prepare();
+      Serial.write(0x67);
+    }
+    if (c == 2) {
+      resample.sendRawData();
+    }
+    if (c == 3) {
+      sample.sendRawData();
+      resample.sendRawData();
+      fft.sendRawData();
+    }
+    if (c == 10) {
       //prepareSample();
       unsigned long start = micros();
 
@@ -40,21 +64,24 @@ void loop() {
       Serial.println(timePeriodInMs);
       Serial.println("Sample Ready");
     }
-    if (c == 2) {
+    if (c == 20) {
       sample.printSingal();
     }
-    if (c == 3) {
+    if (c == 30) {
       sample.printFrequency();
     }
-    if (c == 4) {
+    if (c == 40) {
       sample.prepare();
       sample.printFrequency();
     }
-    if (c == 5) {
+    if (c == 50) {
       resample.printData();
     }
-    if (c == 6) {
-      fft.printData();
+    if (c == 60) {
+      fft.printAmplitudeData();
+    }
+    if (c == 70) {
+      fft.printPhaseData();
     }
   }
 }

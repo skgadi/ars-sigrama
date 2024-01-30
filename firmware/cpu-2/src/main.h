@@ -1,11 +1,10 @@
-#ifndef MAIN_H
-#define MAIN_H
-
 #include <Arduino.h>
 
-void setupPins();
-void SPI_ADC_Init();
-uint16_t readADC(uint8_t channel);
+#include "WiFi.h"
+
+
+
+
 
 #define CALIBRATION_OFFSET (2047)
 #define CALIBRATION_GAIN (1.0f)
@@ -33,15 +32,9 @@ uint16_t readADC(uint8_t channel);
 // Energy calculations related constants
 #define SAMPLING_TIME_FOR_ENERGY_CALCULATION 100 // in ms It is for energy calculation and for logging
 
-#include "sig_sample.h"
-#include "sig_adc.h"
-#include "sig_pins.h"
-#include "sig_calibrate.h"
-#include "sig_resample.h"
-#include "sig_fft.h"
-#include "sig_power.h"
-#include "sig_esp_now.h"
-#include "sig_core_0.h"
-#include "sig_core_1.h"
 
-#endif // MAIN_H
+
+
+#include "sig_sd_card.h"
+#include "sig_esp_now.h"
+

@@ -60,6 +60,13 @@ void SIG_SAMPLE::printFrequency() {
   Serial.println(powerFrequency);
 }
 
+void SIG_SAMPLE::sendRawData() {
+  //send fundamental frequency float as 4 bytes
+  Serial.write((uint8_t *)&powerFrequency, 4);
+}
+
+
+
 uint16_t SIG_SAMPLE::get(int i, int j) {
   return CHANNELS[i][j];
 }
@@ -129,3 +136,4 @@ void SIG_SAMPLE::calculateFrequency() {
 float SIG_SAMPLE::getFrequency() {
   return powerFrequency;
 }
+

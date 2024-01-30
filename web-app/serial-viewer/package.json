@@ -1,0 +1,36 @@
+{
+  "name": "serial-viewer",
+  "productName": "serial-viewer",
+  "version": "1.0.0",
+  "description": "View the Network analyzer data from serial port using PCS-2.0 hardware",
+  "main": "src/machine-script.min.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "Suresh Kumar Gadi",
+    "email": "skgadi@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.4.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "serialport": "^12.0.0",
+    "vue": "^3.4.15",
+    "w3-css": "^4.1.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
+    "electron": "28.1.4"
+  }
+}

@@ -14,10 +14,12 @@ class SIG_RESAMPLE {
   bool errorInResample = true;
   public:
     void printData();
+    void sendRawData();
     void prepare();
     float getSamlingFrequency();
     float getData(int index, int channel);
     bool isErrorInResample();
+    float * getSamplePointer();
 };
 
 extern SIG_RESAMPLE resample;

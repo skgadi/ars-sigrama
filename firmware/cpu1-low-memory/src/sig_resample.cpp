@@ -72,6 +72,17 @@ void SIG_RESAMPLE::printData() {
   }
 }
 
+void SIG_RESAMPLE::sendRawData() {
+  if (errorInResample) {
+    Serial.write(0x62);
+    return;
+  }
+  //send stepTime float as 4 bytes
+  Serial.write((uint8_t *)&stepTime, 4);
+  //send the SAMPLE as bytes of float
+  Serial.write((uint8_t *)SAMPLE, TOTAL_RESAMPLES*4);
+}
+
 float SIG_RESAMPLE::getSamlingFrequency() {
   return 1000.0f/stepTime;
 }
@@ -82,4 +93,8 @@ float SIG_RESAMPLE::getData(int index, int channel) {
 
 bool SIG_RESAMPLE::isErrorInResample() {
   return errorInResample;
+}
+
+float * SIG_RESAMPLE::getSamplePointer() {
+  return SAMPLE;
 }

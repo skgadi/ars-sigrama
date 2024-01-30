@@ -20,6 +20,7 @@ class SIG_SAMPLE {
     void set(int, int, uint16_t);
     float getStepTime();
     float getFrequency();
+    void sendRawData();
 };
 
 extern SIG_SAMPLE sample;
