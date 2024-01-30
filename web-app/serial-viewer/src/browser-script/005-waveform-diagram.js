@@ -1,17 +1,6 @@
 class waveformDiagram {
   constructor(inDOM, waveformData) {
 
-    const data = [
-      { year: 2010, count: 10 },
-      { year: 2011, count: 20 },
-      { year: 2012, count: 15 },
-      { year: 2013, count: 25 },
-      { year: 2014, count: 22 },
-      { year: 2015, count: 30 },
-      { year: 2016, count: 28 },
-    ];
-
-
     this.parent = inDOM;
     //create a new canvas inside parent
     this.canvas = document.createElement('canvas');
@@ -25,6 +14,11 @@ class waveformDiagram {
     this.generateConfi();
 
     this.chart = new Chart(this.canvas,this.config);
+  }
+  updateChart() {
+    this.genereateData();
+    this.generateConfi();
+    this.chart.update();
   }
   close() {
     //console.log('close');

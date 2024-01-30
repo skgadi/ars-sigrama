@@ -48,7 +48,7 @@ ipcMain.handle( 'serial-port', async ( event, data ) => {
       serialPortDevice.close();
     }*/
     //Wait for the data to be read from the serial port
-    await sleep(50);
+    await sleep(150);
     //Read all the available data from the serial port in a buffer
     let buffer = [];
     let dataRead = serialPortDevice.read();

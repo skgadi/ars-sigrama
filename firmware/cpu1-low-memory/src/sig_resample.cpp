@@ -19,8 +19,13 @@ void SIG_RESAMPLE::prepare() {
   }
   
   //Check that no extrapolation is required for resampling both ends of the sample
-  //First and last 5 samples are not resampled (to avoid extrapolation errors)
-  if (sample.getStepTime()*SAMPLE_SIZE < stepTime*(RESAMPLE_SIZE + 10)) {
+  //first getFirstZeroCrossingOfMainChannel samples are not resampled (to avoid extrapolation 
+  // errors and to zero cross the main channel at the begining)
+  //Last 5 samples are not resampled (to avoid extrapolation errors)
+  int avoidFirstSamples = sample.getFirstZeroCrossingOfMainChannel();
+  //Serial.print("avoidFirstSamples from resample: ");
+  //Serial.println(avoidFirstSamples);
+  if (sample.getStepTime()*SAMPLE_SIZE < stepTime*(RESAMPLE_SIZE + avoidFirstSamples + 5)) {
     return;
   }
   
@@ -33,10 +38,14 @@ void SIG_RESAMPLE::prepare() {
   if (!ALL_SIGNALS_SYNC_FROM_HARDWARE) {
     timeOffset = sample.getStepTime()/NO_OF_CHANNELS;
   }
+
+  // translate the avoidFirstSamples to resample index
+  avoidFirstSamples = (int)(avoidFirstSamples*sample.getStepTime()/stepTime)+1;
   for (int i = 0; i < RESAMPLE_SIZE; i++) {
-    float resampleTime = (i + 5)*stepTime;
-    int sampleIndex_0 = (int)(resampleTime/sample.getStepTime());
+    float resampleTime = (i + avoidFirstSamples)*stepTime;
+    int sampleIndexParent = (int)(resampleTime/sample.getStepTime());
     for (int j = 0; j < NO_OF_CHANNELS; j++) {
+      int sampleIndex_0 = sampleIndexParent;
       float sampleTime = sampleIndex_0*sample.getStepTime() + j*timeOffset;
       int sampleIndex_1;
       if (sampleTime < resampleTime) {
@@ -80,7 +89,7 @@ void SIG_RESAMPLE::sendRawData() {
   //send stepTime float as 4 bytes
   Serial.write((uint8_t *)&stepTime, 4);
   //send the SAMPLE as bytes of float
-  Serial.write((uint8_t *)SAMPLE, TOTAL_RESAMPLES*4);
+  Serial.write((uint8_t *)CHANNELS, TOTAL_RESAMPLES*4);
 }
 
 float SIG_RESAMPLE::getSamlingFrequency() {
@@ -96,5 +105,5 @@ bool SIG_RESAMPLE::isErrorInResample() {
 }
 
 float * SIG_RESAMPLE::getSamplePointer() {
-  return SAMPLE;
+  return (float *) CHANNELS;
 }

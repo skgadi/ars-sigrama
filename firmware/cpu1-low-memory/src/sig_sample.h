@@ -4,10 +4,12 @@
 #include "main.h"
 
 class SIG_SAMPLE {
-  union {
+  /*union {
     uint16_t SAMPLE[TOTAL_SAMPLES];
     uint16_t CHANNELS[SAMPLE_SIZE][NO_OF_CHANNELS];
-  };
+  };*/
+  uint16_t CHANNELS[SAMPLE_SIZE][NO_OF_CHANNELS];
+  int firstZeroCrossingOfMainChannel;
   float stepTime;
   float powerFrequency;
   void calculateFrequency();
@@ -21,6 +23,7 @@ class SIG_SAMPLE {
     float getStepTime();
     float getFrequency();
     void sendRawData();
+    int getFirstZeroCrossingOfMainChannel();
 };
 
 extern SIG_SAMPLE sample;

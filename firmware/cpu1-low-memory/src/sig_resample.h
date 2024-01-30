@@ -6,10 +6,11 @@
 
 class SIG_RESAMPLE {
   float powerFrequency;
-  union {
+  /*union {
     float SAMPLE[TOTAL_RESAMPLES];
     float CHANNELS[RESAMPLE_SIZE][NO_OF_CHANNELS];
-  };
+  };*/
+  float CHANNELS[RESAMPLE_SIZE][NO_OF_CHANNELS];
   float stepTime;
   bool errorInResample = true;
   public:

@@ -11,14 +11,14 @@ void SIG_SAMPLE::prepare() {
 
   unsigned long startTime = micros();
   for (int i = 0; i < SAMPLE_SIZE; i++) {
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x1000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x0800);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x2000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x0000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x0000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x0000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x2000);
-    *(SAMPLE + (idx++)) = SPI.transfer16(0x1800);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x1000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x0800);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x2000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x0000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x0000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x0000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x2000);
+    *((uint16_t *)CHANNELS + (idx++)) = SPI.transfer16(0x1800);
   }
   unsigned long endTime = micros();
   float timePeriod;
@@ -88,6 +88,7 @@ void SIG_SAMPLE::calculateFrequency() {
   float lastZeroCrossingDown = -1;
   float totalTimeForZeroCrossingUp = 0;
   float totalTimeForZeroCrossingDown = 0;
+  firstZeroCrossingOfMainChannel = -1;
   float previousReading = CHANNELS[0][0] - calibrate.getVoltageOffset();
   for (int i = 1; i < SAMPLE_SIZE; i++) {
     float presentReading = CHANNELS[i][0] - calibrate.getVoltageOffset();
@@ -104,6 +105,11 @@ void SIG_SAMPLE::calculateFrequency() {
       }
     } else {
       if (presentReading > 0.0f) {
+        if (firstZeroCrossingOfMainChannel == -1 && i>4) {
+          //Serial.print("First Zero Crossing: ");
+          //Serial.println(i);
+          firstZeroCrossingOfMainChannel = i;
+        }
         if (i-lastZeroCrossingDown > 2) {
           float exactZeroCrossingTime = i - presentReading/(presentReading - previousReading);
           zeroCrossingDown++;
@@ -137,3 +143,6 @@ float SIG_SAMPLE::getFrequency() {
   return powerFrequency;
 }
 
+int SIG_SAMPLE::getFirstZeroCrossingOfMainChannel() {
+  return firstZeroCrossingOfMainChannel;
+}

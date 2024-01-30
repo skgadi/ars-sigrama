@@ -38,6 +38,15 @@ void loop() {
       resample.sendRawData();
     }
     if (c == 3) {
+
+      //preparing sample
+      sample.prepare();
+      resample.prepare();
+      fft.prepare();
+      power.loop(); // Energy calculations are incorrect because this is not called at regular intervals
+
+
+      //sending sample
       sample.sendRawData();
       resample.sendRawData();
       fft.sendRawData();

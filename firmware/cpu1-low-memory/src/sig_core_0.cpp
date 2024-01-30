@@ -19,10 +19,10 @@ void codeForTaskForCore0( void * pvParameters ){
 
 
     while(1){
-      sample.prepare();
+      /*sample.prepare();
       resample.prepare();
       fft.prepare();
-      power.loop();
+      power.loop();*/ //stopping while showing waveform
       vTaskDelay(SAMPLING_TIME_FOR_ENERGY_CALCULATION / portTICK_PERIOD_MS);
     }
   }

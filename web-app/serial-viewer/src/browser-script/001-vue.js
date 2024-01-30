@@ -77,9 +77,9 @@ const app = createApp({
   },
   methods: {
     resizeRequired: function () {
-      this.updateAllGraphs();
+      this.updateAllGraphs(true);
     },
-    updateAllGraphs: function () {
+    updateAllGraphs: function (callFromResize = false) {
       let el = document.getElementById('canvas-phasor-diagram');
       if (!!el) {
         el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
@@ -94,7 +94,12 @@ const app = createApp({
         el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
         el.style.height = window.innerHeight + 'px';
         if (!!this.waveformDiagram) {
-          this.waveformDiagram.close();
+          if (callFromResize) {
+            this.waveformDiagram.close();
+          } else {
+            this.waveformDiagram.updateChart();
+            return;
+          }
         }
         this.waveformDiagram = new waveformDiagram (el, this.waveform);
       }
