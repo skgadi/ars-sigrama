@@ -88,7 +88,8 @@ void SIG_SAMPLE::calculateFrequency() {
   float lastZeroCrossingDown = -1;
   float totalTimeForZeroCrossingUp = 0;
   float totalTimeForZeroCrossingDown = 0;
-  firstZeroCrossingOfMainChannel = -1;
+  this->firstZeroCrossingOfMainChannel = -1;
+  this->timeForFirstZeroCrossingOfMainChannel = -1;
   float previousReading = CHANNELS[0][0] - calibrate.getVoltageOffset();
   for (int i = 1; i < SAMPLE_SIZE; i++) {
     float presentReading = CHANNELS[i][0] - calibrate.getVoltageOffset();
@@ -105,13 +106,21 @@ void SIG_SAMPLE::calculateFrequency() {
       }
     } else {
       if (presentReading > 0.0f) {
-        if (firstZeroCrossingOfMainChannel == -1 && i>4) {
+        /*if (firstZeroCrossingOfMainChannel == -1 && i>4) {
+          //find the exact zero crossing time
+          float exactZeroCrossingTime = i*1.0f - presentReading/(presentReading - previousReading);
           //Serial.print("First Zero Crossing: ");
           //Serial.println(i);
           firstZeroCrossingOfMainChannel = i;
-        }
+        }*/
         if (i-lastZeroCrossingDown > 2) {
           float exactZeroCrossingTime = i - presentReading/(presentReading - previousReading);
+          if (timeForFirstZeroCrossingOfMainChannel<0) {
+            this->firstZeroCrossingOfMainChannel = i;
+            //Serial.print("First exactZeroCrossingTime: ");
+            //Serial.println(exactZeroCrossingTime);
+            this->timeForFirstZeroCrossingOfMainChannel = exactZeroCrossingTime*stepTime;
+          }
           zeroCrossingDown++;
           if (lastZeroCrossingDown != -1) {
             totalTimeForZeroCrossingDown += (exactZeroCrossingTime-lastZeroCrossingDown);
@@ -145,4 +154,8 @@ float SIG_SAMPLE::getFrequency() {
 
 int SIG_SAMPLE::getFirstZeroCrossingOfMainChannel() {
   return firstZeroCrossingOfMainChannel;
+}
+
+float SIG_SAMPLE::getTimeForFirstZeroCrossingOfMainChannel() {
+  return timeForFirstZeroCrossingOfMainChannel;
 }

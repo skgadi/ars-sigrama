@@ -22,6 +22,7 @@ void SIG_RESAMPLE::prepare() {
   //first getFirstZeroCrossingOfMainChannel samples are not resampled (to avoid extrapolation 
   // errors and to zero cross the main channel at the begining)
   //Last 5 samples are not resampled (to avoid extrapolation errors)
+  float firstZeroCrossingTime = sample.getTimeForFirstZeroCrossingOfMainChannel();
   int avoidFirstSamples = sample.getFirstZeroCrossingOfMainChannel();
   //Serial.print("avoidFirstSamples from resample: ");
   //Serial.println(avoidFirstSamples);
@@ -39,10 +40,11 @@ void SIG_RESAMPLE::prepare() {
     timeOffset = sample.getStepTime()/NO_OF_CHANNELS;
   }
 
+  
   // translate the avoidFirstSamples to resample index
   avoidFirstSamples = (int)(avoidFirstSamples*sample.getStepTime()/stepTime)+1;
   for (int i = 0; i < RESAMPLE_SIZE; i++) {
-    float resampleTime = (i + avoidFirstSamples)*stepTime;
+    float resampleTime = firstZeroCrossingTime + i*stepTime;//(i + avoidFirstSamples)*stepTime;
     int sampleIndexParent = (int)(resampleTime/sample.getStepTime());
     for (int j = 0; j < NO_OF_CHANNELS; j++) {
       int sampleIndex_0 = sampleIndexParent;
@@ -57,7 +59,9 @@ void SIG_RESAMPLE::prepare() {
       sampleTime = sampleIndex_0*sample.getStepTime() + j*timeOffset;
       float sampleValue_0 = sample.get(sampleIndex_0, j);
       float sampleValue_1 = sample.get(sampleIndex_1, j);
-      float resampleValue = sampleValue_0 + (sampleValue_1 - sampleValue_0)*(resampleTime - sampleTime)/(sample.getStepTime() + timeOffset);
+
+      
+      float resampleValue = sampleValue_0 + (sampleValue_1 - sampleValue_0)*(resampleTime - sampleTime)/(sample.getStepTime() + (j*timeOffset));
       CHANNELS[i][j] =  calibrate.applyFullCalibration(resampleValue, j);
     }
   }

@@ -10,6 +10,7 @@ class SIG_SAMPLE {
   };*/
   uint16_t CHANNELS[SAMPLE_SIZE][NO_OF_CHANNELS];
   int firstZeroCrossingOfMainChannel;
+  float timeForFirstZeroCrossingOfMainChannel = -1;
   float stepTime;
   float powerFrequency;
   void calculateFrequency();
@@ -24,6 +25,7 @@ class SIG_SAMPLE {
     float getFrequency();
     void sendRawData();
     int getFirstZeroCrossingOfMainChannel();
+    float getTimeForFirstZeroCrossingOfMainChannel();
 };
 
 extern SIG_SAMPLE sample;
