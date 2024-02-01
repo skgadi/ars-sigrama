@@ -90,19 +90,30 @@ const app = createApp({
         this.phasorDiagram = new phasorDiagram (el, this.harmonics);
       }
       el = document.getElementById('div-waveform-diagram');
+      //check if el contains child nodes
+      if (!!el) {
+        el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
+        el.style.height = window.innerHeight + 'px';
+        if (el.hasChildNodes()) {
+          this.waveformDiagram.updateChart(this.waveform);
+        } else {
+          this.waveformDiagram = new waveformDiagram (el, this.waveform);
+        }
+      }
+      /*
       if (!!el) {
         el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
         el.style.height = window.innerHeight + 'px';
         if (!!this.waveformDiagram) {
-          if (callFromResize) {
-            this.waveformDiagram.close();
-          } else {
-            this.waveformDiagram.updateChart();
+          if (!callFromResize) {
+            //this.waveformDiagram.updateChart();
             return;
           }
+        } else {
+          this.waveformDiagram.close();
+          this.waveformDiagram = new waveformDiagram (el, this.waveform);
         }
-        this.waveformDiagram = new waveformDiagram (el, this.waveform);
-      }
+      }*/
     },
     refreshSerialPorts: async function () {
       let list = await api.send('serial-port',{'c':0}); // 0 = list

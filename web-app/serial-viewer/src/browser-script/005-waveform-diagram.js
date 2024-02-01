@@ -14,11 +14,31 @@ class waveformDiagram {
     this.generateConfi();
 
     this.chart = new Chart(this.canvas,this.config);
+    Object.seal(this.chart);
   }
-  updateChart() {
+  updateChart(newWaveformData) {
+    this.waveformData = newWaveformData;
+    let hiddenCharts = [];
+    for (let i = 0; i < this.chart.data.datasets.length; i++) {
+      if (this.chart.getDatasetMeta(i).hidden) {
+        hiddenCharts.push(i);
+      }
+    }
     this.genereateData();
-    this.generateConfi();
+    for (let i = 0; i < hiddenCharts.length; i++) {
+      if (hiddenCharts[i] < this.chart.data.datasets.length) {
+        this.datasets[hiddenCharts[i]].hidden = true;
+      }
+    }
+    this.chart.data = this.data;
     this.chart.update();
+
+    //Update the meta data of hidden legends
+    for (let i = 0; i < hiddenCharts.length; i++) {
+      if (hiddenCharts[i] < this.chart.data.datasets.length) {
+        this.chart.getDatasetMeta(hiddenCharts[i]).hidden = true;
+      }
+    }
   }
   close() {
     //console.log('close');
@@ -38,6 +58,7 @@ class waveformDiagram {
         data: this.waveformData.voltage[i],
         borderColor: phaseColors[i],
         backgroundColor: phaseColors[i],
+        showLine: true,
         yAxisID: 'voltage',
       });
     }
@@ -47,6 +68,7 @@ class waveformDiagram {
         data: this.waveformData.current[i],
         borderColor: phaseColors[i],
         backgroundColor: phaseColors[i],
+        showLine: true,
         yAxisID: 'current',
         borderDash: [5, 5],
       });
@@ -59,9 +81,10 @@ class waveformDiagram {
   }
   generateConfi() {
     this.config = {
-      type: 'line',
+      type: 'scatter',
       data: this.data,
       options: {
+        maintainAspectRatio: false,
         animation: {
           duration: 0
         },
@@ -83,6 +106,15 @@ class waveformDiagram {
           }
         },
         scales: {
+          x: {
+            type: 'linear',
+            display: true,
+            position: 'bottom',
+            title: {
+              display: true,
+              text: 'Time in milli seconds'
+            },
+          },
           voltage: {
             type: 'linear',
             display: true,
