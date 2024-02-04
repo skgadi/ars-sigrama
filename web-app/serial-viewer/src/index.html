@@ -17,14 +17,70 @@
           <div class="w3-bar-item w3-button" @click="selectedMenuItem=idx" :class="selectedMenuItem==idx?'selected-menu-item':''"><div>{{menuItem}}</div></div>
         </template>
       </div>
-      <div class="w3-light-gray" :style="'margin-left:'+menuPixelsOffset+'px;'">
+      <div class="w3-light-gray allow-overflow"  :style="'margin-left:'+menuPixelsOffset+'px;'">
         <div v-if="selectedMenuItem == 0">
           <canvas id="canvas-phasor-diagram" width="500px" height="500px"></canvas>
         </div>
         <div v-if="selectedMenuItem == 1">
           <div id="div-waveform-diagram"></div>
         </div>
-        <div v-if="selectedMenuItem == 5" class="w3-panel">
+        <div v-if="selectedMenuItem == 2">
+          <div id="div-harmonics-voltage-histogram-complete"></div>
+        </div>
+        <div v-if="selectedMenuItem == 3">
+          <div id="div-harmonics-voltage-histogram-top"></div>
+        </div>
+        <div v-if="selectedMenuItem == 4">
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Harmonic</th>
+                <template v-for="(harmonic, idx) in harmonics.voltage.amplitude[0]">
+                  <th class="w3-border-left w3-center">|V{{idx+1}}|</th>
+                  <th class="w3-border-left w3-center">arg(V{{idx+1}})</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(harmonic, idx0) in harmonics.voltage.amplitude">
+                <td>{{'H'+idx0.toFixed(0)}}</td>
+                <template v-for="(itemHarmonic, idx1) in harmonic">
+                  <td class="w3-border-left w3-right-align">{{ (Math.round(harmonics.voltage.amplitude[idx0][idx1]*100)/100).toFixed(2)}}</td>
+                  <td class="w3-border-left w3-right-align">{{ (180*Math.round(harmonics.voltage.phase[idx0][idx1]/Math.PI*100)/100).toFixed(2)}}</td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="selectedMenuItem == 5">
+          <div id="div-harmonics-current-histogram-complete"></div>
+        </div>
+        <div v-if="selectedMenuItem == 6">
+          <div id="div-harmonics-current-histogram-top"></div>
+        </div>
+        <div v-if="selectedMenuItem == 7">
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Harmonic</th>
+                <template v-for="(harmonic, idx) in harmonics.current.amplitude[0]">
+                  <th class="w3-border-left w3-center">|I{{idx+1}}|</th>
+                  <th class="w3-border-left w3-center">arg(I{{idx+1}})</th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(harmonic, idx0) in harmonics.current.amplitude">
+                <td>{{'H'+idx0.toFixed(0)}}</td>
+                <template v-for="(itemHarmonic, idx1) in harmonic">
+                  <td class="w3-border-left w3-right-align">{{ (Math.round(harmonics.current.amplitude[idx0][idx1]*100)/100).toFixed(2)}}</td>
+                  <td class="w3-border-left w3-right-align">{{ (Math.round(180*harmonics.current.phase[idx0][idx1]/Math.PI*100)/100).toFixed(2)}}</td>
+                </template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="selectedMenuItem == 9" class="w3-panel">
           <div class="w3-row-padding w3-padding">
             <div class="w3-col s12 m6 l4">
               <label>First Name</label>

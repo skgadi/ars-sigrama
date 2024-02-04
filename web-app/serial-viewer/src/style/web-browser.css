@@ -28,3 +28,8 @@ html, body, #app {
   font-weight: bold;
   font-style: italic;
 }
+
+.allow-overflow {
+  overflow: auto;
+  height: 100%;
+}

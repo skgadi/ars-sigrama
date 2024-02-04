@@ -6,9 +6,13 @@ const app = createApp({
       menuItems: [
         "Phasor diagram",
         "Waveform",
-        "Harmonics",
+        "Harmonics Voltage (complete)",
+        "Harmonics Voltage (top-10)",
+        "Harmonics Voltage (table)",
+        "Harmonics Current (complete)",
+        "Harmonics Current (top-10)",
+        "Harmonics Current (table)",
         "Power",
-        "Energy",
         "Settings"
       ],
       settings: {
@@ -37,11 +41,17 @@ const app = createApp({
           amplitude: [[]],
           phase: [[]],
         },
+        frequencies: [],
+        frequenciesNumber:[],
       },
       selectedMenuItem: -1,
-      menuPixelsOffset: 150,
+      menuPixelsOffset: 250,
       phasorDiagram: null,
       waveformDiagram: null,
+      harmonicsDiagram: null,
+      harmonicsDiagramTop: null,
+      harmonicsDiagramCurrent: null,
+      harmonicsDiagramTopCurrent: null,
     }
   },
   watch: {
@@ -61,6 +71,38 @@ const app = createApp({
           this.waveformDiagram.close();
         }
         this.waveformDiagram = new waveformDiagram (document.getElementById("div-waveform-diagram"), this.waveform);
+      }
+      if (val === 2) {
+        await nextTick();
+        this.resizeRequired();
+        if (!!this.harmonicsDiagram) {
+          this.harmonicsDiagram.close();
+        }
+        this.harmonicsDiagram = new harmonicsBarsFull (document.getElementById("div-harmonics-voltage-histogram-complete"), this.harmonics);
+      }
+      if (val === 3) {
+        await nextTick();
+        this.resizeRequired();
+        if (!!this.harmonicsDiagramTop) {
+          this.harmonicsDiagramTop.close();
+        }
+        this.harmonicsDiagramTop = new harmonicsBarsTop (document.getElementById("div-harmonics-voltage-histogram-top"), this.harmonics, 10);
+      }
+      if (val === 5) {
+        await nextTick();
+        this.resizeRequired();
+        if (!!this.harmonicsDiagramCurrent) {
+          this.harmonicsDiagramCurrent.close();
+        }
+        this.harmonicsDiagramCurrent = new harmonicsBarsFullCurrent (document.getElementById("div-harmonics-current-histogram-complete"), this.harmonics);
+      }
+      if (val === 6) {
+        await nextTick();
+        this.resizeRequired();
+        if (!!this.harmonicsDiagramTopCurrent) {
+          this.harmonicsDiagramTopCurrent.close();
+        }
+        this.harmonicsDiagramTopCurrent = new harmonicsBarsTopCurrent (document.getElementById("div-harmonics-current-histogram-top"), this.harmonics, 10);
       }
     },
     'settings.updateGraphTimer.interval': {
@@ -100,20 +142,50 @@ const app = createApp({
           this.waveformDiagram = new waveformDiagram (el, this.waveform);
         }
       }
-      /*
+      el = document.getElementById('div-harmonics-voltage-histogram-complete');
       if (!!el) {
         el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
         el.style.height = window.innerHeight + 'px';
-        if (!!this.waveformDiagram) {
-          if (!callFromResize) {
-            //this.waveformDiagram.updateChart();
-            return;
-          }
+        if (el.hasChildNodes()) {
+          this.harmonicsDiagram.updateChart(this.harmonics);
         } else {
-          this.waveformDiagram.close();
-          this.waveformDiagram = new waveformDiagram (el, this.waveform);
+          this.harmonicsDiagram = new harmonicsBarsFull (el, this.harmonics);
         }
-      }*/
+      }
+      el = document.getElementById('div-harmonics-voltage-histogram-top');
+      if (!!el) {
+        el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
+        el.style.height = window.innerHeight + 'px';
+        if (el.hasChildNodes()) {
+          this.harmonicsDiagramTop.updateChart(this.harmonics);
+        } else {
+          this.harmonicsDiagramTop = new harmonicsBarsTop (el, this.harmonics, 10);
+        }
+      }
+
+
+
+      el = document.getElementById('div-harmonics-current-histogram-complete');
+      if (!!el) {
+        el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
+        el.style.height = window.innerHeight + 'px';
+        if (el.hasChildNodes()) {
+          this.harmonicsDiagramCurrent.updateChart(this.harmonics);
+        } else {
+          this.harmonicsDiagramCurrent = new harmonicsBarsFullCurrent (el, this.harmonics);
+        }
+      }
+      el = document.getElementById('div-harmonics-current-histogram-top');
+      if (!!el) {
+        el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
+        el.style.height = window.innerHeight + 'px';
+        if (el.hasChildNodes()) {
+          this.harmonicsDiagramTopCurrent.updateChart(this.harmonics);
+        } else {
+          this.harmonicsDiagramTopCurrent = new harmonicsBarsTopCurrent (el, this.harmonics, 10);
+        }
+      }
+
     },
     refreshSerialPorts: async function () {
       let list = await api.send('serial-port',{'c':0}); // 0 = list
@@ -151,6 +223,8 @@ const app = createApp({
       this.harmonics.current.amplitude = [[]];
       this.harmonics.current.phase = [[]];
       this.waveform.time = [];
+      this.harmonics.frequencies = [];
+      this.harmonics.frequenciesNumber = [];
       const RESAMPLE_SIZE = 128;
       const NO_OF_CHANNELS = 4; // 4 for voltage and 4 for current
       let idx = 0;
@@ -161,6 +235,11 @@ const app = createApp({
       //fill the time array of size RESAMPLE_SIZE with values from 0 with step of stepTime
       for (let i=0; i<RESAMPLE_SIZE; i++) {
         this.waveform.time[i] = i*this.waveform.stepTime;
+      }
+      //fill the frequency array of size RESAMPLE_SIZE/2 with values from 0 with step of fundamentalFrequency
+      for (let i=0; i<RESAMPLE_SIZE/2; i++) {
+        this.harmonics.frequencies[i] = i*this.harmonics.fundamentalFrequency;
+        this.harmonics.frequenciesNumber[i] = i;
       }
 
       for (let i=0; i<NO_OF_CHANNELS; i++) {
