@@ -127,6 +127,9 @@ const app = createApp({
     console.log('mounted');
     this.refreshSerialPorts();
     this.updateTheDataFromTheMachine();
+    setTimeout(() => {
+      this.selectedMenuItem = 0;
+    }, 100);
   },
   methods: {
     totalHarmonicDistortion: function (channel, isVoltage = true) {
@@ -222,7 +225,6 @@ const app = createApp({
           this.harmonicsDiagramTopCurrent = new harmonicsBarsTopCurrent (el, this.harmonics, 10);
         }
       }
-
     },
     refreshSerialPorts: async function () {
       let list = await api.send('serial-port',{'c':0}); // 0 = list
@@ -247,6 +249,7 @@ const app = createApp({
         if (data.length > 0 && data[0].length === 8296) {
           this.processInputFromMachine(data[0].buffer);
           this.updateAllGraphs();
+          document.title = "Network analyzer by Sigrama [last update: " + new Date().toLocaleTimeString() + "]";
         } else {
           console.log ('unexpected response');
         }

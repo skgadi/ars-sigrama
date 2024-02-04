@@ -81,7 +81,7 @@ class waveformDiagram {
   }
   generateConfi() {
     this.config = {
-      type: 'scatter',
+      type: 'line',
       data: this.data,
       options: {
         maintainAspectRatio: false,
@@ -107,6 +107,7 @@ class waveformDiagram {
         },
         scales: {
           x: {
+            bounds: 'data',
             type: 'linear',
             display: true,
             position: 'bottom',
