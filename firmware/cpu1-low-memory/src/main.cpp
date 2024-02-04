@@ -11,6 +11,7 @@ SIG_POWER power;
 SIG_ESP_NOW sig_esp_now;
 SIG_CORE_0 sig_core_0;
 SIG_CORE_1 sig_core_1;
+SIG_STREAM sig_stream;
 
 void setup() {
   pins.setup();
@@ -40,16 +41,17 @@ void loop() {
     if (c == 3) {
 
       //preparing sample
-      sample.prepare();
-      resample.prepare();
-      fft.prepare();
-      power.loop(); // Energy calculations are incorrect because this is not called at regular intervals
+      //sample.prepare();
+      //resample.prepare();
+      //fft.prepare();
+      //power.loop(); // Energy calculations are incorrect because this is not called at regular intervals
 
 
       //sending sample
-      sample.sendRawData();
-      resample.sendRawData();
-      fft.sendRawData();
+      //sample.sendRawData();
+      //resample.sendRawData();
+      //fft.sendRawData();
+      sig_stream.stream();
     }
     if (c == 10) {
       //prepareSample();
@@ -59,6 +61,8 @@ void loop() {
       sample.prepare();
       resample.prepare();
       fft.prepare();
+      power.loop();
+      sig_stream.loop();
       
       
       //resample.calculateFrequency();

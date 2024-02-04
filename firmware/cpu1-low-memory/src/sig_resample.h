@@ -21,6 +21,7 @@ class SIG_RESAMPLE {
     float getData(int index, int channel);
     bool isErrorInResample();
     float * getSamplePointer();
+    float getStepTime();
 };
 
 extern SIG_RESAMPLE resample;

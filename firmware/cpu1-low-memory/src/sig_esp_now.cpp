@@ -76,7 +76,8 @@ bool SIG_ESP_NOW::sendSystemState() {
 
 bool SIG_ESP_NOW::prepareSystemState() {
   memcpy(systemState_0.waveform, resample.getSamplePointer(), RESAMPLE_SIZE * NO_OF_CHANNELS * sizeof(float));
-  memcpy(systemState_0.harmonics, fft.getSamplePointer(), RESAMPLE_SIZE * NO_OF_CHANNELS * sizeof(float));
+  memcpy(systemState_0.harmonics, fft.getSpectrumAmplitudePointer(), RESAMPLE_SIZE/2 * NO_OF_CHANNELS * sizeof(float));
+  memcpy(systemState_0.harmonics, fft.getSpectrumPhasePointer(), RESAMPLE_SIZE/2 * NO_OF_CHANNELS * sizeof(float));
   memcpy(systemState_0.energyActive, power.getEnergyActivePointer(), NO_OF_CHANNELS/2 * sizeof(float));
   memcpy(systemState_0.energyReactive, power.getEnergyReactivePointer(), NO_OF_CHANNELS/2 * sizeof(float));
   memcpy(systemState_0.energyApparent, power.getEnergyApparentPointer(), NO_OF_CHANNELS/2 * sizeof(float));

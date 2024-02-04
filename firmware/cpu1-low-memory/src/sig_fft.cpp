@@ -78,14 +78,18 @@ void SIG_FFT::sendRawData() {
   Serial.write((uint8_t *)SPECTRUM_CHANNELS_PHASE, TOTAL_RESAMPLES*2);
 }
 
-float * SIG_FFT::getSamplePointer() {
-  return (float *) SPECTRUM_CHANNELS_PHASE;
-}
-
 float SIG_FFT::getSpecturmAmplitude(int index, int channel) {
   return SPECTRUM_CHANNELS_AMPLITUDE[index][channel];
 }
 
 float SIG_FFT::getSpecturmPhase(int index, int channel) {
   return SPECTRUM_CHANNELS_PHASE[index][channel];
+}
+
+float * SIG_FFT::getSpectrumAmplitudePointer() {
+  return (float *)SPECTRUM_CHANNELS_AMPLITUDE;
+}
+
+float * SIG_FFT::getSpectrumPhasePointer() {
+  return (float *)SPECTRUM_CHANNELS_PHASE;
 }

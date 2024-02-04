@@ -12,7 +12,7 @@ const app = createApp({
         "Harmonics Current (complete)",
         "Harmonics Current (top-10)",
         "Harmonics Current (table)",
-        "Power",
+        "Power & Energy",
         "Settings"
       ],
       settings: {
@@ -43,6 +43,17 @@ const app = createApp({
         },
         frequencies: [],
         frequenciesNumber:[],
+      },
+      power: {
+        active: [],
+        reactive: [],
+        apparent: [],
+        powerFactor: [],
+      },
+      energy: {
+        active: [],
+        reactive: [],
+        apparent: [],
       },
       selectedMenuItem: -1,
       menuPixelsOffset: 250,
@@ -118,14 +129,40 @@ const app = createApp({
     this.updateTheDataFromTheMachine();
   },
   methods: {
+    totalHarmonicDistortion: function (channel, isVoltage = true) {
+      let sum = 0;
+      let fundamental = 0;
+      let harmonics = isVoltage ? this.harmonics.voltage.amplitude : this.harmonics.current.amplitude;
+      for (let i=1; i<harmonics.length; i++) {
+        if (i === 1) {
+          fundamental = harmonics[i][channel];
+        } else {
+          sum += harmonics[i][channel]*harmonics[i][channel];
+        }
+      }
+      return Math.sqrt(sum)*100/fundamental;
+    },
+    crestFactor: function (channel, isVoltage = true) {
+      let max = 0;
+      let rms = 0;
+      let waveform = isVoltage ? this.waveform.voltage[channel] : this.waveform.current[channel];
+      for (let i=0; i<waveform.length; i++) {
+        if (Math.abs(waveform[i]) > max) {
+          max = Math.abs(waveform[i]);
+        }
+        rms += waveform[i]*waveform[i];
+      }
+      rms = Math.sqrt(rms/waveform.length);
+      return max/rms;
+    },
     resizeRequired: function () {
       this.updateAllGraphs(true);
     },
     updateAllGraphs: function (callFromResize = false) {
       let el = document.getElementById('canvas-phasor-diagram');
       if (!!el) {
-        el.style.width = (window.innerWidth - this.menuPixelsOffset) + 'px';
-        el.style.height = window.innerHeight + 'px';
+        el.style.width = (window.innerWidth - this.menuPixelsOffset - 8) + 'px';
+        el.style.height = (window.innerHeight - 8) + 'px';
         if (!!this.phasorDiagram) {
           this.phasorDiagram.close();
         }
@@ -207,7 +244,7 @@ const app = createApp({
       this.settings.updateGraphTimer.id = setInterval(async () => {
         let data = await api.send('serial-port',{'c':1, 'path': this.settings.serial['selectedPort'], 'data': "3"});
         //console.log("response: ", data);
-        if (data.length > 0 && data[0].length === 8200) {
+        if (data.length > 0 && data[0].length === 8296) {
           this.processInputFromMachine(data[0].buffer);
           this.updateAllGraphs();
         } else {
@@ -225,6 +262,13 @@ const app = createApp({
       this.waveform.time = [];
       this.harmonics.frequencies = [];
       this.harmonics.frequenciesNumber = [];
+      this.power.active = [];
+      this.power.reactive = [];
+      this.power.apparent = [];
+      this.power.powerFactor = [];
+      this.energy.active = [];
+      this.energy.reactive = [];
+      this.energy.apparent = [];
       const RESAMPLE_SIZE = 128;
       const NO_OF_CHANNELS = 4; // 4 for voltage and 4 for current
       let idx = 0;
@@ -274,6 +318,31 @@ const app = createApp({
           this.harmonics.current.phase[i][j] = view.getFloat32(idx, true); idx += 4;
         }
       }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.power.active[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.power.reactive[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.power.apparent[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.power.powerFactor[i] = this.power.active[i]/this.power.apparent[i];
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.energy.active[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.energy.reactive[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      for (let i=0; i<NO_OF_CHANNELS; i++) {
+        this.energy.apparent[i] = view.getFloat32(idx, true); idx += 4;
+      }
+      //console.log(this.power.active, this.power.reactive, this.power.apparent, this.power.powerFactor, this.energy.active, this.energy.reactive, this.energy.apparent);
+
+
+
       //Print first 3 harmonics
       for (let i=0; i<3; i++) {
         //console.log('voltage harmonic:', i, this.harmonics.voltage.amplitude[i], this.harmonics.voltage.phase[i]);

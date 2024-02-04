@@ -80,7 +80,7 @@ class harmonicsBarsTop {
     }
     let labels = [];
     for (let i = 0; i < indexes.length; i++) {
-      labels.push('H_'+(indexes[i]).toString());
+      labels.push('H'+(indexes[i]).toString());
       for (let j = 0; j < this.harmonicsData.voltage.amplitude[0].length; j++) {
         yData[j][i] = (this.harmonicsData.voltage.amplitude[indexes[i]][j])/fundamentalFrequencyAmplitude[j]*100;
       }
@@ -94,14 +94,14 @@ class harmonicsBarsTop {
         borderColor: phaseColors[i],
         backgroundColor: phaseColors[i],
         showLine: true,
-        yAxisID: 'voltage %',
+        yAxisID: 'voltage',
       });
     }
     this.data = {
       labels: labels,
       datasets: this.datasets,
     };
-    console.log(this.data);
+    //console.log(this.data);
   }
   generateConfi() {
     //console.log(this.harmonicsData.fundamentalFrequency);
@@ -134,7 +134,7 @@ class harmonicsBarsTop {
           x: {
             title: {
               display: true,
-              text: 'Harmonics multiples of fundamental frequency = '+(Math.round(this.harmonicsData.fundamentalFrequency)).toFixed(2)+' Hz'
+              text: 'Harmonics with fundamental frequency = '+(Math.round(this.harmonicsData.fundamentalFrequency)).toFixed(2)+' Hz'
             }
           },
           voltage: {
@@ -143,7 +143,7 @@ class harmonicsBarsTop {
             position: 'left',
             title: {
               display: true,
-              text: 'Volt'
+              text: '% of fundamental frequency amplitude'
             },
           },
         }

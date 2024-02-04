@@ -19,7 +19,7 @@
       </div>
       <div class="w3-light-gray allow-overflow"  :style="'margin-left:'+menuPixelsOffset+'px;'">
         <div v-if="selectedMenuItem == 0">
-          <canvas id="canvas-phasor-diagram" width="500px" height="500px"></canvas>
+          <canvas id="canvas-phasor-diagram"></canvas>
         </div>
         <div v-if="selectedMenuItem == 1">
           <div id="div-waveform-diagram"></div>
@@ -31,6 +31,35 @@
           <div id="div-harmonics-voltage-histogram-top"></div>
         </div>
         <div v-if="selectedMenuItem == 4">
+          <h2 class="w3-center">Summary</h2>
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Parameter</th>
+                <th>Phase 1</th>
+                <th>Phase 2</th>
+                <th>Phase 3</th>
+                <th>Neutral</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>THD (%)</td>
+                <td>{{(Math.round(totalHarmonicDistortion(0,true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(1,true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(2,true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(3,true)*100)/100).toFixed(2)}}</td>
+              </tr>
+              <tr>
+                <td>Crest factor</td>
+                <td>{{(Math.round(crestFactor(0, true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(1, true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(2, true)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(3, true)*100)/100).toFixed(2)}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2 class="w3-center">Details</h2>
           <table class="w3-table-all w3-hoverable">
             <thead>
               <tr class="w3-light-grey">
@@ -59,6 +88,35 @@
           <div id="div-harmonics-current-histogram-top"></div>
         </div>
         <div v-if="selectedMenuItem == 7">
+          <h2 class="w3-center">Summary</h2>
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Parameter</th>
+                <th>Phase 1</th>
+                <th>Phase 2</th>
+                <th>Phase 3</th>
+                <th>Neutral</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>THD (%)</td>
+                <td>{{(Math.round(totalHarmonicDistortion(0,false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(1,false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(2,false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(totalHarmonicDistortion(3,false)*100)/100).toFixed(2)}}</td>
+              </tr>
+              <tr>
+                <td>Crest factor</td>
+                <td>{{(Math.round(crestFactor(0, false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(1, false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(2, false)*100)/100).toFixed(2)}}</td>
+                <td>{{(Math.round(crestFactor(3, false)*100)/100).toFixed(2)}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2 class="w3-center">Details</h2>
           <table class="w3-table-all w3-hoverable">
             <thead>
               <tr class="w3-light-grey">
@@ -80,7 +138,51 @@
             </tbody>
           </table>
         </div>
-        <div v-if="selectedMenuItem == 9" class="w3-panel">
+        <div v-if="selectedMenuItem == 8">
+          <h2 class="w3-center">Power (watt)</h2>
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Phase</th>
+                <th>Apparent</th>
+                <th>Active</th>
+                <th>Reactive</th>
+                <th>Power factor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(powerItem, idx) in power.active">
+                  <tr>
+                    <td>{{idx}}</td>
+                    <td>{{(Math.round(power.apparent[idx]*100)/100).toFixed(2)}}</td>
+                    <td>{{(Math.round(power.active[idx]*100)/100).toFixed(2)}}</td>
+                    <td>{{(Math.round(power.reactive[idx]*100)/100).toFixed(2)}}</td>
+                    <td>{{(Math.abs(Math.round(power.powerFactor[idx]*100)/100)).toFixed(2)}}, {{power.powerFactor[idx]>0?'Leading':'Lagging'}}</td>
+                  </tr>
+                </template>
+            </tbody>
+          </table>
+          <h2 class="w3-center">Energy (whatt hour)</h2>
+          <table class="w3-table-all w3-hoverable">
+            <thead>
+              <tr class="w3-light-grey">
+                <th>Phase</th>
+                <th>Active</th>
+                <th>Reactive</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-for="(energyItem, idx) in energy.active">
+                  <tr>
+                    <td>{{idx}}</td>
+                    <td>{{(Math.round(energy.active[idx]*100)/100).toFixed(2)}}</td>
+                    <td>{{(Math.round(energy.reactive[idx]*100)/100).toFixed(2)}}</td>
+                  </tr>
+                </template>
+            </tbody>
+          </table>
+        </div>
+        <div v-if="selectedMenuItem == 9">
           <div class="w3-row-padding w3-padding">
             <div class="w3-col s12 m6 l4">
               <label>First Name</label>

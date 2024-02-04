@@ -26,7 +26,8 @@ class SIG_FFT {
     void printAmplitudeData();
     void printPhaseData();
     void prepare();
-    float * getSamplePointer();
+    float * getSpectrumAmplitudePointer();
+    float * getSpectrumPhasePointer();
     float getSpecturmAmplitude(int index, int channel);
     float getSpecturmPhase(int index, int channel);
     void sendRawData();

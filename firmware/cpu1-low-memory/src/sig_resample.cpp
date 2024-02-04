@@ -111,3 +111,7 @@ bool SIG_RESAMPLE::isErrorInResample() {
 float * SIG_RESAMPLE::getSamplePointer() {
   return (float *) CHANNELS;
 }
+
+float SIG_RESAMPLE::getStepTime() {
+  return stepTime;
+}

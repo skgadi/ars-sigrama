@@ -43,5 +43,6 @@ uint16_t readADC(uint8_t channel);
 #include "sig_esp_now.h"
 #include "sig_core_0.h"
 #include "sig_core_1.h"
+#include "sig_stream.h"
 
 #endif // MAIN_H

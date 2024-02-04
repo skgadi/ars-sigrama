@@ -55,15 +55,15 @@ class harmonicsBarsFullCurrent {
     //Preparing y-axis data
     let yData = [];
     //console.log(this.harmonicsData.voltage.amplitude);
-    if (this.harmonicsData.voltage.amplitude.length > 0) {
-      for (let i = 0; i < this.harmonicsData.voltage.amplitude[0].length; i++) {
+    if (this.harmonicsData.current.amplitude.length > 0) {
+      for (let i = 0; i < this.harmonicsData.current.amplitude[0].length; i++) {
         yData[i] = [];
       }
     }
     //console.log(yData);
-    for (let i = 0; i < this.harmonicsData.voltage.amplitude.length; i++) {
-      for (let j = 0; j < this.harmonicsData.voltage.amplitude[i].length; j++) {
-        yData[j][i] = this.harmonicsData.voltage.amplitude[i][j];
+    for (let i = 0; i < this.harmonicsData.current.amplitude.length; i++) {
+      for (let j = 0; j < this.harmonicsData.current.amplitude[i].length; j++) {
+        yData[j][i] = this.harmonicsData.current.amplitude[i][j];
       }
     }
     for (let i = 0; i < yData.length; i++) {
@@ -73,7 +73,7 @@ class harmonicsBarsFullCurrent {
         borderColor: phaseColors[i],
         backgroundColor: phaseColors[i],
         showLine: true,
-        yAxisID: 'voltage',
+        yAxisID: 'current',
       });
     }
     this.data = {
@@ -118,13 +118,13 @@ class harmonicsBarsFullCurrent {
               text: 'Harmonics multiples of fundamental frequency = '+(Math.round(this.harmonicsData.fundamentalFrequency)).toFixed(2)+' Hz'
             },
           },
-          voltage: {
+          current: {
             type: 'linear',
             display: true,
             position: 'left',
             title: {
               display: true,
-              text: 'Volt'
+              text: 'Ampere'
             },
           },
         }
