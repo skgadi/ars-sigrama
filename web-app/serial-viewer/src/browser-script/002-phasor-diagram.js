@@ -169,6 +169,9 @@ class phasorDiagram {
     
   }
 
+  /**
+   * Plots the harmonics of voltage and current on a polar chart.
+   */
   plotHarmonics() {
     if (this.harmonics.voltage.amplitude.length !== this.harmonics.voltage.phase.length) {
       console.error('Voltage amplitude and phase arrays have different length');
@@ -206,13 +209,13 @@ class phasorDiagram {
     }
     maxAmplitudeCurrent = this.getNearestScaleValue(maxAmplitudeCurrent);
     //Plot voltages
-    for (let i =0; i < this.harmonics.voltage.amplitude[1].length; i++) {
+    for (let i =0; i < this.harmonics.voltage.amplitude[1].length-1; i++) { // -1 is to ignore neutral because the hardware is not ready
       let angle = this.harmonics.voltage.phase[1][i];
       let radius = this.fullRadius*this.harmonics.voltage.amplitude[1][i]/maxAmplitudeVoltage;
       this.placeArrowOnPolarChart(angle, radius, phaseColors[i], 0);
     }
     //Plot currents
-    for (let i =0; i < this.harmonics.current.amplitude[1].length; i++) {
+    for (let i =0; i < this.harmonics.current.amplitude[1].length-1; i++) { // -1 is to ignore neutral because the hardware is not ready
       let angle = this.harmonics.current.phase[1][i];
       let radius = this.fullRadius*this.harmonics.current.amplitude[1][i]/maxAmplitudeCurrent;
       this.placeArrowOnPolarChart(angle, radius, phaseColors[i], 1);
@@ -225,7 +228,7 @@ class phasorDiagram {
     this.ctx.textBaseline = "top";
     this.ctx.fillText("Voltage", 10, 10);
     this.ctx.fillText("Scale: "+ maxAmplitudeVoltage + " V", 10, 10 + this.fontSize);
-    for (let i =0; i < this.harmonics.voltage.amplitude[1].length; i++) {
+    for (let i =0; i < this.harmonics.voltage.amplitude[1].length-1; i++) { // -1 is to ignore neutral because the hardware is not ready
       //Place a triangle with sharp on top before the Voltage text to indicate the arrow color and type
       this.ctx.beginPath();
       this.ctx.strokeStyle = phaseColors[i];
@@ -252,7 +255,7 @@ class phasorDiagram {
     this.ctx.textBaseline = "top";
     this.ctx.fillText("Current", this.canvas.width - 10, 10);
     this.ctx.fillText("Scale: "+ maxAmplitudeCurrent + " mA", this.canvas.width - 10, 10 + this.fontSize);
-    for (let i =0; i < this.harmonics.current.amplitude[1].length; i++) {
+    for (let i =0; i < this.harmonics.current.amplitude[1].length-1; i++) { // -1 is to ignore neutral because the hardware is not ready
       //Place a triangle with sharp on top before the Voltage text to indicate the arrow color and type
       this.ctx.beginPath();
       this.ctx.strokeStyle = phaseColors[i];
