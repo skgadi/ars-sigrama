@@ -17,6 +17,7 @@ class harmonicsBarsTop {
 
     this.chart = new Chart(this.canvas,this.config);
     this.chart.getDatasetMeta(3).hidden = true;
+    this.chart.update();
     Object.seal(this.chart);
   }
   updateChart(newHarmonicsData) {
