@@ -27,7 +27,7 @@ extern void *SGI_GV_Bat;
 #define PRINT(x) ((SGI_SERIAL *)SGI_GV_Ter)->print(String(x));
 
 //ChipID required to ensure code is not copied.
-#define ESP_CHIP_ID 3359480
+#define ESP_CHIP_ID 13832748
 #define SHOW_CHIP_ID_AT_START false //Use `false` in production code
 
 

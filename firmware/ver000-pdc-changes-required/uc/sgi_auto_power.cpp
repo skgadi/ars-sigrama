@@ -20,12 +20,12 @@ float SGI_AUTO_POWER::getCurrentTime() {
 
 void SGI_AUTO_POWER::loop() {
   if (getCurrentTime()>=shutDownTime) {
-    flagShutDownNow = true;
+    //flagShutDownNow = true;
   }
 
   if (!digitalRead(PIN_AUTO_POWER)) {
     if (!isStartPress) {
-      flagShutDownNow = true;
+      //flagShutDownNow = true;
     }
   } else {
     isStartPress = false;
@@ -34,7 +34,7 @@ void SGI_AUTO_POWER::loop() {
 
 void SGI_AUTO_POWER::mainLoop() {
   if (flagShutDownNow) {
-    shutdownNow();
+    //shutdownNow();
   }
   
   /*
@@ -55,7 +55,7 @@ void SGI_AUTO_POWER::mainLoop() {
 }
 
 void SGI_AUTO_POWER::shutdownNow() {
-  shutdownNow(0);
+  //shutdownNow(0);
 }
 
 /*
@@ -68,13 +68,13 @@ void SGI_AUTO_POWER::shutdownNow() {
  */
 
 void SGI_AUTO_POWER::shutdownNow(int reason) {
-  PRINTLN("Shutting down...");
-  WiFi.disconnect(true);
-  WiFi.mode(WIFI_OFF);
+  /*PRINTLN("Shutting down...");
+  //WiFi.disconnect(true);
+  //WiFi.mode(WIFI_OFF);
 
 
   //Display reason
-  switch (reason) {
+  /*switch (reason) {
     case 1:
       ((SGI_DISPLAY*)SGI_GV_Dsp)->signalBatteryLowShutdown();
       break;
@@ -91,23 +91,23 @@ void SGI_AUTO_POWER::shutdownNow(int reason) {
   
   
   
-  while(!digitalRead(PIN_AUTO_POWER)) {
-  }
-  delay(1000); // Time for debounce of power button
-  pinMode(PIN_AUTO_POWER, INPUT_PULLDOWN);
-  pinMode(PIN_AUTO_POWER, OUTPUT);
-  delay(100);
-  digitalWrite(PIN_AUTO_POWER, LOW);
+  //while(!digitalRead(PIN_AUTO_POWER)) {
+  //}
+  //delay(1000); // Time for debounce of power button
+  //pinMode(PIN_AUTO_POWER, INPUT_PULLDOWN);
+  //pinMode(PIN_AUTO_POWER, OUTPUT);
+  //delay(100);
+  //digitalWrite(PIN_AUTO_POWER, LOW);
   //delay(2000);
-  for (int i=0; i<10; i++) {
-    PRINT("Delay iteration: ");
-    for (int j=0; j<60; j++) {
-      delay(1000);
-    }
-    PRINTLN(i);
-  }
-  ESP.restart();
-  //esp_deep_sleep_start();
+  //for (int i=0; i<10; i++) {
+  //  PRINT("Delay iteration: ");
+  //  for (int j=0; j<60; j++) {
+  //    delay(1000);
+  //  }
+   // PRINTLN(i);
+  //}
+  //ESP.restart();
+  //esp_deep_sleep_start();*/
 }
 
 

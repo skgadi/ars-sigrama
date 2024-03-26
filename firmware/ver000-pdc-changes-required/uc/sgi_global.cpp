@@ -52,7 +52,7 @@ void loop() {
   ((SGI_WIFI*)SGI_GV_Wfi)->loop();
   ((SGI_AUTO_POWER*)SGI_GV_Apw)->mainLoop();
   ((SGI_SENSOR*)SGI_GV_Sen)->loop();
-  ((SGI_BAT*)SGI_GV_Bat)->loop();
+  //((SGI_BAT*)SGI_GV_Bat)->loop();
   //PRINTLN("Hi");
   delay(10);
 }
